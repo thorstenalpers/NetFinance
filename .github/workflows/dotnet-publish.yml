@@ -12,7 +12,7 @@ jobs:
 
     env:
       Solution_Name: NetFinance.sln
-      Test_Project_Path: Tests\Tests.csproj
+      Test_Project_Path: Tests/Tests.csproj
 
     steps:
     - name: Checkout
@@ -21,7 +21,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 6.x
+        dotnet-version: 8.x
 
     - name: Restore dependencies
       run: dotnet restore ${{ env.Solution_Name }}
