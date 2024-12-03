@@ -4,19 +4,16 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using NetFinance.Application.Exceptions;
-using NetFinance.Application.Options;
 
 namespace NetFinance.Application.Utilities;
 
-internal class YahooSession(IHttpClientFactory httpClientFactory, IOptions<NetFinanceOptions> options) : IYahooSession
+internal class YahooSession(IHttpClientFactory httpClientFactory) : IYahooSession
 {
 	private string? _crumb;
 	private readonly YahooCookie _yahooCookie = new();
 	private SemaphoreSlim _semaphore = new(1, 1);
 	private readonly IHttpClientFactory _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-	private readonly NetFinanceOptions _netFinanceOptions = options.Value ?? throw new ArgumentNullException(nameof(options));
 
 	public async Task<(string crumb, Cookie cookie)> GetSessionStateAsync(CancellationToken token = default)
 	{
@@ -29,7 +26,7 @@ internal class YahooSession(IHttpClientFactory httpClientFactory, IOptions<NetFi
 		try
 		{
 			var httpClient = _httpClientFactory.CreateClient(Constants.ApiClientName);
-			var response = await httpClient.GetAsync(_netFinanceOptions.BaseUrl_Auth_Api, token).ConfigureAwait(false);
+			var response = await httpClient.GetAsync(Constants.BaseUrl_Auth_Api, token).ConfigureAwait(false);
 			var cookieStr = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
 
 
@@ -40,7 +37,7 @@ internal class YahooSession(IHttpClientFactory httpClientFactory, IOptions<NetFi
 			{
 				throw new NetFinanceException("Failed to obtain Yahoo auth cookie.");
 			}
-			var requestMessage = new HttpRequestMessage(HttpMethod.Get, _netFinanceOptions.BaseUrl_Crumb_Api);
+			var requestMessage = new HttpRequestMessage(HttpMethod.Get, Constants.BaseUrl_Crumb_Api);
 			requestMessage.Headers.Add("Cookie", _yahooCookie.ToString());
 			var crumbResponse = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 			_crumb = await crumbResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
