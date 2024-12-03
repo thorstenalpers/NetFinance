@@ -20,31 +20,26 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 	private readonly IHttpClientFactory _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
 	private readonly IYahooSession _yahooSession = yahooSession ?? throw new ArgumentNullException(nameof(yahooSession));
 
-	public async Task<Security> GetSecurityAsync(string symbol, int maxAttempts = 3, CancellationToken token = default)
+	public async Task<Quote> GetQuoteAsync(string symbol, int maxAttempts = 3, CancellationToken token = default)
 	{
-		var symbolsToSecurity = await GetSecurityAsync([symbol], maxAttempts, token).ConfigureAwait(false);
-		var security = symbolsToSecurity.FirstOrDefault(e => e.Key == symbol).Value ?? throw new NetFinanceException($"No security for symbol {symbol} found");
-		return security;
+		var quotes = await GetQuotesAsync([symbol], maxAttempts, token).ConfigureAwait(false);
+		var quote = quotes.FirstOrDefault(e => e.Symbol == symbol) ?? throw new NetFinanceException($"No security for symbol {symbol} found");
+		return quote;
 	}
 
-	public async Task<Dictionary<string, Security>> GetSecurityAsync(List<string> symbols, int maxAttempts = 3, CancellationToken token = default)
+	public async Task<IEnumerable<Quote>> GetQuotesAsync(List<string> symbols, int maxAttempts = 3, CancellationToken token = default)
 	{
-		var symbolsToSecurity = new Dictionary<string, Security>();
+		var quotes = new List<Quote>();
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
 
 		var httpClient = _httpClientFactory.CreateClient(Constants.ApiClientName);
 
-		var url = $"{Constants.BaseUrl_Quote_Api}?symbols={string.Join(",", symbols)}&crumb={crumb}";
-		var url2 = $"{Constants.BaseUrl_Quote_Api}?symbols={string.Join(",", symbols)}" +
-			"" +
+		var url = $"{Constants.BaseUrl_Quote_Api}?" +
+			$"&symbols={string.Join(",", symbols)}" +
 			$"&crumb={crumb}";
 
 		var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 		requestMessage.Headers.Add("Cookie", $"{cookie.Name}={cookie.Value}");
-
-		var requestMessage2 = new HttpRequestMessage(HttpMethod.Get, url2);
-		requestMessage2.Headers.Add("Cookie", $"{cookie.Name}={cookie.Value}");
-
 
 		Exception? lastException = null;
 		for (int attempt = 1; attempt <= maxAttempts; attempt++)
@@ -56,11 +51,6 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 
 				var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-
-				var response2 = await httpClient.SendAsync(requestMessage2, token).ConfigureAwait(false);
-				var data2 = await response2.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-
 				var parsedData = JsonConvert.DeserializeObject<QuoteResponseRoot>(data) ?? throw new NetFinanceException($"Invalid data returned by Yahoo");
 				var responseObj = parsedData.QuoteResponse ?? throw new NetFinanceException($"Unexpected response from Yahoo");
 
@@ -71,18 +61,18 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 				}
 				if (responseObj.Result == null)
 				{
-					return symbolsToSecurity;
+					return quotes;
 				}
 
-				foreach (var security in responseObj.Result)
+				foreach (var quote in responseObj.Result)
 				{
-					if (security.Symbol == null)
+					if (quote.Symbol == null)
 					{
-						throw new NetFinanceException("Invalid security field symbol");
+						throw new NetFinanceException("Invalid quote field symbol");
 					}
-					symbolsToSecurity.Add(security.Symbol, security);
+					quotes.Add(quote);
 				}
-				return symbolsToSecurity;
+				return quotes;
 			}
 			catch (Exception ex)
 			{
@@ -90,12 +80,12 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 				lastException = ex;
 			}
 		}
-		throw new NetFinanceException($"No security found after {maxAttempts} attempts", lastException ?? new Exception());
+		throw new NetFinanceException($"No quote found after {maxAttempts} attempts", lastException ?? new Exception());
 	}
 
-	public async Task<IEnumerable<YahooRecord>> GetRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, int maxAttempts = 3, CancellationToken token = default)
+	public async Task<IEnumerable<Record>> GetRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, int maxAttempts = 3, CancellationToken token = default)
 	{
-		var symbolsToSecurity = new Dictionary<string, Security>();
+		var symbolsToSecurity = new Dictionary<string, Quote>();
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
 		var httpClient = _httpClientFactory.CreateClient(Constants.ApiClientName);
 
@@ -110,7 +100,7 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 		{
 			try
 			{
-				var records = new List<YahooRecord>();
+				var records = new List<Record>();
 				var expectedHeaders = new[] { "Date", "Open", "High", "Low", "Close", "Adj Close", "Volume" };
 				var expectedHeaderSet = new HashSet<string>(expectedHeaders);
 				var headerMap = new Dictionary<string, int>();
@@ -168,7 +158,7 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 						var adjClose = Helper.ParseDecimal(adjCloseString);
 						var volume = Helper.ParseLong(volumeString);
 
-						records.Add(new YahooRecord
+						records.Add(new Record
 						{
 							Date = date,
 							Open = open,

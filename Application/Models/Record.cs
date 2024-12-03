@@ -2,7 +2,7 @@
 
 namespace NetFinance.Application.Models;
 
-public record YahooRecord
+public record Record
 {
 	public DateTime Date { get; set; }
 

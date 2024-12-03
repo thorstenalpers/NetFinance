@@ -27,12 +27,12 @@ public class IntegrationTests
 	[TestCase("SAP")]
 	[TestCase("SAP.DE")]
 	[TestCase("6758.T")]
-	public async Task GetSecurityAsync_Success(string symbol)
+	public async Task GetQuoteAsync_Success(string symbol)
 	{
-		var security = await _dotNetFinanceService.GetSecurityAsync(symbol);
+		var quote = await _dotNetFinanceService.GetQuoteAsync(symbol);
 
-		Assert.That(security, Is.Not.Null);
-		Assert.That(security.Symbol, Is.EqualTo(symbol));
+		Assert.That(quote, Is.Not.Null);
+		Assert.That(quote.Symbol, Is.EqualTo(symbol));
 	}
 
 	[TestCase("MSFT")]
