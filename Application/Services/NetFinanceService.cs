@@ -24,7 +24,7 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 	private readonly IYahooSession _yahooSession = yahooSession ?? throw new ArgumentNullException(nameof(yahooSession));
 	private readonly NetFinanceOptions _netFinanceOptions = options.Value ?? throw new ArgumentNullException(nameof(options));
 
-	public async Task<Security> GetSecurityAsync(string symbol, int maxAttempts = 3, CancellationToken token = default)
+	public async Task<Security> GetTickerAsync(string symbol, int maxAttempts = 3, CancellationToken token = default)
 	{
 		var symbolsToSecurity = await GetSecurityAsync([symbol], maxAttempts, token).ConfigureAwait(false);
 		var security = symbolsToSecurity.FirstOrDefault(e => e.Key == symbol).Value ?? throw new NetFinanceException($"No security for symbol {symbol} found");

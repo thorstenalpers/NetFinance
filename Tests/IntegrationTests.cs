@@ -27,9 +27,9 @@ public class IntegrationTests
 	[TestCase("SAP")]
 	[TestCase("SAP.DE")]
 	[TestCase("6758.T")]
-	public async Task GetSecurityAsync_Success(string symbol)
+	public async Task GetTickerAsync_Success(string symbol)
 	{
-		var security = await _dotNetFinanceService.GetSecurityAsync(symbol);
+		var security = await _dotNetFinanceService.GetTickerAsync(symbol);
 
 		Assert.That(security, Is.Not.Null);
 		Assert.That(security.Symbol, Is.EqualTo(symbol));
