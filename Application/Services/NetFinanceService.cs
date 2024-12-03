@@ -5,10 +5,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using NetFinance.Application.Exceptions;
 using NetFinance.Application.Models;
-using NetFinance.Application.Options;
 using NetFinance.Application.Utilities;
 using Newtonsoft.Json;
 
@@ -16,15 +14,13 @@ namespace NetFinance.Application.Services;
 
 public class NetFinanceService(ILogger<NetFinanceService> logger,
 							   IHttpClientFactory httpClientFactory,
-							   IYahooSession yahooSession,
-							   IOptions<NetFinanceOptions> options) : INetFinanceService
+							   IYahooSession yahooSession) : INetFinanceService
 {
 	private readonly ILogger<NetFinanceService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 	private readonly IHttpClientFactory _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
 	private readonly IYahooSession _yahooSession = yahooSession ?? throw new ArgumentNullException(nameof(yahooSession));
-	private readonly NetFinanceOptions _netFinanceOptions = options.Value ?? throw new ArgumentNullException(nameof(options));
 
-	public async Task<Security> GetTickerAsync(string symbol, int maxAttempts = 3, CancellationToken token = default)
+	public async Task<Security> GetSecurityAsync(string symbol, int maxAttempts = 3, CancellationToken token = default)
 	{
 		var symbolsToSecurity = await GetSecurityAsync([symbol], maxAttempts, token).ConfigureAwait(false);
 		var security = symbolsToSecurity.FirstOrDefault(e => e.Key == symbol).Value ?? throw new NetFinanceException($"No security for symbol {symbol} found");
@@ -38,10 +34,18 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 
 		var httpClient = _httpClientFactory.CreateClient(Constants.ApiClientName);
 
-		var url = $"{_netFinanceOptions.BaseUrl_Quote_Api}?symbols={string.Join(",", symbols)}&crumb={crumb}";
+		var url = $"{Constants.BaseUrl_Quote_Api}?symbols={string.Join(",", symbols)}&crumb={crumb}";
+		var url2 = $"{Constants.BaseUrl_Quote_Api}?symbols={string.Join(",", symbols)}" +
+			"" +
+			$"&crumb={crumb}";
 
 		var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 		requestMessage.Headers.Add("Cookie", $"{cookie.Name}={cookie.Value}");
+
+		var requestMessage2 = new HttpRequestMessage(HttpMethod.Get, url2);
+		requestMessage2.Headers.Add("Cookie", $"{cookie.Name}={cookie.Value}");
+
+
 		Exception? lastException = null;
 		for (int attempt = 1; attempt <= maxAttempts; attempt++)
 		{
@@ -51,6 +55,12 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 				response.EnsureSuccessStatusCode();
 
 				var data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+
+				var response2 = await httpClient.SendAsync(requestMessage2, token).ConfigureAwait(false);
+				var data2 = await response2.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+
 				var parsedData = JsonConvert.DeserializeObject<QuoteResponseRoot>(data) ?? throw new NetFinanceException($"Invalid data returned by Yahoo");
 				var responseObj = parsedData.QuoteResponse ?? throw new NetFinanceException($"Unexpected response from Yahoo");
 
@@ -94,7 +104,7 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 
 		long period1 = Helper.ToUnixTimestamp(startDate.Date);
 		long period2 = Helper.ToUnixTimestamp(endDate.Value.Date);
-		var url = $"{_netFinanceOptions.BaseUrl_Html}/{symbol}/history/?period1={period1}&period2={period2}";
+		var url = $"{Constants.BaseUrl_Html}/{symbol}/history/?period1={period1}&period2={period2}";
 		Exception? lastException = null;
 		for (int attempt = 1; attempt <= maxAttempts; attempt++)
 		{

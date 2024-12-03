@@ -16,7 +16,7 @@ public interface INetFinanceService
 	/// <param name="maxAttempts">Optional max retry attempts. If not provided, 3 reties with 3 seconds delay between.</param>
 	/// <param name="token">A <see cref="CancellationToken"/> to allow cancellation of the operation.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains the security data for the given symbol.</returns>
-	public Task<Security> GetTickerAsync(string symbol, int maxAttempts = 3, CancellationToken token = default);
+	public Task<Security> GetSecurityAsync(string symbol, int maxAttempts = 3, CancellationToken token = default);
 
 	/// <summary>
 	/// Asynchronously retrieves multiple securities' data from Yahoo Finance based on a list of symbols.
