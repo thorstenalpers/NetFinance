@@ -114,9 +114,7 @@ public class NetFinanceService(ILogger<NetFinanceService> logger,
 				var table = document.QuerySelector("table.table");
 				if (table == null)
 				{
-					_logger.LogWarning($"No records found for symbol {symbol}");
-					//throw new NetFinanceException("No records found");
-					return records;
+					throw new NetFinanceException("No records found");
 				}
 
 				var headers = table.QuerySelectorAll("thead th")
