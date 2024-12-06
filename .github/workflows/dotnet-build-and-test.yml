@@ -34,14 +34,14 @@ jobs:
       run: |
         echo "NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY=MyValue1" >> $GITHUB_ENV
         echo "NetFinanceConfiguration__AlphaVantageApiKey=MyValue2" >> $GITHUB_ENV
-        echo "AlphaVantageApiKey=MyValue4" >> $GITHUB_ENV
+        echo "AlphaVantageApiKey=MyValue3" >> $GITHUB_ENV
         echo "FOO=MyValue4" >> $GITHUB_ENV
       shell: bash
 
     - name: Execute unit tests
       run: dotnet test ${{ env.Test_Project_Path }} --configuration Release --no-restore
       env:
-          NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY: xxxxxxxxxxxxxxxxxx
+          NetFinanceConfiguration__AlphaVantageApiKey: xxxxxxxxxxxxxxxxxx
 
     - name: Run Tests and Generate Coverage Report
       run: |
