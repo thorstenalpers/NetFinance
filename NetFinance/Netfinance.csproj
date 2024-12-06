@@ -12,9 +12,9 @@
 	<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
 	<PackageId>NetFinance</PackageId>
-	<Version>0.1.1</Version>
+	<Version>1.0.0</Version>
 	<Authors>Thorsten Alpers</Authors>
-	<Description>.Net Finance: A library to fetch financial data from Yahoo, Xetra, OpenData and AlphaVantage.</Description>
+	<Description>.Net Finance is a robust library designed for .NET developers to easily fetch and manage financial data from multiple sources, including Yahoo Finance, Xetra, OpenData, and AlphaVantage. Ideal for building financial applications, this library simplifies data retrieval and integration.</Description>
 	<PackageProjectUrl>https://github.com/thorstenalpers/NetFinance</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/thorstenalpers/NetFinance</RepositoryUrl>
 	<PackageTags>NetFinance;Nasdaq;Xetra;Yahoo;Finance;Trading;Stock;Exchange</PackageTags>
