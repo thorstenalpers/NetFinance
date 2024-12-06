@@ -130,11 +130,7 @@ public class AlphaVantageServiceTests
 		var interval = Models.AlphaVantage.EInterval.Interval_5Min;
 
 		// Act
-		var result = await service.GetIntradayRecordsAsync(
-			symbol,
-			startDate,
-			endDate,
-			interval);
+		var result = await service.GetIntradayRecordsAsync(symbol, startDate, endDate, interval);
 
 		// Assert
 		Assert.That(result, Is.Not.Empty);

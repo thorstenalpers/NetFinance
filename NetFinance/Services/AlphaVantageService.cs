@@ -196,7 +196,7 @@ internal class AlphaVantageService : IAlphaVantageService
 			result.AddRange(currentCourses);
 		}
 		return result.IsNullOrEmpty()
-			? throw new NetFinanceException($"No intraday records found for {symbol}")
+			? throw new NetFinanceException($"Fail for {symbol}")
 			: result.Where(e => e.DateTime >= startDate).ToList();
 	}
 
