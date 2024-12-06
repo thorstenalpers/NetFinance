@@ -19,6 +19,16 @@ jobs:
         ref: develop
         fetch-depth: 0 
 
+    - name: List directory structure
+      run: |
+        echo "Root Directory Structure:"
+        ls -R
+
+    - name: Debug specific directory (e.g., src)
+      run: |
+        echo "Contents of src directory:"
+        ls -R NetFinance
+
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
