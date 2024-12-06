@@ -27,7 +27,11 @@ public class YahooTests
 		var services = new ServiceCollection();
 		services.AddSingleton<IConfiguration>(configuration);
 
-		services.AddNetFinance();
+		services.AddNetFinance(new NetFinanceConfiguration
+		{
+			Http_Timeout = 30,
+			Http_Retries = 5
+		});
 
 		_serviceProvider = services.BuildServiceProvider();
 	}

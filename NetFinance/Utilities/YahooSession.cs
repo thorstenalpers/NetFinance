@@ -28,7 +28,7 @@ internal class YahooSession(IHttpClientFactory httpClientFactory, IOptions<NetFi
 		await _semaphore.WaitAsync(token).ConfigureAwait(false);
 		try
 		{
-			var httpClient = _httpClientFactory.CreateClient(_netFinanceOptions.Yahoo_Http_ClientName);
+			using var httpClient = _httpClientFactory.CreateClient(_netFinanceOptions.Yahoo_Http_ClientName);
 			var response = await httpClient.GetAsync(_netFinanceOptions.Yahoo_BaseUrl_Auth_Api, token).ConfigureAwait(false);
 			var cookieStr = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
 
