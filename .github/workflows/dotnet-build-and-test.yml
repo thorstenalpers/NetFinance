@@ -32,8 +32,11 @@ jobs:
 
     - name: Set environment variable from GitHub Secret
       run: |
-        echo "NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY=MyValue" >> $GITHUB_ENV
-        echo "FOO=VALUE" >> $GITHUB_ENV
+        echo "NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY=MyValue1" >> $GITHUB_ENV
+        echo "NetFinanceConfiguration__AlphaVantageApiKey=MyValue2" >> $GITHUB_ENV
+        echo "NetFinanceConfiguration_AlphaVantageApiKey=MyValue3" >> $GITHUB_ENV
+        echo "AlphaVantageApiKey=MyValue4" >> $GITHUB_ENV
+        echo "FOO=MyValue4" >> $GITHUB_ENV
       shell: bash
 
     - name: Execute unit tests
