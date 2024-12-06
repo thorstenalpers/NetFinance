@@ -1,0 +1,8 @@
+Symbol,Name,Sector,Price,Price/Earnings,Dividend Yield,Earnings/Share,52 Week Low,52 Week High,Market Cap,EBITDA,Price/Sales,Price/Book,SEC Filings
+MMM,3M,Industrial Conglomerates,133.53,13.894901,0.021,9.61,75.652176,141.34,72714960896,8117000192,2.2279234,15.66518,http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=MMM
+AOS,A. O. Smith,Building Products,74.49,19.654354,0.0183,3.79,70.73,92.45,10744139776,809100032,2.7592943,5.635071,http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=AOS
+ABT,Abbott Laboratories,Health Care Equipment,118.77,36.100304,0.0185,3.29,99.71,121.64,206312996864,10824999936,5.005532,5.1765165,http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=ABT
+ABBV,AbbVie,Biotechnology,182.93,63.738674,0.0359,2.87,142.66,207.32,323528163328,25629999104,5.8258724,53.598003,http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=ABBV
+ACN,Accenture,IT Consulting & Other Services,362.37,31.648035,0.0163,11.45,278.69,387.51,226429059072,11065912320,3.4890816,8.009593,http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=ACN
+ADBE,Adobe Inc.,Application Software,515.93,43.685856,,11.81,433.97,638.25,227112386560,8134000128,10.842239,15.784916,http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=ADBE
+AMD,Advanced Micro Devices,Semiconductors,137.175,122.477684,,1.12,116.37,227.3,222608965632,4479000064,9.162748,3.9068954,http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=AMD
