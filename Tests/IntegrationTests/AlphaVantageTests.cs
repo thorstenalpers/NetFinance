@@ -27,7 +27,7 @@ public class AlphaVantageTests
 		var services = new ServiceCollection();
 		services.AddSingleton<IConfiguration>(configuration);
 
-		Console.WriteLine("YYYYYYYY1 " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
+		//Console.WriteLine("YYYYYYYY1 " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
 		Console.WriteLine("YYYYYYYY2 " + configuration["FOO"]);
 		Console.WriteLine("YYYYYYYY3 " + configuration["NetFinanceConfiguration:AlphavantageApiKey"]);
 		Console.WriteLine("YYYYYYYY4 " + configuration["NetFinanceConfiguration__AlphaVantageApiKey"]);
