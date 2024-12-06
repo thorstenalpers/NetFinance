@@ -1,0 +1,42 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      Solution_Name: NetFinance.sln
+      Test_Project_Path: Tests/Tests.csproj
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.x
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.Solution_Name }}
+
+    - name: Build project
+      run: dotnet build ${{ env.Solution_Name }} --configuration Release  --no-restore
+
+    - name: Execute unit tests
+      run: dotnet test ${{ env.Test_Project_Path }} --configuration Release 
+      
+    - name: Pack NuGet Package
+      run: dotnet pack ${{ env.Solution_Name }} --configuration Release --no-build --output ./nupkg
+
+    - name: Publish to NuGet
+      if: success()
+      env:
+         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY

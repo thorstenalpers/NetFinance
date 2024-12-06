@@ -26,12 +26,12 @@ internal class YahooService : IYahooService
 {
 	private readonly ILogger<IYahooService> _logger;
 	private readonly IHttpClientFactory _httpClientFactory;
-	private readonly YahooSession _yahooSession;
+	private readonly IYahooSession _yahooSession;
 	private readonly IMapper _mapper;
 	private readonly NetFinanceConfiguration _options;
 	private static ServiceProvider? _serviceProvider = null;
 
-	public YahooService(ILogger<IYahooService> logger, IHttpClientFactory httpClientFactory, YahooSession yahooSession, IOptions<NetFinanceConfiguration> options)
+	public YahooService(ILogger<IYahooService> logger, IHttpClientFactory httpClientFactory, IYahooSession yahooSession, IOptions<NetFinanceConfiguration> options)
 	{
 		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		_httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
@@ -77,7 +77,7 @@ internal class YahooService : IYahooService
 			$"&crumb={crumb}";
 
 		var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-		requestMessage.Headers.Add("Cookie", $"{cookie.Name}={cookie.Value}");
+		requestMessage.Headers.Add("Cookie", $"{cookie?.Name}={cookie?.Value}");
 
 		var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 		response.EnsureSuccessStatusCode();
@@ -158,7 +158,7 @@ internal class YahooService : IYahooService
 		};
 	}
 
-	public async Task<IEnumerable<DailyRecord>> GetRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
+	public async Task<IEnumerable<DailyRecord>> GetDailyRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
 	{
 		var symbolsToSecurity = new Dictionary<string, Quote>();
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);

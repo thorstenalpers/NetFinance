@@ -53,7 +53,7 @@ internal class XetraService : IXetraService
 		return _serviceProvider.GetRequiredService<IXetraService>();
 	}
 
-	public async Task<IEnumerable<Instrument>> GetTradableInstruments(CancellationToken token = default)
+	public async Task<IEnumerable<Instrument>> GetInstruments(CancellationToken token = default)
 	{
 		var httpClient = _httpClientFactory.CreateClient(_options.Xetra_Http_ClientName);
 		try

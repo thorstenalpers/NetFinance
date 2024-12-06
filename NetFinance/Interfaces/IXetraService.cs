@@ -16,5 +16,5 @@ public interface IXetraService
 	/// </summary>
 	/// <param name="token">A <see cref="CancellationToken"/> to allow cancellation of the operation.</param>
 	/// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of <see cref="Instrument"/> objects representing tradable instruments.</returns>
-	Task<IEnumerable<Instrument>> GetTradableInstruments(CancellationToken token = default);
+	Task<IEnumerable<Instrument>> GetInstruments(CancellationToken token = default);
 }

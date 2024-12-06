@@ -42,7 +42,7 @@ public class YahooTests
 	public async Task GetRecordsAsync_WithDividend_Success()
 	{
 		var startDate = new DateTime(2020, 01, 01);
-		var records = await _service.GetRecordsAsync("SAP.DE", startDate);
+		var records = await _service.GetDailyRecordsAsync("SAP.DE", startDate);
 
 		Assert.That(records, Is.Not.Empty);
 
@@ -56,7 +56,7 @@ public class YahooTests
 	{
 		var startDate = new DateTime(2024, 01, 04);
 		var endDate = new DateTime(2024, 01, 05);
-		var records = await _service.GetRecordsAsync("SAP.DE", startDate, endDate);
+		var records = await _service.GetDailyRecordsAsync("SAP.DE", startDate, endDate);
 
 		Assert.That(records, Is.Not.Empty);
 		Assert.That(records.Count(), Is.EqualTo(2));
@@ -156,7 +156,7 @@ public class YahooTests
 	public async Task GetRecordsAsync_ValidSymbols_ReturnsRecords(string symbol)
 	{
 		var startDate = DateTime.UtcNow.AddDays(-7);
-		var records = await _service.GetRecordsAsync(symbol, startDate);
+		var records = await _service.GetDailyRecordsAsync(symbol, startDate);
 
 		Assert.That(records, Is.Not.Empty);
 

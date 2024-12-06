@@ -50,7 +50,7 @@ internal class AlphaVantageService : IAlphaVantageService
 		return _serviceProvider.GetRequiredService<IAlphaVantageService>();
 	}
 
-	public async Task<CompanyOverview?> GetCompanyOverviewAsync(string symbol, CancellationToken token = default)
+	public async Task<CompanyInfo?> GetCompanyInfoAsync(string symbol, CancellationToken token = default)
 	{
 		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		Exception? lastException = new();
@@ -75,7 +75,7 @@ internal class AlphaVantageService : IAlphaVantageService
 				{
 					throw new NetFinanceException($"higher API call volume for {symbol}");
 				}
-				return JsonConvert.DeserializeObject<CompanyOverview>(jsonResponse);
+				return JsonConvert.DeserializeObject<CompanyInfo>(jsonResponse);
 			}
 			catch (Exception ex)
 			{

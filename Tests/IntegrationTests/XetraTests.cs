@@ -42,7 +42,7 @@ public class XetraTests
 	[TestCase("VUSA.DE")]   // Vanguard S&P 500 ETF
 	public async Task GetTradableInstruments_ValidSymbols_ReturnsIntsruments(string symbol)
 	{
-		var instruments = await _service.GetTradableInstruments();
+		var instruments = await _service.GetInstruments();
 
 		Assert.That(instruments, Is.Not.Empty);
 
@@ -57,7 +57,7 @@ public class XetraTests
 	public async Task GetTradableInstruments_WithoutIoC_ReturnsInstruments()
 	{
 		var service = XetraService.Create();
-		var instruments = await service.GetTradableInstruments();
+		var instruments = await service.GetInstruments();
 
 		Assert.That(instruments, Is.Not.Empty);
 	}

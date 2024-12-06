@@ -48,7 +48,7 @@ public class AlphaVantageTests
 		{
 			AlphaVantageApiKey = cfg.Value.AlphaVantageApiKey
 		});
-		var overview = await service.GetCompanyOverviewAsync("SAP");
+		var overview = await service.GetCompanyInfoAsync("SAP");
 
 		Assert.That(overview, Is.Not.Null);
 		Assert.That(overview.Symbol, Is.EqualTo("SAP"));
@@ -59,7 +59,7 @@ public class AlphaVantageTests
 	[TestCase("GOOG")]      // Alphabet (Nasdaq)
 	public async Task GetCompanyOverviewAsync_ValidSymbols_ReturnsOverview(string symbol)
 	{
-		var overview = await _service.GetCompanyOverviewAsync(symbol);
+		var overview = await _service.GetCompanyInfoAsync(symbol);
 
 		Assert.That(overview, Is.Not.Null);
 		Assert.That(overview.Symbol, Is.EqualTo(symbol));

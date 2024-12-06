@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
 			opt.AlphaVantage_ApiUrl = cfg.AlphaVantage_ApiUrl;
 		});
 
-		services.AddSingleton<YahooSession>();
+		services.AddSingleton<IYahooSession, YahooSession>();
 
 		services.AddScoped<IYahooService, YahooService>();
 		services.AddScoped<IXetraService, XetraService>();

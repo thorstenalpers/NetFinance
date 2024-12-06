@@ -60,7 +60,7 @@ public class XetraServiceTests
 			_mockOptions.Object);
 
 		// Act
-		var result = await service.GetTradableInstruments();
+		var result = await service.GetInstruments();
 
 		// Assert
 

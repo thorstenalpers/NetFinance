@@ -75,7 +75,7 @@ public class AlphaVantageServiceTests
 		var symbol = "IBM";
 
 		// Act
-		var result = await service.GetCompanyOverviewAsync(symbol);
+		var result = await service.GetCompanyInfoAsync(symbol);
 
 		// Assert
 		Assert.That(result, Is.Not.Null);

@@ -13,7 +13,6 @@ using Moq;
 using Moq.Protected;
 using NetFinance.Interfaces;
 using NetFinance.Services;
-using NetFinance.Utilities;
 using NUnit.Framework;
 
 namespace NetFinance.Tests.Services;
@@ -24,7 +23,7 @@ public class YahooServiceTests
 {
 	private Mock<ILogger<IYahooService>> _mockLogger;
 	private Mock<IHttpClientFactory> _mockHttpClientFactory;
-	private Mock<YahooSession> _mockYahooSession;
+	private Mock<IYahooSession> _mockYahooSession;
 	private Mock<IOptions<NetFinanceConfiguration>> _mockOptions;
 	private Mock<HttpMessageHandler> _mockHandler;
 
@@ -36,7 +35,7 @@ public class YahooServiceTests
 		_mockLogger = new Mock<ILogger<IYahooService>>();
 		_mockHttpClientFactory = new Mock<IHttpClientFactory>();
 		_mockHandler = new Mock<HttpMessageHandler>();
-		_mockYahooSession = new Mock<YahooSession>(_mockHttpClientFactory.Object, _mockOptions.Object);
+		_mockYahooSession = new Mock<IYahooSession>();
 
 		_mockHandler
 			.Protected()
@@ -157,7 +156,7 @@ public class YahooServiceTests
 		DateTime? endDate = null;
 
 		// Act
-		var result = await service.GetRecordsAsync(symbol, startDate, endDate);
+		var result = await service.GetDailyRecordsAsync(symbol, startDate, endDate);
 
 		// Assert
 		Assert.That(result, Is.Not.Empty);
