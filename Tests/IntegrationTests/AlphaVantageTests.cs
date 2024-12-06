@@ -21,11 +21,11 @@ public class AlphaVantageTests
 	public void OneTimeSetUp()
 	{
 		var builder = new ConfigurationBuilder();
+		builder.AddEnvironmentVariables();
 		builder.AddUserSecrets<AlphaVantageTests>();
 		var configuration = builder.Build();
 		var services = new ServiceCollection();
 		services.AddSingleton<IConfiguration>(configuration);
-
 
 		services.AddNetFinance(
 			new NetFinanceConfiguration
@@ -46,7 +46,7 @@ public class AlphaVantageTests
 		var configuration = _serviceProvider.GetService<IConfiguration>();
 
 
-		Console.WriteLine("XXXXXXXX " + configuration["NETFINANCECONFIGURATION_ALPHAVANTAGEAPIKEY"]);
+		Console.WriteLine("XXXXXXXX " + configuration["ALPHAVANTAGEAPIKEY"]);
 		Console.WriteLine("XXXXXXXX " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
 		Console.WriteLine("XXXXXXXX " + configuration["NetFinanceConfiguration:AlphavantageApiKey"]);
 
