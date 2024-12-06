@@ -45,15 +45,15 @@ public class AlphaVantageTests
 		var cfg = _serviceProvider.GetRequiredService<IOptions<NetFinanceConfiguration>>();
 		var configuration = _serviceProvider.GetService<IConfiguration>();
 
-
-		Console.WriteLine("XXXXXXXX " + configuration["ALPHAVANTAGEAPIKEY"]);
-		Console.WriteLine("XXXXXXXX " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
-		Console.WriteLine("XXXXXXXX " + configuration["NetFinanceConfiguration:AlphavantageApiKey"]);
-
 		var service = AlphaVantageService.Create(new NetFinanceConfiguration
 		{
 			AlphaVantageApiKey = cfg.Value.AlphaVantageApiKey
 		});
+
+		Console.WriteLine("XXXXXXXX " + cfg.Value.AlphaVantageApiKey);
+		Console.WriteLine("XXXXXXXX " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
+		Console.WriteLine("XXXXXXXX " + configuration["NetFinanceConfiguration:AlphavantageApiKey"]);
+
 		var overview = await service.GetCompanyInfoAsync("SAP");
 
 		Assert.That(overview, Is.Not.Null);
