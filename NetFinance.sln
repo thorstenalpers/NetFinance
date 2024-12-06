@@ -1,22 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35521.163
+VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{735F9681-C03D-4638-81D8-3E31B3CBA08D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netfinance", "NetFinance\Netfinance.csproj", "{9C0E7C0F-672C-43CE-A1EF-45FAA86A0DB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{50343667-AF9C-49F8-9F57-E6FF157114D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1AC96238-D4F7-4B75-82EF-2EAD87CC9522}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		.github\workflows\dotnet-build-and-test.yml = .github\workflows\dotnet-build-and-test.yml
-		.github\workflows\dotnet-publish-nuget.yml = .github\workflows\dotnet-publish-nuget.yml
 		LICENSE = LICENSE
 		licenses.txt = licenses.txt
 		README.md = README.md
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netfinance", "NetFinance\Netfinance.csproj", "{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,14 +22,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0E7C0F-672C-43CE-A1EF-45FAA86A0DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0E7C0F-672C-43CE-A1EF-45FAA86A0DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0E7C0F-672C-43CE-A1EF-45FAA86A0DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0E7C0F-672C-43CE-A1EF-45FAA86A0DB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50343667-AF9C-49F8-9F57-E6FF157114D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50343667-AF9C-49F8-9F57-E6FF157114D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50343667-AF9C-49F8-9F57-E6FF157114D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50343667-AF9C-49F8-9F57-E6FF157114D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
