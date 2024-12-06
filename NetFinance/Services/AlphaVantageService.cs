@@ -52,12 +52,12 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	public async Task<CompanyInfo?> GetCompanyInfoAsync(string symbol, CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		Exception? lastException = new();
 		for (int index = 0; index < _options.Http_Retries; index++)
 		{
 			try
 			{
+				using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 				var requestUrl = _options.AlphaVantage_ApiUrl + "/query?function=OVERVIEW" +
 					$"&symbol={symbol}" +
 					$"&apikey={_options.AlphaVantageApiKey}";
@@ -89,7 +89,6 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	public async Task<IEnumerable<DailyRecord>> GetDailyRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		var lastException = new Exception();
 		Guard.Against.NullOrEmpty(symbol);
 		var result = new List<DailyRecord>();
@@ -106,6 +105,7 @@ internal class AlphaVantageService : IAlphaVantageService
 		{
 			try
 			{
+				using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 				var requestUrl = _options.AlphaVantage_ApiUrl + "/query?function=TIME_SERIES_DAILY_ADJUSTED" +
 					$"&symbol={symbol}&outputsize=full&apikey={_options.AlphaVantageApiKey}";
 
@@ -169,8 +169,6 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	public async Task<IEnumerable<IntradayRecord>> GetIntradayRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, EInterval interval = EInterval.Interval_15Min, CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
-		Exception? lastException = new();
 		Guard.Against.NullOrEmpty(symbol);
 		var result = new List<IntradayRecord>();
 		if (endDate == null || endDate?.Date >= DateTime.UtcNow.Date)
@@ -204,7 +202,6 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	private async Task<List<IntradayRecord>> GetIntradayRecordsByMonthAsync(string symbol, DateTime month, EInterval interval, CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		var result = new List<IntradayRecord>();
 		Exception? lastException = new();
 
@@ -212,6 +209,7 @@ internal class AlphaVantageService : IAlphaVantageService
 		{
 			try
 			{
+				using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 				var requestUrl = _options.AlphaVantage_ApiUrl + "/query?function=TIME_SERIES_INTRADAY" +
 					$"&symbol={symbol}" +
 					$"&interval={interval.Description()}" +
@@ -286,7 +284,6 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	public async Task<IEnumerable<DailyForexRecord>> GetDailyForexRecordsAsync(string currency1, string currency2, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		Exception? lastException = new();
 		Guard.Against.NullOrEmpty(currency1);
 		Guard.Against.NullOrEmpty(currency2);
@@ -305,6 +302,7 @@ internal class AlphaVantageService : IAlphaVantageService
 		{
 			try
 			{
+				using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 				var requestUrl = _options.AlphaVantage_ApiUrl + "/query?function=FX_DAILY" +
 					$"&from_symbol={currency1}&to_symbol={currency2}&outputsize=full&apikey={_options.AlphaVantageApiKey}";
 

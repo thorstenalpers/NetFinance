@@ -191,8 +191,6 @@ internal class YahooService : IYahooService
 	{
 		Exception? lastException = new();
 		var symbolsToSecurity = new Dictionary<string, Quote>();
-		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
-		using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 
 		endDate ??= DateTime.UtcNow;
 		endDate = endDate.Value.AddDays(1).Date;
@@ -204,6 +202,9 @@ internal class YahooService : IYahooService
 		{
 			try
 			{
+				var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
+				using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
+
 				var records = new List<DailyRecord>();
 				var expectedHeaders = new[] { "Date", "Open", "High", "Low", "Close", "Adj Close", "Volume" };
 				var expectedHeaderSet = new HashSet<string>(expectedHeaders);
@@ -298,8 +299,6 @@ internal class YahooService : IYahooService
 	{
 		Exception? lastException = new();
 		var result = new Dictionary<string, FinancialReport>();
-		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
-		using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/";
 
@@ -307,6 +306,9 @@ internal class YahooService : IYahooService
 		{
 			try
 			{
+				var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
+				using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
+
 				var response = await httpClient.GetAsync(url, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
 
@@ -372,8 +374,6 @@ internal class YahooService : IYahooService
 	{
 		Exception? lastException = new();
 		var symbolsToSecurity = new Dictionary<string, Quote>();
-		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
-		using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/";
 
@@ -381,6 +381,9 @@ internal class YahooService : IYahooService
 		{
 			try
 			{
+				var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
+				using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
+
 				var response = await httpClient.GetAsync(url, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
 
