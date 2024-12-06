@@ -39,6 +39,12 @@ jobs:
     - name: Print AlphaVantage API Key3
       run: echo "AlphaVantage API Key is ${{ env.AlphaVantageApiKey }}"
             
+    - name: Print AlphaVantage API Key4
+      run: echo "AlphaVantage API Key is ${{ env.Foo }}"
+            
+    - name: Print AlphaVantage API Key5
+      run: echo "AlphaVantage API Key is ${{ env.FOO }}"
+            
     - name: Set environment variable from GitHub Secret
       run: |
         echo "NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY=MyValue1" >> $GITHUB_ENV
