@@ -4,7 +4,6 @@ on:
   push:
     branches: [ "develop" ]
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,14 +15,16 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        ref: develop
 
     - name: Install .NET Core
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.x
+        dotnet-version: 8.0
 
     - name: Restore dependencies
-      run: dotnet restore ${{ env.Solution_Name }}
+      run: dotnet restore ${{ env.Solution_Name }} --verbosity detailed
 
     - name: Build project
       run: dotnet build ${{ env.Solution_Name }} --configuration Release  --no-restore
