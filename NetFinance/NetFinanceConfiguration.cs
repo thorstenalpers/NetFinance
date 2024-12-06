@@ -6,11 +6,14 @@ public class NetFinanceConfiguration
 	/// <summary> Alpha Vantage API Key </summary>
 	public string? AlphaVantageApiKey { get; set; } = null;
 
-	/// <summary> Defaul retries for failed http requests (caused by rate limits) </summary>
+	/// <summary> Default retries for failed http requests (caused by rate limits) </summary>
 	[Required] public int Http_Retries = 3;
 
-	/// <summary> Defaul HTTP timeout in seconds </summary>
+	/// <summary> Default HTTP timeout in seconds </summary>
 	[Required] public int Http_Timeout = 30;
+
+	/// <summary> Default wait-time between retries in seconds </summary>
+	[Required] public int Http_Retries_Waittime = 30;
 
 	/// <summary> Base url for Yahoo UI content </summary>
 	[Required] public string Yahoo_BaseUrl_Html = "https://finance.yahoo.com/quote";
