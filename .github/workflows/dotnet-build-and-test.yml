@@ -24,6 +24,9 @@ jobs:
       with:
         dotnet-version: 8.x
         
+    - name: Print secret directly
+      run: echo "My secret is ${{ secrets.NETFINANCECONFIGURATION__ALPHAVANTAGEAPIKEY }}"
+
     - name: Print environment variables
       run: printenv
 
