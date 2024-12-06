@@ -333,7 +333,7 @@ internal class YahooService : IYahooService
 					var columns = row.ChildNodes.QuerySelectorAll("div.column").Select(e => e.TextContent.Trim()).ToList();
 
 					if (columns.Count != headers.Count + 1)
-						throw new NetFinanceException("Unknown table format");
+						throw new NetFinanceException("Unknown table format" + "\n------------\n" + url + "\n------------\n" + htmlContent);
 
 					var rowTitle = columns.FirstOrDefault();
 					var values = columns.Skip(1).Select(Helper.ParseDecimal).ToList();
