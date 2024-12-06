@@ -24,10 +24,10 @@ jobs:
         dotnet-version: 8.0
 
     - name: Restore dependencies
-      run: dotnet restore ${{ env.Solution_Name }} --verbosity detailed
+      run: dotnet restore ${{ env.Solution_Name }}
 
     - name: Build project
-      run: dotnet build ${{ env.Solution_Name }} --configuration Release  --no-restore
+      run: dotnet build ${{ env.Solution_Name }} --configuration Release
 
     - name: Execute unit tests
       run: dotnet test ${{ env.Test_Project_Path }} --configuration Release 
