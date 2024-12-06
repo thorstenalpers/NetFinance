@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+	<MaxCpuUsage>0</MaxCpuUsage>
+  </RunConfiguration>
+  <DataCollectionRunSettings>
+	<DataCollectors>
+	  <DataCollector friendlyName="XPlat code coverage">
+		<Configuration>
+		  <RunInParallel>true</RunInParallel>
+
+		  <Attributes>
+			<Exclude>
+			  <Attribute>^System\.Diagnostics\.CodeAnalysis\.ExcludeFromCodeCoverageAttribute$</Attribute>
+			</Exclude>
+		  </Attributes> 
+		
+	  </Configuration>
+	  </DataCollector>
+	</DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
