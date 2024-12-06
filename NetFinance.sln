@@ -3,15 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{AB87BC38-5A0E-4DFF-8453-00A8628BD107}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{E423AC4C-CFDC-44D6-8E84-65A828EC8909}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{735F9681-C03D-4638-81D8-3E31B3CBA08D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		.github\workflows\dotnet-publish.yml = .github\workflows\dotnet-publish.yml
+		LICENSE = LICENSE
+		licenses.txt = licenses.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netfinance", "NetFinance\Netfinance.csproj", "{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +23,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AB87BC38-5A0E-4DFF-8453-00A8628BD107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB87BC38-5A0E-4DFF-8453-00A8628BD107}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB87BC38-5A0E-4DFF-8453-00A8628BD107}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB87BC38-5A0E-4DFF-8453-00A8628BD107}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E423AC4C-CFDC-44D6-8E84-65A828EC8909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E423AC4C-CFDC-44D6-8E84-65A828EC8909}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E423AC4C-CFDC-44D6-8E84-65A828EC8909}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E423AC4C-CFDC-44D6-8E84-65A828EC8909}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72BB01C4-B80C-4E98-BE2E-773F76E5AA51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA43EB71-216C-4BFB-BF87-91D57C1C7BA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
