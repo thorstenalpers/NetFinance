@@ -23,18 +23,17 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.x
-        
-    - name: Print secret directly
-      run: echo "My secret is ${{ secrets.NETFINANCECONFIGURATION__ALPHAVANTAGEAPIKEY }}"
-
-    - name: Print environment variables
-      run: printenv
 
     - name: Restore dependencies
       run: dotnet restore ${{ env.Solution_Name }}
 
     - name: Build project
       run: dotnet build ${{ env.Solution_Name }} --configuration Release --no-restore
+
+    - name: Set environment variable from GitHub Secret
+      run: |
+        echo "NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY=${{ secrets.NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY }}" >> $GITHUB_ENV
+      shell: bash
 
     - name: Execute unit tests
       run: dotnet test ${{ env.Test_Project_Path }} --configuration Release --no-restore
