@@ -27,6 +27,10 @@ public class AlphaVantageTests
 		var services = new ServiceCollection();
 		services.AddSingleton<IConfiguration>(configuration);
 
+		Console.WriteLine("YYYYYYYY1 " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
+		Console.WriteLine("YYYYYYYY2 " + configuration["FOO"]);
+
+
 		services.AddNetFinance(
 			new NetFinanceConfiguration
 			{
@@ -45,14 +49,16 @@ public class AlphaVantageTests
 		var cfg = _serviceProvider.GetRequiredService<IOptions<NetFinanceConfiguration>>();
 		var configuration = _serviceProvider.GetService<IConfiguration>();
 
+		Console.WriteLine("XXXXXXXX1 " + cfg.Value.AlphaVantageApiKey);
+		Console.WriteLine("XXXXXXXX2 " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
+		Console.WriteLine("XXXXXXXX3 " + configuration["FOO"]);
+
 		var service = AlphaVantageService.Create(new NetFinanceConfiguration
 		{
 			AlphaVantageApiKey = cfg.Value.AlphaVantageApiKey
 		});
 
-		Console.WriteLine("XXXXXXXX " + cfg.Value.AlphaVantageApiKey);
-		Console.WriteLine("XXXXXXXX " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
-		Console.WriteLine("XXXXXXXX " + configuration["FOO"]);
+
 
 		var overview = await service.GetCompanyInfoAsync("SAP");
 
