@@ -67,7 +67,7 @@ internal class YahooService : IYahooService
 
 	public async Task<IEnumerable<Quote>> GetQuotesAsync(List<string> symbols, CancellationToken token = default)
 	{
-		Exception? lastException = new();
+		string? lastException = null;
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
 			try
@@ -117,15 +117,15 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex;
+				lastException = ex.ToString();
 			}
 		}
-		throw new NetFinanceException($"No quotes found after {_options.Http_Retries} attempts", lastException ?? new Exception());
+		throw new NetFinanceException($"No quotes found after {_options.Http_Retries} attempts. {lastException}");
 	}
 
 	public async Task<Models.Yahoo.Profile> GetProfileAsync(string symbol, CancellationToken token = default)
 	{
-		Exception? lastException = new();
+		string? lastException = null;
 
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
@@ -180,15 +180,15 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex;
+				lastException = ex.ToString();
 			}
 		}
-		throw new NetFinanceException($"No profile found after {_options.Http_Retries} attempts", lastException ?? new Exception());
+		throw new NetFinanceException($"No profile found after {_options.Http_Retries} attempts. {lastException}");
 	}
 
 	public async Task<IEnumerable<DailyRecord>> GetDailyRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
 	{
-		Exception? lastException = new();
+		string? lastException = null;
 
 		endDate ??= DateTime.UtcNow;
 		endDate = endDate.Value.AddDays(1).Date;
@@ -287,15 +287,15 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex;
+				lastException = ex.ToString();
 			}
 		}
-		throw new NetFinanceException($"No records found after {_options.Http_Retries} attempts", lastException ?? new Exception());
+		throw new NetFinanceException($"No records found after {_options.Http_Retries} attempts. {lastException}");
 	}
 
 	public async Task<Dictionary<string, FinancialReport>> GetFinancialReportsAsync(string symbol, CancellationToken token = default)
 	{
-		Exception? lastException = new();
+		string? lastException = null;
 
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/";
 
@@ -362,15 +362,15 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex;
+				lastException = ex.ToString();
 			}
 		}
-		throw new NetFinanceException($"No financial reports found after {_options.Http_Retries} attempts", lastException ?? new Exception());
+		throw new NetFinanceException($"No financial reports found after {_options.Http_Retries} attempts. {lastException}");
 	}
 
 	public async Task<Summary> GetSummaryAsync(string symbol, CancellationToken token = default)
 	{
-		Exception? lastException = new();
+		string? lastException = null;
 		var symbolsToSecurity = new Dictionary<string, Quote>();
 
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/";
@@ -478,9 +478,9 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex;
+				lastException = ex.ToString();
 			}
 		}
-		throw new NetFinanceException($"No summary found after {_options.Http_Retries} attempts", lastException ?? new Exception());
+		throw new NetFinanceException($"No summary found after {_options.Http_Retries} attempts. {lastException}");
 	}
 }
