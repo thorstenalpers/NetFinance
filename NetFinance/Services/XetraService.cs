@@ -55,9 +55,9 @@ internal class XetraService : IXetraService
 
 	public async Task<IEnumerable<Instrument>> GetInstruments(CancellationToken token = default)
 	{
+		using var httpClient = _httpClientFactory.CreateClient(_options.Xetra_Http_ClientName);
 		try
 		{
-			using var httpClient = _httpClientFactory.CreateClient(_options.Xetra_Http_ClientName);
 			var response = await httpClient.GetAsync(_options.Xetra_DownloadUrl_Instruments, token);
 			response.EnsureSuccessStatusCode();
 			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
