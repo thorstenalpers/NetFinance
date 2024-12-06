@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,6 +44,14 @@ public class AlphaVantageTests
 	{
 		var cfg = _serviceProvider.GetRequiredService<IOptions<NetFinanceConfiguration>>();
 		var configuration = _serviceProvider.GetService<IConfiguration>();
+
+		var environmentVariables = Environment.GetEnvironmentVariables();
+
+		// Iterate through each environment variable and print it
+		foreach (DictionaryEntry entry in environmentVariables)
+		{
+			Console.WriteLine($"{entry.Key}: {entry.Value}");
+		}
 
 		var service = AlphaVantageService.Create(new NetFinanceConfiguration
 		{
