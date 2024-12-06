@@ -30,9 +30,6 @@ jobs:
     - name: Build project
       run: dotnet build ${{ env.Solution_Name }} --configuration Release --no-restore
 
-    - name: Print AlphaVantage API Key
-      run: echo "AlphaVantage API Key is ${{ env.NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY }}"
-
     - name: Execute unit tests
       run: dotnet test ${{ env.Test_Project_Path }} --configuration Release --no-restore
       env:

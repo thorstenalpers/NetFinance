@@ -91,7 +91,6 @@ internal class AlphaVantageService : IAlphaVantageService
 	{
 		var lastException = new Exception();
 		Guard.Against.NullOrEmpty(symbol);
-		var result = new List<DailyRecord>();
 		if (endDate == null || endDate?.Date >= DateTime.UtcNow.Date)
 		{
 			endDate = DateTime.UtcNow.Date;
@@ -105,6 +104,7 @@ internal class AlphaVantageService : IAlphaVantageService
 		{
 			try
 			{
+				var result = new List<DailyRecord>();
 				using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 				var requestUrl = _options.AlphaVantage_ApiUrl + "/query?function=TIME_SERIES_DAILY_ADJUSTED" +
 					$"&symbol={symbol}&outputsize=full&apikey={_options.AlphaVantageApiKey}";
@@ -202,13 +202,13 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	private async Task<List<IntradayRecord>> GetIntradayRecordsByMonthAsync(string symbol, DateTime month, EInterval interval, CancellationToken token = default)
 	{
-		var result = new List<IntradayRecord>();
 		Exception? lastException = new();
 
 		for (int retryAttempt = 0; retryAttempt < _options.Http_Retries; retryAttempt++)
 		{
 			try
 			{
+				var result = new List<IntradayRecord>();
 				using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 				var requestUrl = _options.AlphaVantage_ApiUrl + "/query?function=TIME_SERIES_INTRADAY" +
 					$"&symbol={symbol}" +
@@ -287,7 +287,6 @@ internal class AlphaVantageService : IAlphaVantageService
 		Exception? lastException = new();
 		Guard.Against.NullOrEmpty(currency1);
 		Guard.Against.NullOrEmpty(currency2);
-		var result = new List<DailyForexRecord>();
 
 		if (endDate == null || endDate?.Date >= DateTime.UtcNow.Date)
 		{
@@ -302,6 +301,7 @@ internal class AlphaVantageService : IAlphaVantageService
 		{
 			try
 			{
+				var result = new List<DailyForexRecord>();
 				using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 				var requestUrl = _options.AlphaVantage_ApiUrl + "/query?function=FX_DAILY" +
 					$"&from_symbol={currency1}&to_symbol={currency2}&outputsize=full&apikey={_options.AlphaVantageApiKey}";
