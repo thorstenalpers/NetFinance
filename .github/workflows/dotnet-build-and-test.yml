@@ -1,0 +1,43 @@
+name: Build and test the develop branch
+
+on:
+  push:
+    branches: [ "develop" ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      Solution_Name: NetFinance.sln
+      Test_Project_Path: Tests/Tests.csproj
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.x
+
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.Solution_Name }}
+
+    - name: Build project
+      run: dotnet build ${{ env.Solution_Name }} --configuration Release  --no-restore
+
+    - name: Execute unit tests
+      run: dotnet test ${{ env.Test_Project_Path }} --configuration Release 
+
+    - name: Run Tests and Generate Coverage Report
+      run: |
+        dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults
+        reportgenerator -reports:./TestResults/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage -reporttypes:Html
+
+    - name: Upload Coverage Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: ./TestResults/Coverage  
