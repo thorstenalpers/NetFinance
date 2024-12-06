@@ -26,7 +26,7 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore ${{ env.Solution_Name }}
-      TestData\AlphaVantage
+
     - name: Build project
       run: dotnet build ${{ env.Solution_Name }} --configuration Release --no-restore
 
