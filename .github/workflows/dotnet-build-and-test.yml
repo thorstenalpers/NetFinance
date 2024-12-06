@@ -19,16 +19,6 @@ jobs:
         ref: develop
         fetch-depth: 0 
 
-    - name: List directory structure
-      run: |
-        echo "Root Directory Structure:"
-        ls -R
-
-    - name: Debug specific directory (e.g., src)
-      run: |
-        echo "Contents of src directory:"
-        ls -R NetFinance
-
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
       with:
@@ -38,10 +28,10 @@ jobs:
       run: dotnet restore ${{ env.Solution_Name }}
 
     - name: Build project
-      run: dotnet build ${{ env.Solution_Name }} --configuration Release  --no-restore
+      run: dotnet build ${{ env.Solution_Name }} --configuration Release --no-restore
 
     - name: Execute unit tests
-      run: dotnet test ${{ env.Test_Project_Path }} --configuration Release 
+      run: dotnet test ${{ env.Test_Project_Path }} --configuration Release --no-restore
 
     - name: Run Tests and Generate Coverage Report
       run: |
