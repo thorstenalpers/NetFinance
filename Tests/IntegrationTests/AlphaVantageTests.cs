@@ -26,9 +26,6 @@ public class AlphaVantageTests
 		var services = new ServiceCollection();
 		services.AddSingleton<IConfiguration>(configuration);
 
-		Console.WriteLine(configuration["NETFINANCECONFIGURATION_ALPHAVANTAGEAPIKEY"]);
-		Console.WriteLine(configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
-		Console.WriteLine(configuration["NetFinanceConfiguration:AlphavantageApiKey"]);
 
 		services.AddNetFinance(
 			new NetFinanceConfiguration
@@ -48,6 +45,11 @@ public class AlphaVantageTests
 		var cfg = _serviceProvider.GetRequiredService<IOptions<NetFinanceConfiguration>>();
 		var configuration = _serviceProvider.GetService<IConfiguration>();
 
+
+		Console.WriteLine("XXXXXXXX " + configuration["NETFINANCECONFIGURATION_ALPHAVANTAGEAPIKEY"]);
+		Console.WriteLine("XXXXXXXX " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
+		Console.WriteLine("XXXXXXXX " + configuration["NetFinanceConfiguration:AlphavantageApiKey"]);
+
 		var service = AlphaVantageService.Create(new NetFinanceConfiguration
 		{
 			AlphaVantageApiKey = cfg.Value.AlphaVantageApiKey
@@ -63,6 +65,7 @@ public class AlphaVantageTests
 	[TestCase("GOOG")]      // Alphabet (Nasdaq)
 	public async Task GetCompanyOverviewAsync_ValidSymbols_ReturnsOverview(string symbol)
 	{
+
 		var overview = await _service.GetCompanyInfoAsync(symbol);
 
 		Assert.That(overview, Is.Not.Null);
