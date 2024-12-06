@@ -51,7 +51,7 @@ jobs:
     - name: Execute unit tests
       run: dotnet test ${{ env.Test_Project_Path }} --configuration Release --no-restore
       env:
-          NetFinanceConfiguration__AlphaVantageApiKey: xxxxxxxxxxxxxxxxxx
+          NetFinanceConfiguration__AlphaVantageApiKey: ${{ secrets.NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY }}
 
     - name: Run Tests and Generate Coverage Report
       run: |
