@@ -1,0 +1,127 @@
+####################################################################################################
+Package:AngleSharp
+Version:1.1.2
+project URL:https://anglesharp.github.io/
+Description:AngleSharp is the ultimate angle brackets parser library. It parses HTML5, CSS3, and XML to construct a DOM based on the official W3C specification.
+licenseUrl:https://licenses.nuget.org/MIT
+license Type:MIT
+
+####################################################################################################
+Package:AngleSharp.XPath
+Version:2.0.4
+project URL:https://github.com/AngleSharp/AngleSharp.XPath/
+Description:XPath support for AngleSharp
+licenseUrl:https://licenses.nuget.org/MIT
+license Type:MIT
+
+####################################################################################################
+Package:Ardalis.GuardClauses
+Version:5.0.0
+project URL:https://github.com/ardalis/guardclauses
+Description:A simple package by @ardalis and @nimblepros with guard clause helper methods. See docs for how to extend using your own extension methods defined in your project.
+licenseUrl:https://www.nuget.org/packages/Ardalis.GuardClauses/5.0.0/License
+license Type:LICENSE
+
+####################################################################################################
+Package:AutoMapper
+Version:12.0.1
+project URL:https://automapper.org/
+Description:A convention-based object-object mapper.
+licenseUrl:https://licenses.nuget.org/MIT
+license Type:MIT
+
+####################################################################################################
+Package:CsvHelper
+Version:33.0.1
+project URL:https://joshclose.github.io/CsvHelper/
+Description:A library for reading and writing CSV files. Extremely fast, flexible, and easy to use. Supports reading and writing of custom class objects.
+licenseUrl:https://licenses.nuget.org/MS-PL%20OR%20Apache-2.0
+license Type:MS-PL OR Apache-2.0
+
+####################################################################################################
+Package:Microsoft.Extensions.Http
+Version:6.0.1
+project URL:https://dot.net/
+Description:The HttpClient factory is a pattern for configuring and retrieving named HttpClients in a composable way. The HttpClient factory provides extensibility to plug in DelegatingHandlers that address cross-cutting concerns such as service location, load balancing, and reliability. The default HttpClient factory provides built-in diagnostics and logging and manages the lifetimes of connections in a performant way.
+
+Commonly Used Types:
+System.Net.Http.IHttpClientFactory
+licenseUrl:https://licenses.nuget.org/MIT
+license Type:MIT
+
+####################################################################################################
+Package:Microsoft.Extensions.Logging.Abstractions
+Version:6.0.4
+project URL:https://dot.net/
+Description:Logging abstractions for Microsoft.Extensions.Logging.
+
+Commonly Used Types:
+Microsoft.Extensions.Logging.ILogger
+Microsoft.Extensions.Logging.ILoggerFactory
+Microsoft.Extensions.Logging.ILogger<TCategoryName>
+Microsoft.Extensions.Logging.LogLevel
+Microsoft.Extensions.Logging.Logger<T>
+Microsoft.Extensions.Logging.LoggerMessage
+Microsoft.Extensions.Logging.Abstractions.NullLogger
+licenseUrl:https://licenses.nuget.org/MIT
+license Type:MIT
+
+####################################################################################################
+Package:Newtonsoft.Json
+Version:13.0.1
+project URL:https://www.newtonsoft.com/json
+Description:Json.NET is a popular high-performance JSON framework for .NET
+licenseUrl:https://licenses.nuget.org/MIT
+license Type:MIT
+
+####################################################################################################
+Package:System.ComponentModel.Annotations
+Version:5.0.0
+project URL:https://github.com/dotnet/runtime
+Description:Provides attributes that are used to define metadata for objects used as data sources.
+
+Commonly Used Types:
+System.ComponentModel.DataAnnotations.ValidationResult
+System.ComponentModel.DataAnnotations.IValidatableObject
+System.ComponentModel.DataAnnotations.ValidationAttribute
+System.ComponentModel.DataAnnotations.RequiredAttribute
+System.ComponentModel.DataAnnotations.StringLengthAttribute
+System.ComponentModel.DataAnnotations.DisplayAttribute
+System.ComponentModel.DataAnnotations.RegularExpressionAttribute
+System.ComponentModel.DataAnnotations.DataTypeAttribute
+System.ComponentModel.DataAnnotations.RangeAttribute
+System.ComponentModel.DataAnnotations.KeyAttribute
+ 
+When using NuGet 3.x this package requires at least version 3.4.
+licenseUrl:https://licenses.nuget.org/MIT
+license Type:MIT
+
+  
+This project includes data from the following external resources:  
+  
+1. **Xetra Instruments Data**:  
+   - URL: https://www.xetra.com/resource/blob/1528/76087c675c856fe7720917da03a62a34/data/t7-xetr-allTradableInstruments.csv  
+   - License: Please refer to Xetra's terms of service or data usage policy at https://www.xetra.com/xetra-de/instrumente/alle-handelbaren-instrumente  
+  
+2. **S&P 500 Symbols (OpenData)**:  
+   - URL: https://raw.githubusercontent.com/datasets/s-and-p-500-companies-financials/refs/heads/main/data/constituents-financials.csv  
+   - License: This dataset is licensed under the Public Domain Dedication and License (PDDL). The PDDL allows unrestricted use, sharing, modification, and distribution of the data for any purpose, including commercial use.  
+   - Notice: The PDDL allows unrestricted use, modification, and distribution of the data. The MIT/BSD licenses permit free use of the code with attribution and disclaimers. While formal credit is not required, it is recommended to include a link back or provide credit to Rufus Pollock and the Open Knowledge Foundation.  
+  
+3. **NASDAQ Symbols (OpenData)**:  
+   - URL: https://raw.githubusercontent.com/datasets/nasdaq-listings/refs/heads/main/data/nasdaq-listed-symbols.csv  
+   - License: This dataset is licensed under the Public Domain Dedication and License (PDDL). The PDDL allows unrestricted use, sharing, modification, and distribution of the data for any purpose, including commercial use.  
+   - Notice: The data originates from the NASDAQ OMX Group, which retains copyright over the original information. Users should review the copyright notice of the source dataset to ensure compliance with any specific restrictions regarding public or commercial use.  
+   - Source Data Copyright: Copyright © 2010, The NASDAQ OMX Group, Inc. All rights reserved.  
+  
+4. **Yahoo Finance Data**:  
+   - URL: https://finance.yahoo.com/  
+   - License: Please review Yahoo Finance's terms of service at https://legal.yahoo.com/us/en/yahoo/terms/otos/index.html  
+
+5. **Alpha Vantage API**:  
+   Usage: This application uses the Alpha Vantage API to retrieve financial data. The API is used in accordance with Alpha Vantage's Terms of Service.  
+   Attribution Requirement:Per Alpha Vantage's terms, users must provide attribution to Alpha Vantage when displaying data retrieved from the API.  
+   Note: For more information, visit the Alpha Vantage API Documentation https://www.alphavantage.co/documentation/.  
+   
+  
+Please review the associated licenses to ensure proper usage and attribution.  
