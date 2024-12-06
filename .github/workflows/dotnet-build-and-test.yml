@@ -31,19 +31,11 @@ jobs:
       run: dotnet build ${{ env.Solution_Name }} --configuration Release --no-restore
       
     - name: Print AlphaVantage API Key1
-      run: echo "AlphaVantage API Key is ${{ env.NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY }}"
+      run: echo "AlphaVantage API Key is ${{ secrets.NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY }}"
             
     - name: Print AlphaVantage API Key2
-      run: echo "AlphaVantage API Key is ${{ env.NetFinanceConfiguration__AlphaVantageApiKey }}"
+      run: echo "AlphaVantage API Key is ${{ secrets.FOO }}"
             
-    - name: Print AlphaVantage API Key3
-      run: echo "AlphaVantage API Key is ${{ env.AlphaVantageApiKey }}"
-            
-    - name: Print AlphaVantage API Key4
-      run: echo "AlphaVantage API Key is ${{ env.Foo }}"
-            
-    - name: Print AlphaVantage API Key5
-      run: echo "AlphaVantage API Key is ${{ env.FOO }}"
             
     - name: Set environment variable from GitHub Secret
       run: |
