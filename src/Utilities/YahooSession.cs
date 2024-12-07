@@ -102,8 +102,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<Y
 					response.EnsureSuccessStatusCode();
 
 					// get crumb: used to make quote api calls
-					var crumbResponse = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
-
+					var crumbResponse = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Crumb_Api).ConfigureAwait(false);
 					_crumb = await crumbResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 					if (string.IsNullOrEmpty(_crumb) || _crumb.Contains("Too Many Requests"))
 					{
@@ -122,7 +121,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<Y
 					lastException = ex;
 				}
 			}
-			throw lastException ?? new NetFinanceException("Failed to authenticate");
+			_logger.LogError("Failed to authenticate, lastException=" + lastException + "\n");
 		}
 		finally
 		{
