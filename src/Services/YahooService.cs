@@ -141,6 +141,8 @@ internal class YahooService : IYahooService
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
 				var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+				var len = htmlContent.Length;
+
 				var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
 
 				var descriptionElement = document.Body.SelectSingleNode("//section[header/h3[contains(text(), 'Description')]]/p");
@@ -165,7 +167,7 @@ internal class YahooService : IYahooService
 				var address = string.IsNullOrEmpty(addressName) ? addressLocation : addressName + "\n" + addressLocation;
 				var cntEmployeesNumber = Helper.ParseLong(cntEmployees);
 
-				return new Models.Yahoo.Profile
+				var result = new Models.Yahoo.Profile
 				{
 					Description = description,
 					CorporateGovernance = corporateGovernance,
@@ -176,6 +178,11 @@ internal class YahooService : IYahooService
 					Phone = phone,
 					Website = website
 				};
+				if (Helper.AreAllFieldsNull(result))
+				{
+					throw new NetFinanceException("All fields empty");
+				}
+				return result;
 			}
 			catch (Exception ex)
 			{
@@ -374,6 +381,11 @@ internal class YahooService : IYahooService
 						_logger.LogWarning($"Unknown row property {rowTitle}.");
 					}
 				}
+				if (result == null || result.Count == 0)
+				{
+					throw new NetFinanceException("no reports");
+				}
+
 				return result;
 			}
 			catch (Exception ex)
@@ -474,7 +486,7 @@ internal class YahooService : IYahooService
 				var weekRange52_Min = weekRange52?.Count() == 2 ? Helper.ParseDecimal(weekRange52.FirstOrDefault()) : null;
 				var weekRange52_Max = weekRange52?.Count() == 2 ? Helper.ParseDecimal(weekRange52.LastOrDefault()) : null;
 
-				return new Summary
+				var result = new Summary
 				{
 					Ask = ask,
 					AvgVolume = avgVolume,
@@ -497,6 +509,11 @@ internal class YahooService : IYahooService
 					WeekRange52_Max = weekRange52_Max,
 					WeekRange52_Min = weekRange52_Min
 				};
+				if (Helper.AreAllFieldsNull(result))
+				{
+					throw new NetFinanceException("All fields empty");
+				}
+				return result;
 			}
 			catch (Exception ex)
 			{

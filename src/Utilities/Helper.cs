@@ -189,6 +189,19 @@ public static class Helper
 		}
 	}
 
+	public static bool AreAllFieldsNull<T>(T obj)
+	{
+		if (obj == null)
+		{
+			throw new ArgumentNullException(nameof(obj), "Object cannot be null.");
+		}
+		var fields = obj.GetType().GetFields(
+			System.Reflection.BindingFlags.Instance |
+			System.Reflection.BindingFlags.Public |
+			System.Reflection.BindingFlags.NonPublic).ToList();
+		return fields.All(field => field.GetValue(obj) == null);
+	}
+
 	private static string ConvertCookiesToHeader(CookieCollection cookieCollection)
 	{
 		List<string> cookieStrings = new();

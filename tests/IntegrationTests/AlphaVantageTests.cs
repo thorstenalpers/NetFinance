@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NetFinance.Extensions;
 using NetFinance.Interfaces;
@@ -20,26 +21,25 @@ public class AlphaVantageTests
 	[SetUp]
 	public void OneTimeSetUp()
 	{
+		var serviceProvider = new ServiceCollection()
+			.AddLogging(builder =>
+			{
+				builder.AddConsole();
+				builder.SetMinimumLevel(LogLevel.Information);
+			});
 		var builder = new ConfigurationBuilder();
-		builder.AddEnvironmentVariables();
-		builder.AddUserSecrets<AlphaVantageTests>();
+		builder.AddUserSecrets<OpenDataTests>();
 		var configuration = builder.Build();
+
 		var services = new ServiceCollection();
 		services.AddSingleton<IConfiguration>(configuration);
 
-		//Console.WriteLine("YYYYYYYY1 " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
-		Console.WriteLine("YYYYYYYY2 " + configuration["FOO"]);
-		Console.WriteLine("YYYYYYYY3 " + configuration["NetFinanceConfiguration:AlphavantageApiKey"]);
-		Console.WriteLine("YYYYYYYY4 " + configuration["NetFinanceConfiguration__AlphaVantageApiKey"]);
-		Console.WriteLine("YYYYYYYY5 " + configuration["NetFinanceConfiguration_AlphaVantageApiKey"]);
-
-		services.AddNetFinance(
-			new NetFinanceConfiguration
-			{
-				AlphaVantageApiKey = configuration["NetFinanceConfiguration:AlphavantageApiKey"],
-				Http_Retries = 2,
-				Http_Timeout = 5
-			});
+		services.AddNetFinance(new NetFinanceConfiguration
+		{
+			AlphaVantageApiKey = configuration["NetFinanceConfiguration:AlphavantageApiKey"],
+			Http_Timeout = 10,
+			Http_Retries = 3
+		});
 
 		_serviceProvider = services.BuildServiceProvider();
 		_service = _serviceProvider.GetRequiredService<IAlphaVantageService>();
@@ -51,16 +51,10 @@ public class AlphaVantageTests
 		var cfg = _serviceProvider.GetRequiredService<IOptions<NetFinanceConfiguration>>();
 		var configuration = _serviceProvider.GetService<IConfiguration>();
 
-		Console.WriteLine("XXXXXXXX1 " + cfg.Value.AlphaVantageApiKey);
-		Console.WriteLine("XXXXXXXX2 " + configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"]);
-		Console.WriteLine("XXXXXXXX3 " + configuration["FOO"]);
-
 		var service = AlphaVantageService.Create(new NetFinanceConfiguration
 		{
 			AlphaVantageApiKey = cfg.Value.AlphaVantageApiKey
 		});
-
-
 
 		var overview = await service.GetCompanyInfoAsync("SAP");
 

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NetFinance.Extensions;
 using NetFinance.Interfaces;
 using NetFinance.Services;
@@ -21,9 +22,16 @@ public class YahooTests
 	[OneTimeSetUp]
 	public void OneTimeSetUp()
 	{
+		var serviceProvider = new ServiceCollection()
+			.AddLogging(builder =>
+			{
+				builder.AddConsole();
+				builder.SetMinimumLevel(LogLevel.Information);
+			});
 		var builder = new ConfigurationBuilder();
-		builder.AddUserSecrets<YahooTests>();
+		builder.AddUserSecrets<OpenDataTests>();
 		var configuration = builder.Build();
+
 		var services = new ServiceCollection();
 		services.AddSingleton<IConfiguration>(configuration);
 

@@ -11,9 +11,9 @@ using NetFinance.Interfaces;
 
 namespace NetFinance.Utilities;
 
-internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<YahooSession> logger) : IYahooSession
+internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<IYahooSession> logger) : IYahooSession
 {
-	private readonly ILogger<YahooSession> _logger = logger;
+	private readonly ILogger<IYahooSession> _logger = logger;
 	private SemaphoreSlim _semaphore = new(1, 1);
 	private readonly NetFinanceConfiguration _options = options.Value ?? throw new ArgumentNullException(nameof(options));
 	private CookieContainer? _cookieContainer;
