@@ -79,7 +79,10 @@ internal class YahooService : IYahooService
 			{
 				var quotes = new List<Quote>();
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-				requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				if (attempt == 1)
+				{
+					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
 
@@ -131,7 +134,10 @@ internal class YahooService : IYahooService
 			try
 			{
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-				requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				if (attempt == 1)
+				{
+					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
 				var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -207,7 +213,10 @@ internal class YahooService : IYahooService
 				var headerMap = new Dictionary<string, int>();
 
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-				requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				if (attempt == 1)
+				{
+					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
 
@@ -309,7 +318,11 @@ internal class YahooService : IYahooService
 				var result = new Dictionary<string, FinancialReport>();
 
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-				requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				if (attempt == 1)
+				{
+					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				}
+
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
 
@@ -389,7 +402,10 @@ internal class YahooService : IYahooService
 			try
 			{
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
-				requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				if (attempt == 1)
+				{
+					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
 
