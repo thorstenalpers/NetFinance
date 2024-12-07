@@ -12,7 +12,7 @@ jobs:
 
     env:
       Solution_Name: NetFinance.sln
-      Test_Project_Path: Tests/Tests.csproj
+      Test_Project_Path: tests/Tests.csproj
 
     steps:
     - name: Checkout
