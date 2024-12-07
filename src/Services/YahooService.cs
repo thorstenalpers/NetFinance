@@ -119,7 +119,8 @@ internal class YahooService : IYahooService
 				lastException = ex;
 			}
 		}
-		throw new NetFinanceException($"No quotes found after {_options.Http_Retries} attempts.LastException=\n{lastException}");
+		_logger.LogWarning($"No quotes found after {_options.Http_Retries} attempts.");
+		return [];
 	}
 
 	public async Task<Models.Yahoo.Profile> GetProfileAsync(string symbol, CancellationToken token = default)
@@ -194,7 +195,8 @@ internal class YahooService : IYahooService
 				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/profile/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}";
 			}
 		}
-		throw new NetFinanceException($"No profile found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
+		_logger.LogWarning($"No profile found after {_options.Http_Retries} attempts.");
+		return new Models.Yahoo.Profile();
 	}
 
 	public async Task<IEnumerable<DailyRecord>> GetDailyRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
@@ -309,7 +311,8 @@ internal class YahooService : IYahooService
 				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/history/?period1={period1}&period2={period2}&_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}";
 			}
 		}
-		throw new NetFinanceException($"No records found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
+		_logger.LogWarning($"No records found after {_options.Http_Retries} attempts.");
+		return [];
 	}
 
 	public async Task<Dictionary<string, FinancialReport>> GetFinancialReportsAsync(string symbol, CancellationToken token = default)
@@ -398,7 +401,8 @@ internal class YahooService : IYahooService
 				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}";
 			}
 		}
-		throw new NetFinanceException($"No financial reports found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
+		_logger.LogWarning($"No financial reports found after {_options.Http_Retries} attempts.");
+		return [];
 	}
 
 	public async Task<Summary> GetSummaryAsync(string symbol, CancellationToken token = default)
@@ -525,6 +529,7 @@ internal class YahooService : IYahooService
 				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}";
 			}
 		}
-		throw new NetFinanceException($"No summary found after {_options.Http_Retries} attempts. LastException=\n{lastException}\n\n");
+		_logger.LogWarning($"No summary found after {_options.Http_Retries} attempts.");
+		return new Summary();
 	}
 }
