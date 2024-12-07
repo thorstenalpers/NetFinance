@@ -62,7 +62,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					var cookieStr = "";
 					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
 					{
-						cookieStr += $"{cookie.Name}: {cookie.Value}";
+						cookieStr += $"{cookie.Name}: {cookie.Value}+\n";
 					}
 					_logger.LogInformation($"xxxx: {cookieStr}");
 
@@ -118,7 +118,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					cookieStr = "";
 					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
 					{
-						cookieStr += $"{cookie.Name}: {cookie.Value}";
+						cookieStr += $"{cookie.Name}: {cookie.Value}+\n";
 					}
 					_logger.LogInformation($"zzz: {cookieStr}");
 
