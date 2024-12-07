@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -50,25 +49,8 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<Y
 					httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
 					httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
 
-					// get auth cookie: used to make quote api calls
-					var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Authentication, token).ConfigureAwait(false);
-					await Task.Delay(TimeSpan.FromSeconds(3));
-
-					// get crumb: used to make quote api calls
-					var cookieStr = response?.Headers?.GetValues("Set-Cookie")?.FirstOrDefault();
-					var requestMessage = new HttpRequestMessage(HttpMethod.Get, _options.Yahoo_BaseUrl_Crumb_Api);
-					requestMessage.Headers.Add("Cookie", cookieStr);
-					var crumbResponse = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
-
-					_crumb = await crumbResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-					if (string.IsNullOrEmpty(_crumb) || _crumb.Contains("Too Many Requests"))
-					{
-						_logger.LogWarning($"Failed to retrieve Yahoo crumb. crumb={_crumb}");
-					}
-					await Task.Delay(TimeSpan.FromSeconds(3));
-
 					// get consent
-					response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent);
+					var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent);
 					response.EnsureSuccessStatusCode();
 					var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 					var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
@@ -100,7 +82,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<Y
 						postData.Add(new("reject", value));
 					}
 					var url1 = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId=" + sessionId;
-					requestMessage = new HttpRequestMessage(HttpMethod.Post, url1)
+					var requestMessage = new HttpRequestMessage(HttpMethod.Post, url1)
 					{
 						Content = new FormUrlEncodedContent(postData),
 					};
@@ -118,6 +100,16 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<Y
 					var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId=" + sessionId;
 					response = await httpClient.GetAsync(url2);
 					response.EnsureSuccessStatusCode();
+
+					// get crumb: used to make quote api calls
+					var crumbResponse = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+
+					_crumb = await crumbResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+					if (string.IsNullOrEmpty(_crumb) || _crumb.Contains("Too Many Requests"))
+					{
+						_logger.LogWarning($"Failed to retrieve Yahoo crumb. crumb={_crumb}");
+					}
+					await Task.Delay(TimeSpan.FromSeconds(3));
 
 					_cookieContainer = cookieContainer;
 					_refreshTime = DateTime.UtcNow;
