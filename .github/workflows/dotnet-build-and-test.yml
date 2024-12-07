@@ -24,6 +24,9 @@ jobs:
       with:
         dotnet-version: 8.x
 
+    - name: Install ReportGenerator
+      run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
     - name: Restore dependencies
       run: dotnet restore ${{ env.Solution_Name }}
 
