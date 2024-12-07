@@ -29,6 +29,7 @@ public class OpenDataTests
 			});
 		var builder = new ConfigurationBuilder();
 		builder.AddUserSecrets<OpenDataTests>();
+		builder.AddEnvironmentVariables();
 		var configuration = builder.Build();
 
 		var services = new ServiceCollection();
