@@ -44,7 +44,7 @@ public class YahooTests
 
 		services.AddNetFinance(new NetFinanceConfiguration
 		{
-			Http_Timeout = 5,
+			Http_Timeout = 1,
 			Http_Retries = 2
 		});
 
