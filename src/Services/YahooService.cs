@@ -114,7 +114,7 @@ internal class YahooService : IYahooService
 			}
 			catch (Exception ex)
 			{
-				_logger.LogInformation($"Retry after exception {ex}");
+				//_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
 			}
@@ -187,7 +187,7 @@ internal class YahooService : IYahooService
 			}
 			catch (Exception ex)
 			{
-				_logger.LogInformation($"Retry after exception {ex}");
+				//_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
 
@@ -303,7 +303,7 @@ internal class YahooService : IYahooService
 			}
 			catch (Exception ex)
 			{
-				_logger.LogInformation($"Retry after exception {ex}");
+				//_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
 
@@ -393,7 +393,7 @@ internal class YahooService : IYahooService
 			}
 			catch (Exception ex)
 			{
-				_logger.LogInformation($"Retry after exception {ex}");
+				//_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
 
@@ -521,7 +521,7 @@ internal class YahooService : IYahooService
 			}
 			catch (Exception ex)
 			{
-				_logger.LogInformation($"Retry after exception {ex}");
+				//_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
 
