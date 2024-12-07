@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -52,11 +51,6 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					var response6 = await httpClient.GetAsync("https://finance.yahoo.com");
 					response6.EnsureSuccessStatusCode();
 
-					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
-					{
-						_logger.LogInformation($"xxxx: {cookie.Name}: {cookie.Value}");
-					}
-
 					// get consent
 					await Task.Delay(TimeSpan.FromSeconds(1));
 					var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, _options.Yahoo_BaseUrl_Consent);
@@ -69,13 +63,6 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					{
 						_logger.LogInformation($"yyy: {cookie.Name}: {cookie.Value}");
 					}
-
-					var requestHeaders = string.Join("; ", requestMessage.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
-					_logger.LogInformation("Outgoing Request Headers: {Headers}", requestHeaders);
-
-					var responseHeaders = string.Join("; ", response.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
-					_logger.LogInformation("Incoming Response Headers: {Headers}", responseHeaders);
-
 
 					var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
 					var csrfTokenNode = document.QuerySelector("input[name='csrfToken']");
@@ -125,6 +112,12 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId=" + sessionId;
 					response = await httpClient.GetAsync(url2);
 					response.EnsureSuccessStatusCode();
+
+
+					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
+					{
+						_logger.LogInformation($"xxxx: {cookie.Name}: {cookie.Value}");
+					}
 
 					// get crumb: used to make quote api calls
 					var crumbResponse = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Crumb_Api).ConfigureAwait(false);
