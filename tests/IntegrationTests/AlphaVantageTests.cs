@@ -50,7 +50,7 @@ public class AlphaVantageTests
 
 		_serviceProvider = services.BuildServiceProvider();
 		_service = _serviceProvider.GetRequiredService<IAlphaVantageService>();
-		var logger = _serviceProvider.GetRequiredService<ILogger>();
+		var logger = _serviceProvider.GetRequiredService<ILogger<AlphaVantageTests>>();
 
 		var config1 = configuration["NetFinanceConfiguration:AlphavantageApiKey"];
 		var config2 = configuration["NetFinanceConfiguration__AlphaVantageApiKey"];
