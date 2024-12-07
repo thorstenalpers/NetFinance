@@ -18,24 +18,28 @@ internal class YahooSession(IHttpClientFactory httpClientFactory, IOptions<NetFi
 	private readonly IHttpClientFactory _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
 	private readonly NetFinanceConfiguration _netFinanceOptions = options.Value ?? throw new ArgumentNullException(nameof(options));
 
-	public async Task<(string crumb, Cookie cookie)> GetSessionStateAsync(CancellationToken token = default)
+	public async Task<(string crumb, Cookie cookie)> RefreshSessionAsync(CancellationToken token = default)
 	{
-		var httpClient = _httpClientFactory.CreateClient(_netFinanceOptions.Yahoo_Http_ClientName);
-		if (!string.IsNullOrEmpty(_crumb) && _yahooCookie?.Cookie != null && _yahooCookie.IsValid())
+		return await GetSessionAsync(token, true);
+	}
+
+	public async Task<(string crumb, Cookie cookie)> GetSessionAsync(CancellationToken token = default, bool forceRefresh = false)
+	{
+		if (!forceRefresh && !string.IsNullOrEmpty(_crumb) && _yahooCookie?.Cookie != null && _yahooCookie.IsValid())
 		{
 			return (_crumb, _yahooCookie.Cookie);
 		}
-
 		await _semaphore.WaitAsync(token).ConfigureAwait(false);
+
 		try
 		{
+			var httpClient = _httpClientFactory.CreateClient(_netFinanceOptions.Yahoo_Http_ClientName);
 			var response = await httpClient.GetAsync(_netFinanceOptions.Yahoo_BaseUrl_Auth_Api, token).ConfigureAwait(false);
 			var cookieStr = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
 
-			if (_yahooCookie == null) throw new NetFinanceException("YahooCookie is null");
-			_yahooCookie.Parse(cookieStr);
+			_yahooCookie?.Parse(cookieStr);
 
-			if (_yahooCookie.Cookie == null || !_yahooCookie.IsValid())
+			if (_yahooCookie?.Cookie == null || !_yahooCookie.IsValid())
 			{
 				throw new NetFinanceException("Failed to obtain Yahoo auth cookie.");
 			}
