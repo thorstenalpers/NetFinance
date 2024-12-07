@@ -32,6 +32,11 @@ public class XetraTests
 		var configuration = builder.Build();
 
 		var services = new ServiceCollection();
+		services.AddLogging(builder =>
+		{
+			builder.AddConsole();
+			builder.SetMinimumLevel(LogLevel.Information);
+		});
 		services.AddSingleton<IConfiguration>(configuration);
 
 		services.AddNetFinance(new NetFinanceConfiguration
