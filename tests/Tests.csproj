@@ -53,9 +53,9 @@
     <None Update="TestData\Xetra\t7-xetr-allTradableInstruments.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\Yahoo\financialReport.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	<None Update="TestData\Yahoo\financial.html">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
     <None Update="TestData\Yahoo\profile.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -171,7 +171,7 @@ public class YahooServiceTests
 	public async Task GetFinancialReportsAsync_OfIbm_ReturnsResult()
 	{
 		// Arrange
-		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "Yahoo", "financialReport.html");
+		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "Yahoo", "financial.html");
 		SetupHttpHtmlFileResponse(filePath);
 
 		var service = new YahooService(
