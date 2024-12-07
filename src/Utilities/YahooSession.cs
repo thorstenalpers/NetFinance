@@ -20,7 +20,7 @@ internal class YahooSession(IHttpClientFactory httpClientFactory, IOptions<NetFi
 
 	public async Task<(string crumb, Cookie cookie)> GetSessionStateAsync(CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_netFinanceOptions.Yahoo_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_netFinanceOptions.Yahoo_Http_ClientName);
 		if (!string.IsNullOrEmpty(_crumb) && _yahooCookie?.Cookie != null && _yahooCookie.IsValid())
 		{
 			return (_crumb, _yahooCookie.Cookie);

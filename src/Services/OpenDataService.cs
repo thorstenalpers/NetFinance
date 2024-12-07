@@ -48,7 +48,7 @@ internal class OpenDataService : IOpenDataService
 
 	public async Task<IEnumerable<NasdaqInstrument>> GetNasdaqInstrumentsAsync(CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.OpenData_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.OpenData_Http_ClientName);
 		try
 		{
 			var response = await httpClient.GetAsync(_options.OpenData_DownloadUrl_NasdaqListedSymbols, token);
@@ -68,7 +68,7 @@ internal class OpenDataService : IOpenDataService
 
 	public async Task<IEnumerable<SP500Instrument>> GetSAndP500InstrumentsAsync(CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.OpenData_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.OpenData_Http_ClientName);
 		try
 		{
 			var response = await httpClient.GetAsync(_options.OpenData_DownloadUrl_SP500Symbols, token);

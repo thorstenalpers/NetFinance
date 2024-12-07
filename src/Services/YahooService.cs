@@ -69,7 +69,7 @@ internal class YahooService : IYahooService
 	{
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
 
-		using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 
 		string? lastException = null;
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
@@ -127,7 +127,7 @@ internal class YahooService : IYahooService
 	public async Task<Models.Yahoo.Profile> GetProfileAsync(string symbol, CancellationToken token = default)
 	{
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
-		using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 		string? lastException = null;
 
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
@@ -190,7 +190,7 @@ internal class YahooService : IYahooService
 	{
 		string? lastException = null;
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
-		using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 
 		endDate ??= DateTime.UtcNow;
 		endDate = endDate.Value.AddDays(1).Date;
@@ -297,7 +297,7 @@ internal class YahooService : IYahooService
 	{
 		string? lastException = null;
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
-		using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/";
 
@@ -371,7 +371,7 @@ internal class YahooService : IYahooService
 	public async Task<Summary> GetSummaryAsync(string symbol, CancellationToken token = default)
 	{
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
-		using var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 		string? lastException = null;
 		var symbolsToSecurity = new Dictionary<string, Quote>();
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,7 +52,7 @@ internal class AlphaVantageService : IAlphaVantageService
 	public async Task<CompanyInfo?> GetCompanyInfoAsync(string symbol, CancellationToken token = default)
 	{
 		string? lastException = null;
-		using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		for (int index = 0; index < _options.Http_Retries; index++)
 		{
 			try
@@ -63,11 +62,6 @@ internal class AlphaVantageService : IAlphaVantageService
 					$"&apikey={_options.AlphaVantageApiKey}";
 
 				var response = await httpClient.GetAsync(requestUrl, token);
-
-				if (response.StatusCode == HttpStatusCode.NotFound)
-				{
-					throw new NetFinanceException($"No company overview available for {symbol}");
-				}
 				response.EnsureSuccessStatusCode();
 
 				string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -89,8 +83,8 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	public async Task<IEnumerable<DailyRecord>> GetDailyRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
-		var lastException = new Exception();
+		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
+		Exception? lastException = null;
 		Guard.Against.NullOrEmpty(symbol);
 		if (endDate == null || endDate?.Date >= DateTime.UtcNow.Date)
 		{
@@ -110,11 +104,6 @@ internal class AlphaVantageService : IAlphaVantageService
 					$"&symbol={symbol}&outputsize=full&apikey={_options.AlphaVantageApiKey}";
 
 				var response = await httpClient.GetAsync(requestUrl, token);
-
-				if (response.StatusCode == HttpStatusCode.NotFound)
-				{
-					throw new NetFinanceException($"No daily records found for {symbol}");
-				}
 				response.EnsureSuccessStatusCode();
 
 				string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -202,7 +191,7 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	private async Task<List<IntradayRecord>> GetIntradayRecordsByMonthAsync(string symbol, DateTime month, EInterval interval, CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		string? lastException = null;
 
 		for (int retryAttempt = 0; retryAttempt < _options.Http_Retries; retryAttempt++)
@@ -219,11 +208,6 @@ internal class AlphaVantageService : IAlphaVantageService
 					$"&apikey={_options.AlphaVantageApiKey}";
 
 				var response = await httpClient.GetAsync(requestUrl, token);
-
-				if (response.StatusCode == HttpStatusCode.NotFound)
-				{
-					throw new NetFinanceException($"No intraday records found for {symbol}");
-				}
 				response.EnsureSuccessStatusCode();
 
 				string jsonResponse = await response.Content.ReadAsStringAsync();
@@ -284,7 +268,7 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	public async Task<IEnumerable<DailyForexRecord>> GetDailyForexRecordsAsync(string currency1, string currency2, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
 	{
-		using var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		string? lastException = null;
 		Guard.Against.NullOrEmpty(currency1);
 		Guard.Against.NullOrEmpty(currency2);
@@ -307,11 +291,6 @@ internal class AlphaVantageService : IAlphaVantageService
 					$"&from_symbol={currency1}&to_symbol={currency2}&outputsize=full&apikey={_options.AlphaVantageApiKey}";
 
 				var response = await httpClient.GetAsync(requestUrl, token);
-
-				if (response.StatusCode == HttpStatusCode.NotFound)
-				{
-					throw new NetFinanceException($"No forex records found for {currency1} /{currency2}");
-				}
 				response.EnsureSuccessStatusCode();
 
 				string jsonResponse = await response.Content.ReadAsStringAsync();
