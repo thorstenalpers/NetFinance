@@ -119,7 +119,7 @@ internal class YahooService : IYahooService
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
-				(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
+				//(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 			}
 		}
 		throw new NetFinanceException($"No quotes found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
@@ -184,7 +184,7 @@ internal class YahooService : IYahooService
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
-				(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
+				//(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 			}
 		}
 		throw new NetFinanceException($"No profile found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
@@ -294,7 +294,7 @@ internal class YahooService : IYahooService
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
-				(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
+				//(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 			}
 		}
 		throw new NetFinanceException($"No records found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
@@ -374,7 +374,7 @@ internal class YahooService : IYahooService
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
-				(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
+				//(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 			}
 		}
 		throw new NetFinanceException($"No financial reports found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
@@ -493,7 +493,7 @@ internal class YahooService : IYahooService
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 				lastException = ex;
 
-				(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
+				//(crumb, cookie) = await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 			}
 		}
 		throw new NetFinanceException($"No summary found after {_options.Http_Retries} attempts. LastException=\n{lastException}\n\n");

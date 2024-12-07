@@ -35,7 +35,7 @@ internal class YahooSession(IHttpClientFactory httpClientFactory, IOptions<NetFi
 		{
 			var httpClient = _httpClientFactory.CreateClient(_netFinanceOptions.Yahoo_Http_ClientName);
 			var response = await httpClient.GetAsync(_netFinanceOptions.Yahoo_BaseUrl_Auth_Api, token).ConfigureAwait(false);
-			var cookieStr = response?.Headers?.GetValues("Set-Cookie").FirstOrDefault();
+			var cookieStr = response?.Headers?.GetValues("Set-Cookie")?.FirstOrDefault();
 			_yahooCookie?.Parse(cookieStr);
 			if (_yahooCookie == null || _yahooCookie.Cookie == null || !_yahooCookie.IsValid())
 			{
