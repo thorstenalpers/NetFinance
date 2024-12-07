@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -63,11 +64,11 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
 
-					//var requestHeaders = string.Join("; ", requestMessage.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
-					//_logger.LogInformation("Outgoing Request Headers: {Headers}", requestHeaders);
+					var requestHeaders = string.Join("; ", requestMessage.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
+					_logger.LogInformation("Outgoing Request Headers: {Headers}", requestHeaders);
 
-					//var responseHeaders = string.Join("; ", response.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
-					//_logger.LogInformation("Incoming Response Headers: {Headers}", responseHeaders);
+					var responseHeaders = string.Join("; ", response.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
+					_logger.LogInformation("Incoming Response Headers: {Headers}", responseHeaders);
 
 
 					var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
