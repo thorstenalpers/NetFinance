@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NetFinance.Exceptions;
 using NetFinance.Extensions;
 using NetFinance.Interfaces;
 using NetFinance.Services;
@@ -41,6 +42,7 @@ public class AlphaVantageTests
 		Console.WriteLine($"2 NetFinanceConfiguration__AlphaVantageApiKey={config2?.Length}");
 		Console.WriteLine($"3 NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY={config3?.Length}");
 
+		throw new NetFinanceException($"1={config1?.Length},2={config2?.Length},3={config3?.Length}");
 		services.AddNetFinance(new NetFinanceConfiguration
 		{
 			AlphaVantageApiKey = configuration["NetFinanceConfiguration:AlphavantageApiKey"],
