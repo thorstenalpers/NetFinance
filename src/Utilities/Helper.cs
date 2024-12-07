@@ -17,17 +17,11 @@ public static class Helper
 										 "132.0", "132.0.1", "132.0.2",
 										 "131.0", "131.0.1", "131.0.2",
 										 "130.0", "130.0.1",
-										 "129.0", "129.0.1", "129.0.2",
-										 "128.0", "128.0.2", "128.0.3","128.1.0", "128.2.0", "128.3.0", "128.3.1"];
+										 "129.0", "129.0.1", "129.0.2"];
 
 	public static readonly List<string> OperatingSystems = [
-
 		"Windows NT 10.0; Win64; x64",
-			"Windows NT 6.1; WOW64",
-			"Macintosh; Intel Mac OS X 10_15_7",
-			"Macintosh; Intel Mac OS X 10_14_6",
-			"Linux x86_64",
-			"Linux i686"
+		"Linux x86_64"
 	];
 
 	public static bool IsNullOrEmpty<T>(this IEnumerable<T> list)
