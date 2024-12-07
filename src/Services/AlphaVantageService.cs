@@ -51,7 +51,7 @@ internal class AlphaVantageService : IAlphaVantageService
 
 	public async Task<CompanyInfo?> GetCompanyInfoAsync(string symbol, CancellationToken token = default)
 	{
-		string? lastException = null;
+		Exception? lastException = null;
 		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		for (int index = 0; index < _options.Http_Retries; index++)
 		{
@@ -74,11 +74,11 @@ internal class AlphaVantageService : IAlphaVantageService
 			catch (Exception ex)
 			{
 				_logger.LogInformation($"Retry for {symbol}");
-				lastException = ex.ToString();
+				lastException = ex;
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 			}
 		}
-		throw new NetFinanceException($"No company overview found for {symbol} after {_options.Http_Retries} retries, {lastException}");
+		throw new NetFinanceException($"No company overview found for {symbol} after {_options.Http_Retries} retries,LastException=\n{lastException}\n\n");
 	}
 
 	public async Task<IEnumerable<DailyRecord>> GetDailyRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
@@ -153,7 +153,7 @@ internal class AlphaVantageService : IAlphaVantageService
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 			}
 		}
-		throw new NetFinanceException($"no daily records for {symbol} after {_options.Http_Retries} retries. {lastException}");
+		throw new NetFinanceException($"no daily records for {symbol} after {_options.Http_Retries} retries.LastException=\n{lastException}\n\n");
 	}
 
 	public async Task<IEnumerable<IntradayRecord>> GetIntradayRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, EInterval interval = EInterval.Interval_15Min, CancellationToken token = default)
@@ -192,7 +192,7 @@ internal class AlphaVantageService : IAlphaVantageService
 	private async Task<List<IntradayRecord>> GetIntradayRecordsByMonthAsync(string symbol, DateTime month, EInterval interval, CancellationToken token = default)
 	{
 		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
-		string? lastException = null;
+		Exception? lastException = null;
 
 		for (int retryAttempt = 0; retryAttempt < _options.Http_Retries; retryAttempt++)
 		{
@@ -259,17 +259,17 @@ internal class AlphaVantageService : IAlphaVantageService
 			catch (Exception ex)
 			{
 				_logger.LogInformation($"Retry for {symbol}");
-				lastException = ex.ToString();
+				lastException = ex;
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 			}
 		}
-		throw new NetFinanceException($"No intraday records found for {symbol} after {_options.Http_Retries} retries. {lastException}");
+		throw new NetFinanceException($"No intraday records found for {symbol} after {_options.Http_Retries} retries.LastException=\n{lastException}\n\n");
 	}
 
 	public async Task<IEnumerable<DailyForexRecord>> GetDailyForexRecordsAsync(string currency1, string currency2, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
 	{
 		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
-		string? lastException = null;
+		Exception? lastException = null;
 		Guard.Against.NullOrEmpty(currency1);
 		Guard.Against.NullOrEmpty(currency2);
 
@@ -333,10 +333,10 @@ internal class AlphaVantageService : IAlphaVantageService
 			catch (Exception ex)
 			{
 				_logger.LogInformation($"Retry for {currency1} /{currency2}");
-				lastException = ex.ToString();
+				lastException = ex;
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 			}
 		}
-		throw new NetFinanceException($"No forex records found for {currency1} /{currency2} after {_options.Http_Retries} retries. {lastException}");
+		throw new NetFinanceException($"No forex records found for {currency1} /{currency2} after {_options.Http_Retries} retries.LastException=\n{lastException}\n\n");
 	}
 }

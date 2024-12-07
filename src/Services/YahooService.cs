@@ -71,7 +71,7 @@ internal class YahooService : IYahooService
 
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 
-		string? lastException = null;
+		Exception? lastException = null;
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
 			try
@@ -118,17 +118,17 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex.ToString();
+				lastException = ex;
 			}
 		}
-		throw new NetFinanceException($"No quotes found after {_options.Http_Retries} attempts. {lastException}");
+		throw new NetFinanceException($"No quotes found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
 	}
 
 	public async Task<Models.Yahoo.Profile> GetProfileAsync(string symbol, CancellationToken token = default)
 	{
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
-		string? lastException = null;
+		Exception? lastException = null;
 
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
@@ -180,15 +180,15 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex.ToString();
+				lastException = ex;
 			}
 		}
-		throw new NetFinanceException($"No profile found after {_options.Http_Retries} attempts. {lastException}");
+		throw new NetFinanceException($"No profile found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
 	}
 
 	public async Task<IEnumerable<DailyRecord>> GetDailyRecordsAsync(string symbol, DateTime startDate, DateTime? endDate = null, CancellationToken token = default)
 	{
-		string? lastException = null;
+		Exception? lastException = null;
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 
@@ -287,15 +287,15 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex.ToString();
+				lastException = ex;
 			}
 		}
-		throw new NetFinanceException($"No records found after {_options.Http_Retries} attempts. {lastException}");
+		throw new NetFinanceException($"No records found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
 	}
 
 	public async Task<Dictionary<string, FinancialReport>> GetFinancialReportsAsync(string symbol, CancellationToken token = default)
 	{
-		string? lastException = null;
+		Exception? lastException = null;
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 
@@ -334,7 +334,7 @@ internal class YahooService : IYahooService
 
 					if (columns.Count != headers.Count + 1)
 					{
-						throw new NetFinanceException("Unknown table format" + "\n------------\n" + url + "\n------------\n" + htmlContent);
+						throw new NetFinanceException($"Unknown table format of {url} html");
 					}
 
 					var rowTitle = columns.FirstOrDefault();
@@ -364,17 +364,17 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex.ToString();
+				lastException = ex;
 			}
 		}
-		throw new NetFinanceException($"No financial reports found after {_options.Http_Retries} attempts. {lastException}");
+		throw new NetFinanceException($"No financial reports found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
 	}
 
 	public async Task<Summary> GetSummaryAsync(string symbol, CancellationToken token = default)
 	{
 		var (crumb, cookie) = await _yahooSession.GetSessionStateAsync(token).ConfigureAwait(false);
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
-		string? lastException = null;
+		Exception? lastException = null;
 		var symbolsToSecurity = new Dictionary<string, Quote>();
 
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/";
@@ -480,9 +480,9 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry after exception {ex}");
 				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
-				lastException = ex.ToString();
+				lastException = ex;
 			}
 		}
-		throw new NetFinanceException($"No summary found after {_options.Http_Retries} attempts. {lastException}");
+		throw new NetFinanceException($"No summary found after {_options.Http_Retries} attempts. LastException=\n{lastException}\n\n");
 	}
 }

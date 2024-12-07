@@ -30,21 +30,26 @@ jobs:
     - name: Build project
       run: dotnet build ${{ env.Solution_Name }} --configuration Release --no-restore
 
-    - name: Execute unit tests
-      run: dotnet test ${{ env.Test_Project_Path }} --configuration Release --no-restore --filter Category=UnitTests
+    - name: Generate Unit Test Coverage Report
+      run: |
+          dotnet test ${{ env.Test_Project_Path }} --collect:"XPlat Code Coverage" --results-directory ./TestResults/UnitTests --configuration Release --filter Category=UnitTests
+          reportgenerator -reports:./TestResults/UnitTests/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage/Unit -reporttypes:Html
 
-    - name: Execute integration tests
-      run: dotnet test ${{ env.Test_Project_Path }} --configuration Release --no-restore --filter Category=IntegrationTests
+    - name: Upload Unit Test Coverage Report
+      uses: actions/upload-artifact@v3
+      with:
+        name: unit-test-coverage-report
+        path: ./TestResults/Coverage/Unit
+
+    - name: Generate Integration Test Coverage Report
+      run: |
+          dotnet test ${{ env.Test_Project_Path }} --collect:"XPlat Code Coverage" --results-directory ./TestResults/IntegrationTests --configuration Release --filter Category=IntegrationTests
+          reportgenerator -reports:./TestResults/IntegrationTests/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage/Integration -reporttypes:Html
       env:
           NetFinanceConfiguration__AlphaVantageApiKey: ${{ secrets.NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY }}
 
-    - name: Run Tests and Generate Coverage Report
-      run: |
-        dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults
-        reportgenerator -reports:./TestResults/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage -reporttypes:Html
-
-    - name: Upload Coverage Report
+    - name: Upload Integration Test Coverage Report
       uses: actions/upload-artifact@v3
       with:
-        name: coverage-report
-        path: ./TestResults/Coverage  
+        name: integration-test-coverage-report
+        path: ./TestResults/Coverage/Integration
