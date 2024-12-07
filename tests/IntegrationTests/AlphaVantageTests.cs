@@ -55,11 +55,15 @@ public class AlphaVantageTests
 		var config1 = configuration["NetFinanceConfiguration:AlphavantageApiKey"];
 		var config2 = configuration["NetFinanceConfiguration__AlphaVantageApiKey"];
 		var config3 = configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"];
+		var config4 = configuration["NETFINANCECONFIGURATION__ALPHAVANTAGEAPIKEY"];
+		var config5 = configuration["NETFINANCECONFIGURATIONALPHAVANTAGEAPIKEY"];
 		logger.LogInformation($"1 NetFinanceConfiguration:AlphavantageApiKey={config1?.Length}");
 		logger.LogWarning($"2 NetFinanceConfiguration__AlphaVantageApiKey={config2?.Length}");
 		logger.LogError($"3 NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY={config3?.Length}");
+		logger.LogError($"4 NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY={config4?.Length}");
+		logger.LogError($"5 NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY={config5?.Length}");
 
-		throw new NetFinanceException($"1={config1?.Length},2={config2?.Length},3={config3?.Length}");
+		throw new NetFinanceException($"1={config1?.Length},2={config2?.Length},3={config3?.Length},4={config4?.Length},5={config5?.Length}");
 
 	}
 
