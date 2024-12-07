@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -50,8 +49,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
 					httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
 					httpClient.DefaultRequestHeaders.Add("Host", "en-US,en;q=0.5");
-					httpClient.DefaultRequestHeaders.Add("Referer", "https://finance.yahoo.com");
-					httpClient.DefaultRequestHeaders.Add("Origin", "https://consent.yahoo.com");
+					httpClient.DefaultRequestHeaders.Add("Origin", "https://finance.yahoo.com");
 					httpClient.DefaultRequestHeaders.Add("DNT", "1");
 					httpClient.DefaultRequestHeaders.Add("Sec-GPC", "1");
 					httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
@@ -65,11 +63,11 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
 
-					var requestHeaders = string.Join("; ", requestMessage.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
-					_logger.LogInformation("Outgoing Request Headers: {Headers}", requestHeaders);
+					//var requestHeaders = string.Join("; ", requestMessage.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
+					//_logger.LogInformation("Outgoing Request Headers: {Headers}", requestHeaders);
 
-					var responseHeaders = string.Join("; ", response.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
-					_logger.LogInformation("Incoming Response Headers: {Headers}", responseHeaders);
+					//var responseHeaders = string.Join("; ", response.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
+					//_logger.LogInformation("Incoming Response Headers: {Headers}", responseHeaders);
 
 
 					var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
