@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -50,9 +51,21 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
 
 					// get consent
-					var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent);
+					var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, _options.Yahoo_BaseUrl_Consent);
+
+					var response = await httpClient.SendAsync(requestMessage);
 					response.EnsureSuccessStatusCode();
 					var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+
+					var requestHeaders = string.Join("; ", requestMessage.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
+					_logger.LogInformation("Outgoing Request Headers: {Headers}", requestHeaders);
+
+					var responseHeaders = string.Join("; ", response.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
+					_logger.LogInformation("Incoming Response Headers: {Headers}", responseHeaders);
+
+
+
 					var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
 					var csrfTokenNode = document.QuerySelector("input[name='csrfToken']");
 					var sessionIdNode = document.QuerySelector("input[name='sessionId']");
@@ -82,7 +95,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 						postData.Add(new("reject", value));
 					}
 					var url1 = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId=" + sessionId;
-					var requestMessage = new HttpRequestMessage(HttpMethod.Post, url1)
+					requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Post, url1)
 					{
 						Content = new FormUrlEncodedContent(postData),
 					};
