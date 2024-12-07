@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NetFinance\NetFinance.csproj" />
+    <ProjectReference Include="..\src\NetFinance.csproj" />
   </ItemGroup>
 
   <ItemGroup>
