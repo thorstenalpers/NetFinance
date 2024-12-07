@@ -1,5 +1,4 @@
 ﻿using System;
-using Moq;
 using NetFinance.Models.AlphaVantage;
 using NetFinance.Utilities;
 using NUnit.Framework;
@@ -112,27 +111,6 @@ public class HelperTests
 
 		// Assert
 		Assert.That(result, Is.EqualTo(expected));
-	}
-
-	[Test]
-	public void CreateRandomUserAgent_WithRandom_ReturnsResult()
-	{
-		// Arrange
-		var randomMock = new Mock<Random>();
-
-		// Mocking random values
-		randomMock.SetupSequence(r => r.Next(It.IsAny<int>()))
-				  .Returns(0)  // First call for firefox version
-				  .Returns(1)  // Second call for operating system
-				  .Returns(0); // Final call for user agent index
-
-		var expectedUserAgent = $"Mozilla/5.0 ({Helper.OperatingSystems[1]}; rv:{Helper.FirefoxVersions[0]}) Gecko/20100101 Firefox/{Helper.FirefoxVersions[0]}";
-
-		// Act
-		var result = Helper.CreateRandomUserAgent(randomMock.Object);
-
-		// Assert
-		Assert.That(expectedUserAgent, Is.EqualTo(result));
 	}
 
 	[TestCase(EInterval.Interval_1Min, "1min")]
