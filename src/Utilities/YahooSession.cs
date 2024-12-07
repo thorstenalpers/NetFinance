@@ -52,6 +52,11 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					var response6 = await httpClient.GetAsync("https://finance.yahoo.com");
 					response6.EnsureSuccessStatusCode();
 
+					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
+					{
+						_logger.LogInformation($"xxxx: {cookie.Name}: {cookie.Value}");
+					}
+
 					// get consent
 					var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, _options.Yahoo_BaseUrl_Consent);
 
@@ -59,6 +64,10 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					response.EnsureSuccessStatusCode();
 					var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
+					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
+					{
+						_logger.LogInformation($"yyy: {cookie.Name}: {cookie.Value}");
+					}
 
 					var requestHeaders = string.Join("; ", requestMessage.Headers.Select(h => $"{h.Key}: {string.Join(", ", h.Value)}"));
 					_logger.LogInformation("Outgoing Request Headers: {Headers}", requestHeaders);
