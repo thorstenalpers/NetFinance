@@ -35,19 +35,17 @@ internal class YahooSession(IHttpClientFactory httpClientFactory, IOptions<NetFi
 		{
 			var httpClient = _httpClientFactory.CreateClient(_netFinanceOptions.Yahoo_Http_ClientName);
 			var response = await httpClient.GetAsync(_netFinanceOptions.Yahoo_BaseUrl_Auth_Api, token).ConfigureAwait(false);
-			var cookieStr = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
-
+			var cookieStr = response?.Headers?.GetValues("Set-Cookie").FirstOrDefault();
 			_yahooCookie?.Parse(cookieStr);
-
-			if (_yahooCookie?.Cookie == null || !_yahooCookie.IsValid())
+			if (_yahooCookie == null || _yahooCookie.Cookie == null || !_yahooCookie.IsValid())
 			{
 				throw new NetFinanceException("Failed to obtain Yahoo auth cookie.");
 			}
+
 			var requestMessage = new HttpRequestMessage(HttpMethod.Get, _netFinanceOptions.Yahoo_BaseUrl_Crumb_Api);
 			requestMessage.Headers.Add("Cookie", _yahooCookie.ToString());
 			var crumbResponse = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
 			_crumb = await crumbResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-
 			if (string.IsNullOrEmpty(_crumb))
 			{
 				throw new NetFinanceException("Failed to retrieve Yahoo crumb.");

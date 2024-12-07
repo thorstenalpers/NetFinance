@@ -14,7 +14,7 @@ internal class YahooCookie
 			   (Cookie.Expires == DateTime.MinValue || Cookie.Expires > DateTime.Now);
 	}
 
-	public void Parse(string cookieString)
+	public void Parse(string? cookieString)
 	{
 		if (string.IsNullOrWhiteSpace(cookieString))
 			throw new ArgumentException("Cookie string cannot be null or empty.", nameof(cookieString));
