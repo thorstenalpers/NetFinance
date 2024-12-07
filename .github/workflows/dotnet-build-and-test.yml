@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     env:
       Solution_Name: NetFinance.sln
@@ -19,12 +19,12 @@ jobs:
         ref: develop
         fetch-depth: 0 
 
-    - name: Install .NET Core
+    - name: Install .Net
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.x
 
-    - name: Install ReportGenerator
+    - name: Install reportgenerator
       run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
     - name: Restore dependencies
@@ -33,25 +33,25 @@ jobs:
     - name: Build project
       run: dotnet build ${{ env.Solution_Name }} --configuration Release --no-restore
 
-    - name: Generate Unit Test Coverage Report
+    - name: Run unit tests
       run: |
           dotnet test ${{ env.Test_Project_Path }} --collect:"XPlat Code Coverage" --results-directory ./TestResults/UnitTests --configuration Release --filter Category=UnitTests
           reportgenerator -reports:./TestResults/UnitTests/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage/Unit -reporttypes:Html
 
-    - name: Upload Unit Test Coverage Report
+    - name: Upload coverage report
       uses: actions/upload-artifact@v3
       with:
         name: unit-test-coverage-report
         path: ./TestResults/Coverage/Unit
 
-    - name: Generate Integration Test Coverage Report
+    - name: Run integration tests
       run: |
           dotnet test ${{ env.Test_Project_Path }} --collect:"XPlat Code Coverage" --results-directory ./TestResults/IntegrationTests --configuration Release --filter Category=IntegrationTests
           reportgenerator -reports:./TestResults/IntegrationTests/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage/Integration -reporttypes:Html
       env:
           NetFinanceConfiguration__AlphaVantageApiKey: ${{ secrets.NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY }}
 
-    - name: Upload Integration Test Coverage Report
+    - name: Upload coverage report
       uses: actions/upload-artifact@v3
       with:
         name: integration-test-coverage-report
