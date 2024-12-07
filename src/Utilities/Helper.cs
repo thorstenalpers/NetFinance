@@ -176,10 +176,17 @@ public static class Helper
 
 	public static void AddCookiesToRequest(this HttpRequestMessage requestMessage, CookieCollection cookieCollection)
 	{
-		if (cookieCollection != null && requestMessage != null)
+		if (cookieCollection != null && requestMessage != null && cookieCollection.Count > 0)
 		{
 			var cookieHeader = ConvertCookiesToHeader(cookieCollection);
-			requestMessage.Headers.Add("Cookie", cookieHeader);
+			try
+			{
+				requestMessage.Headers.Add("Cookie", cookieHeader);
+			}
+			catch
+			{
+
+			}
 		}
 	}
 
