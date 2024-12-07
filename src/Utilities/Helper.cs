@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using NetFinance.Models.AlphaVantage;
 
@@ -176,5 +178,24 @@ public static class Helper
 		}
 		var index = random.Next(firefoxUserAgents.Count);
 		return firefoxUserAgents[index];
+	}
+
+	public static void AddCookiesToRequest(this HttpRequestMessage requestMessage, CookieCollection cookieCollection)
+	{
+		if (cookieCollection != null && requestMessage != null)
+		{
+			var cookieHeader = ConvertCookiesToHeader(cookieCollection);
+			requestMessage.Headers.Add("Cookie", cookieHeader);
+		}
+	}
+
+	private static string ConvertCookiesToHeader(CookieCollection cookieCollection)
+	{
+		List<string> cookieStrings = new();
+		foreach (Cookie cookie in cookieCollection)
+		{
+			cookieStrings.Add($"{cookie.Name}={cookie.Value}");
+		}
+		return string.Join(";", cookieStrings);
 	}
 }

@@ -15,11 +15,20 @@ public class NetFinanceConfiguration
 	/// <summary> Default wait-time between retries in seconds </summary>
 	[Required] public int Http_Retries_Waittime = 30;
 
+	/// <summary> time in hours after refrshing cookies </summary>
+	[Required] public int Yahoo_Cookie_RefreshTime = 6;
+
 	/// <summary> Base url for Yahoo UI content </summary>
 	[Required] public string Yahoo_BaseUrl_Html = "https://finance.yahoo.com/quote";
 
-	/// <summary> Base url for Yahoo auth API calls </summary>
-	[Required] public string Yahoo_BaseUrl_Auth_Api = "https://fc.yahoo.com";
+	/// <summary> Base url to get cookie for api calls </summary>
+	[Required] public string Yahoo_BaseUrl_Authentication = "https://fc.yahoo.com";
+
+	/// <summary> Base url to get cookie for html calls </summary>
+	[Required] public string Yahoo_BaseUrl_Consent = "https://guce.yahoo.com/consent";
+
+	/// <summary> Base url to send consent cookie for html calls </summary>
+	[Required] public string Yahoo_BaseUrl_Consent_Collect = "https://consent.yahoo.com/v2/collectConsent";
 
 	/// <summary> Base url for Yahoo crumb API calls </summary>
 	[Required] public string Yahoo_BaseUrl_Crumb_Api = "https://query1.finance.yahoo.com/v1/test/getcrumb";

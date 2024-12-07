@@ -6,7 +6,9 @@ namespace NetFinance.Interfaces
 {
 	public interface IYahooSession
 	{
-		Task<(string crumb, Cookie cookie)> GetSessionAsync(CancellationToken token = default, bool forceRefresh = false);
-		Task<(string crumb, Cookie cookie)> RefreshSessionAsync(CancellationToken token = default);
+		Task RefreshSessionAsync(CancellationToken token = default, bool forceRefresh = false);
+		string GetCrumb();
+		CookieCollection GetCookieCollection();
+		bool AreCookiesValid();
 	}
 }

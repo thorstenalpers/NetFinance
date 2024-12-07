@@ -32,12 +32,14 @@ public class ServiceCollectionExtensionsTests
 			OpenData_DownloadUrl_NasdaqListedSymbols = "https://www.google2.de",
 			OpenData_DownloadUrl_SP500Symbols = "https://www.google3.de",
 			Xetra_DownloadUrl_Instruments = "https://www.google4.de",
-			Yahoo_BaseUrl_Auth_Api = "https://www.google5.de",
+			Yahoo_BaseUrl_Authentication = "https://www.google5.de",
 			Yahoo_BaseUrl_Crumb_Api = "https://www.google6.de",
 			Yahoo_BaseUrl_Html = "https://www.google7.de",
 			Yahoo_BaseUrl_Quote_Api = "https://www.google8.de",
+			Yahoo_BaseUrl_Consent = "https://www.google9.de",
 			Http_Retries = 100,
 			Http_Timeout = 1000,
+			Http_Retries_Waittime = 100,
 		};
 
 		// Act
@@ -54,7 +56,7 @@ public class ServiceCollectionExtensionsTests
 		Assert.That(resolvedCfg.AlphaVantageApiKey, Is.EqualTo(cfg.AlphaVantageApiKey));
 		Assert.That(resolvedCfg.Http_Retries, Is.EqualTo(cfg.Http_Retries));
 		Assert.That(resolvedCfg.Yahoo_BaseUrl_Html, Is.EqualTo(cfg.Yahoo_BaseUrl_Html));
-		Assert.That(resolvedCfg.Yahoo_BaseUrl_Auth_Api, Is.EqualTo(cfg.Yahoo_BaseUrl_Auth_Api));
+		Assert.That(resolvedCfg.Yahoo_BaseUrl_Authentication, Is.EqualTo(cfg.Yahoo_BaseUrl_Authentication));
 		Assert.That(resolvedCfg.Yahoo_BaseUrl_Crumb_Api, Is.EqualTo(cfg.Yahoo_BaseUrl_Crumb_Api));
 		Assert.That(resolvedCfg.Yahoo_BaseUrl_Quote_Api, Is.EqualTo(cfg.Yahoo_BaseUrl_Quote_Api));
 		Assert.That(resolvedCfg.Http_Timeout, Is.EqualTo(cfg.Http_Timeout));
