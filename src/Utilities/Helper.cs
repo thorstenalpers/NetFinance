@@ -161,17 +161,17 @@ public static class Helper
 		random ??= new Random();
 
 		var firefoxUserAgents = new List<string>();
-
-		for (int i = 0; i < 1000; i++)
+		var allAgents = new List<string>();
+		foreach (var firefoxVersion in FirefoxVersions)
 		{
-			string firefoxVersion = FirefoxVersions[random.Next(FirefoxVersions.Count)];
-			string operatingSystem = OperatingSystems[random.Next(OperatingSystems.Count)];
-			string userAgent = $"Mozilla/5.0 ({operatingSystem}; rv:{firefoxVersion}) Gecko/20100101 Firefox/{firefoxVersion}";
-
-			firefoxUserAgents.Add(userAgent);
+			foreach (var operatingSystem in OperatingSystems)
+			{
+				string userAgent = $"Mozilla/5.0 ({operatingSystem}; rv:{firefoxVersion}) Gecko/20100101 Firefox/{firefoxVersion}";
+				allAgents.Add(userAgent);
+			}
 		}
-		var index = random.Next(firefoxUserAgents.Count);
-		return firefoxUserAgents[index];
+		var index = random.Next(allAgents.Count);
+		return allAgents[index];
 	}
 
 	public static void AddCookiesToRequest(this HttpRequestMessage requestMessage, CookieCollection cookieCollection)

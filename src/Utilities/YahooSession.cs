@@ -49,6 +49,13 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					httpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
 					httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
 					httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+					httpClient.DefaultRequestHeaders.Add("Host", "en-US,en;q=0.5");
+					httpClient.DefaultRequestHeaders.Add("Referer", "https://finance.yahoo.com");
+					httpClient.DefaultRequestHeaders.Add("Origin", "https://consent.yahoo.com");
+					httpClient.DefaultRequestHeaders.Add("DNT", "1");
+					httpClient.DefaultRequestHeaders.Add("Sec-GPC", "1");
+					httpClient.DefaultRequestHeaders.Add("Connection", "keep-alive");
+
 
 					// get consent
 					var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, _options.Yahoo_BaseUrl_Consent);
@@ -104,6 +111,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					requestMessage.Headers.Add("DNT", "1");
 					requestMessage.Headers.Add("Sec-GPC", "1");
 					requestMessage.Headers.Add("Connection", "keep-alive");
+
 					response = await httpClient.SendAsync(requestMessage);
 					response.EnsureSuccessStatusCode();
 					await Task.Delay(TimeSpan.FromSeconds(3));
