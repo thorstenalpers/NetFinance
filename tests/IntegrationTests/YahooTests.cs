@@ -37,7 +37,7 @@ public class YahooTests
 			builder.SetMinimumLevel(LogLevel.Information);
 		});
 		var cfgBuilder = new ConfigurationBuilder();
-		cfgBuilder.AddUserSecrets<OpenDataTests>();
+		cfgBuilder.AddUserSecrets<YahooTests>();
 		cfgBuilder.AddEnvironmentVariables();
 
 		services.AddSingleton<IConfiguration>(cfgBuilder.Build());
