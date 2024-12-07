@@ -52,7 +52,8 @@ public class AlphaVantageTests
 		_serviceProvider = services.BuildServiceProvider();
 		_service = _serviceProvider.GetRequiredService<IAlphaVantageService>();
 		var logger = _serviceProvider.GetRequiredService<ILogger<AlphaVantageTests>>();
-
+		var cfg = _serviceProvider.GetRequiredService<IOptions<NetFinanceConfiguration>>();
+		var cfgKey = cfg.Value.AlphaVantageApiKey;
 		var config1 = configuration["NetFinanceConfiguration:AlphavantageApiKey"];
 		var config2 = configuration["NetFinanceConfiguration__AlphaVantageApiKey"];
 		var config3 = configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"];
@@ -61,10 +62,11 @@ public class AlphaVantageTests
 		logger.LogInformation($"1 NetFinanceConfiguration:AlphavantageApiKey={config1?.Length}");
 		logger.LogWarning($"2 NetFinanceConfiguration__AlphaVantageApiKey={config2?.Length}");
 		logger.LogError($"3 NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY={config3?.Length}");
-		logger.LogError($"4 NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY={config4?.Length}");
-		logger.LogError($"5 NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY={config5?.Length}");
+		logger.LogError($"4 NETFINANCECONFIGURATION__ALPHAVANTAGEAPIKEY={config4?.Length}");
+		logger.LogError($"5 NETFINANCECONFIGURATIONALPHAVANTAGEAPIKEY={config5?.Length}");
+		logger.LogError($"6 cfg.Value.AlphaVantageApiKey={cfg.Value?.AlphaVantageApiKey?.Length}");
 
-		throw new NetFinanceException($"1={config1?.Length},2={config2?.Length},3={config3?.Length},4={config4?.Length},5={config5?.Length}");
+		throw new NetFinanceException($"1={config1?.Length},2={config2?.Length},3={config3?.Length},4={config4?.Length},5={config5?.Length},6={cfg?.Value?.AlphaVantageApiKey?.Length}");
 
 	}
 

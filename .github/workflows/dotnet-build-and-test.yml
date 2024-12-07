@@ -49,7 +49,7 @@ jobs:
           dotnet test ${{ env.Test_Project_Path }} --collect:"XPlat Code Coverage" --results-directory ./TestResults/IntegrationTests --configuration Release --filter Category=IntegrationTests
           reportgenerator -reports:./TestResults/IntegrationTests/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage/Integration -reporttypes:Html
       env:
-          NETFINANCECONFIGURATIONALPHAVANTAGEAPIKEY: ${{ secrets.NETFINANCECONFIGURATIONALPHAVANTAGEAPIKEY }}
+          NetFinanceConfiguration__AlphaVantageApiKey: ${{ secrets.NETFINANCECONFIGURATIONALPHAVANTAGEAPIKEY }}
 
     - name: Upload coverage report
       uses: actions/upload-artifact@v4.4.3
