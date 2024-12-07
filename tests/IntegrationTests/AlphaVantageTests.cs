@@ -34,6 +34,13 @@ public class AlphaVantageTests
 		var services = new ServiceCollection();
 		services.AddSingleton<IConfiguration>(configuration);
 
+		var config1 = configuration["NetFinanceConfiguration:AlphavantageApiKey"];
+		var config2 = configuration["NetFinanceConfiguration__AlphaVantageApiKey"];
+		var config3 = configuration["NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY"];
+		Console.WriteLine($"1 NetFinanceConfiguration:AlphavantageApiKey={config1.Length}");
+		Console.WriteLine($"2 NetFinanceConfiguration__AlphaVantageApiKey={config2.Length}");
+		Console.WriteLine($"3 NET_FINANCE_CONFIGURATION__ALPHAVANTAGE_API_KEY={config3.Length}");
+
 		services.AddNetFinance(new NetFinanceConfiguration
 		{
 			AlphaVantageApiKey = configuration["NetFinanceConfiguration:AlphavantageApiKey"],
