@@ -11,6 +11,7 @@ jobs:
     env:
       Solution_Name: NetFinance.sln
       Test_Project_Path: tests/Tests.csproj
+      ACTIONS_RUNNER_DEBUG: ${{ secrets.ACTIONS_RUNNER_DEBUG }}
 
     steps:
     - name: Checkout
