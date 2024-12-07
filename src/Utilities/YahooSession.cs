@@ -59,10 +59,12 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					response.EnsureSuccessStatusCode();
 					var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri("https://finance.yahoo.com")))
+					var cookieStr = "";
+					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
 					{
-						_logger.LogInformation($"yyy: {cookie.Name}: {cookie.Value}");
+						cookieStr += $"{cookie.Name}: {cookie.Value}";
 					}
+					_logger.LogInformation($"xxxx: {cookieStr}");
 
 					var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
 					var csrfTokenNode = document.QuerySelector("input[name='csrfToken']");
@@ -113,11 +115,13 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					response = await httpClient.GetAsync(url2);
 					response.EnsureSuccessStatusCode();
 
-
-					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri("https://finance.yahoo.com")))
+					cookieStr = "";
+					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
 					{
-						_logger.LogInformation($"xxxx: {cookie.Name}: {cookie.Value}");
+						cookieStr += $"{cookie.Name}: {cookie.Value}";
 					}
+					_logger.LogInformation($"zzz: {cookieStr}");
+
 
 					// get crumb: used to make quote api calls
 					var crumbResponse = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Crumb_Api).ConfigureAwait(false);
