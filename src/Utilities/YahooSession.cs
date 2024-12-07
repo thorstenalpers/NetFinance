@@ -65,7 +65,6 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					_logger.LogInformation("Incoming Response Headers: {Headers}", responseHeaders);
 
 
-
 					var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
 					var csrfTokenNode = document.QuerySelector("input[name='csrfToken']");
 					var sessionIdNode = document.QuerySelector("input[name='sessionId']");
