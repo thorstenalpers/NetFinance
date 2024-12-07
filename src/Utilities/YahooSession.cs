@@ -48,6 +48,10 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					var userAgent = Helper.CreateRandomUserAgent();
 					httpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
 
+					// get index
+					var response6 = await httpClient.GetAsync("https://finance.yahoo.com");
+					response6.EnsureSuccessStatusCode();
+
 					// get consent
 					var requestMessage = new HttpRequestMessage(System.Net.Http.HttpMethod.Get, _options.Yahoo_BaseUrl_Consent);
 
