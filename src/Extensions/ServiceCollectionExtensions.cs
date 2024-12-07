@@ -1,13 +1,10 @@
 using System;
-using System.Net;
-using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NetFinance.Interfaces;
 using NetFinance.Services;
 using NetFinance.Utilities;
 
 namespace NetFinance.Extensions;
-
 public static class ServiceCollectionExtensions
 {
 	/// <summary>
@@ -48,7 +45,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IXetraService, XetraService>();
 		services.AddScoped<IAlphaVantageService, AlphaVantageService>();
 		services.AddScoped<IOpenDataService, OpenDataService>();
-		var cookieContainer = new CookieContainer();
+		services.AddTransient<LoggingHandler>();
 
 		services.AddHttpClient(cfg.Yahoo_Http_ClientName)
 			.ConfigureHttpClient(client =>
@@ -59,43 +56,39 @@ public static class ServiceCollectionExtensions
 				client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
 				client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);
 			})
-			.ConfigurePrimaryHttpMessageHandler(() =>
+			.AddHttpMessageHandler<LoggingHandler>();
+
+		services.AddHttpClient(cfg.Xetra_Http_ClientName)
+			.ConfigureHttpClient(client =>
 			{
-				var handler = new HttpClientHandler()
-				{
-					CookieContainer = cookieContainer // Set the CookieContainer for handling cookies
-				};
-				return handler;
-			}); ;
+				var userAgent = Helper.CreateRandomUserAgent();
+				client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+				client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
+				client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+				client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);
+			})
+			.AddHttpMessageHandler<LoggingHandler>();
 
-		services.AddHttpClient(cfg.Xetra_Http_ClientName, client =>
-		{
-			var userAgent = Helper.CreateRandomUserAgent();
-			client.DefaultRequestHeaders.Add("User-Agent", userAgent);
-			client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
-			client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+		services.AddHttpClient(cfg.AlphaVantage_Http_ClientName)
+			.ConfigureHttpClient(client =>
+			{
+				var userAgent = Helper.CreateRandomUserAgent();
+				client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+				client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
+				client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+				client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);
+			})
+			.AddHttpMessageHandler<LoggingHandler>();
 
-			client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);
-		});
-
-		services.AddHttpClient(cfg.AlphaVantage_Http_ClientName, client =>
-		{
-			var userAgent = Helper.CreateRandomUserAgent();
-			client.DefaultRequestHeaders.Add("User-Agent", userAgent);
-			client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
-			client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
-
-			client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);
-		});
-
-		services.AddHttpClient(cfg.OpenData_Http_ClientName, client =>
-		{
-			var userAgent = Helper.CreateRandomUserAgent();
-			client.DefaultRequestHeaders.Add("User-Agent", userAgent);
-			client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
-			client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
-
-			client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);
-		});
+		services.AddHttpClient(cfg.OpenData_Http_ClientName)
+			.ConfigureHttpClient(client =>
+			{
+				var userAgent = Helper.CreateRandomUserAgent();
+				client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+				client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
+				client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+				client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);
+			})
+			.AddHttpMessageHandler<LoggingHandler>();
 	}
 }

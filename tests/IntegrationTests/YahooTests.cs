@@ -28,10 +28,7 @@ public class YahooTests
 				builder.AddConsole();
 				builder.SetMinimumLevel(LogLevel.Information);
 			});
-		var builder = new ConfigurationBuilder();
-		builder.AddUserSecrets<OpenDataTests>();
-		builder.AddEnvironmentVariables();
-		var configuration = builder.Build();
+
 
 		var services = new ServiceCollection();
 		services.AddLogging(builder =>
@@ -39,12 +36,16 @@ public class YahooTests
 			builder.AddConsole();
 			builder.SetMinimumLevel(LogLevel.Information);
 		});
-		services.AddSingleton<IConfiguration>(configuration);
+		var cfgBuilder = new ConfigurationBuilder();
+		cfgBuilder.AddUserSecrets<OpenDataTests>();
+		cfgBuilder.AddEnvironmentVariables();
+
+		services.AddSingleton<IConfiguration>(cfgBuilder.Build());
 
 		services.AddNetFinance(new NetFinanceConfiguration
 		{
-			Http_Timeout = 10,
-			Http_Retries = 3
+			Http_Timeout = 5,
+			Http_Retries = 2
 		});
 
 		_serviceProvider = services.BuildServiceProvider();
