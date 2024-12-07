@@ -59,7 +59,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					response.EnsureSuccessStatusCode();
 					var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
+					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri("https://finance.yahoo.com")))
 					{
 						_logger.LogInformation($"yyy: {cookie.Name}: {cookie.Value}");
 					}
@@ -114,7 +114,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					response.EnsureSuccessStatusCode();
 
 
-					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri(_options.Yahoo_BaseUrl_Consent)))
+					foreach (Cookie cookie in cookieContainer.GetCookies(new Uri("https://finance.yahoo.com")))
 					{
 						_logger.LogInformation($"xxxx: {cookie.Name}: {cookie.Value}");
 					}
