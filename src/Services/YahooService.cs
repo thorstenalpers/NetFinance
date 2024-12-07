@@ -116,7 +116,7 @@ internal class YahooService : IYahooService
 				lastException = ex;
 			}
 		}
-		throw new NetFinanceException($"No quotes found after {_options.Http_Retries} attempts.LastException=\n{lastException}\n\n");
+		throw new NetFinanceException($"No quotes found after {_options.Http_Retries} attempts.LastException=\n{lastException}");
 	}
 
 	public async Task<Models.Yahoo.Profile> GetProfileAsync(string symbol, CancellationToken token = default)
