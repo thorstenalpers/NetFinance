@@ -52,7 +52,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<Y
 
 					// get auth cookie: used to make quote api calls
 					var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Authentication, token).ConfigureAwait(false);
-					await Task.Delay(TimeSpan.FromSeconds(1));
+					await Task.Delay(TimeSpan.FromSeconds(3));
 
 					// get crumb: used to make quote api calls
 					var cookieStr = response?.Headers?.GetValues("Set-Cookie")?.FirstOrDefault();
@@ -65,7 +65,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<Y
 					{
 						_logger.LogWarning($"Failed to retrieve Yahoo crumb. crumb={_crumb}");
 					}
-					await Task.Delay(TimeSpan.FromSeconds(1));
+					await Task.Delay(TimeSpan.FromSeconds(3));
 
 					// get consent
 					response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent);
@@ -84,7 +84,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<Y
 					{
 						throw new NetFinanceException("Failed to retrieve csrfToken and sessionId.");
 					}
-					await Task.Delay(TimeSpan.FromSeconds(1));
+					await Task.Delay(TimeSpan.FromSeconds(3));
 
 					// reject consent
 					var postData = new List<KeyValuePair<string, string>>
@@ -112,7 +112,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<Y
 					requestMessage.Headers.Add("Connection", "keep-alive");
 					response = await httpClient.SendAsync(requestMessage);
 					response.EnsureSuccessStatusCode();
-					await Task.Delay(TimeSpan.FromSeconds(1));
+					await Task.Delay(TimeSpan.FromSeconds(3));
 
 					// finalize
 					var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId=" + sessionId;
