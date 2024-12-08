@@ -81,7 +81,7 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+					requestMessage.AddCookiesToRequest(_yahooSession.GetApiCookieCollection());
 				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
@@ -138,7 +138,7 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+					requestMessage.AddCookiesToRequest(_yahooSession.GetUiCookieCollection());
 				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
@@ -226,7 +226,7 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+					requestMessage.AddCookiesToRequest(_yahooSession.GetUiCookieCollection());
 				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
@@ -333,7 +333,7 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+					requestMessage.AddCookiesToRequest(_yahooSession.GetUiCookieCollection());
 				}
 
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
@@ -424,7 +424,7 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetCookieCollection());
+					requestMessage.AddCookiesToRequest(_yahooSession.GetUiCookieCollection());
 				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();

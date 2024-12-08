@@ -9,7 +9,8 @@ namespace NetFinance.Interfaces
 		Task RefreshSessionAsync(CancellationToken token = default, bool forceRefresh = false);
 		string GetCrumb();
 		string GetUserAgent();
-		CookieCollection GetCookieCollection();
+		CookieCollection GetApiCookieCollection();
+		CookieCollection GetUiCookieCollection();
 		bool AreCookiesValid();
 	}
 }
