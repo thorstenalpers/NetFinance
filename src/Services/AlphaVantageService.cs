@@ -53,7 +53,7 @@ internal class AlphaVantageService : IAlphaVantageService
 	{
 		Exception? lastException = null;
 		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
-		for (int index = 0; index < _options.Http_Retries; index++)
+		for (int attempt = 0; attempt < _options.Http_Retries; attempt++)
 		{
 			try
 			{
@@ -75,7 +75,9 @@ internal class AlphaVantageService : IAlphaVantageService
 			{
 				_logger.LogInformation($"Retry for {symbol}");
 				lastException = ex;
-				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
+
+				await Task.Delay((int)Math.Pow(2, attempt) * 1000);
+				//await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);			}
 			}
 		}
 		throw new NetFinanceException($"No company overview found for {symbol} after {_options.Http_Retries} retries,LastException=\n{lastException}\n\n");
@@ -150,7 +152,8 @@ internal class AlphaVantageService : IAlphaVantageService
 			{
 				_logger.LogInformation($"Retry for {symbol}");
 				lastException = ex;
-				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
+				await Task.Delay((int)Math.Pow(2, attempt) * 1000);
+				//await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 			}
 		}
 		throw new NetFinanceException($"no daily records for {symbol} after {_options.Http_Retries} retries.LastException=\n{lastException}\n\n");
@@ -260,7 +263,8 @@ internal class AlphaVantageService : IAlphaVantageService
 			{
 				_logger.LogInformation($"Retry for {symbol}");
 				lastException = ex;
-				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
+				await Task.Delay((int)Math.Pow(2, attempt) * 1000);
+				//await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
 			}
 		}
 		throw new NetFinanceException($"No intraday records found for {symbol} after {_options.Http_Retries} retries.LastException=\n{lastException}\n\n");
@@ -334,7 +338,8 @@ internal class AlphaVantageService : IAlphaVantageService
 			{
 				_logger.LogInformation($"Retry for {currency1} /{currency2}");
 				lastException = ex;
-				await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
+				//await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
+				await Task.Delay((int)Math.Pow(2, attempt) * 1000);
 			}
 		}
 		throw new NetFinanceException($"No forex records found for {currency1} /{currency2} after {_options.Http_Retries} retries.LastException=\n{lastException}\n\n");
