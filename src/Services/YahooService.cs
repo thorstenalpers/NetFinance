@@ -81,7 +81,8 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetApiCookieCollection());
+					var cookies = await _yahooSession.GetAndRefreshApiCookies(token).ConfigureAwait(false);
+					requestMessage.AddCookiesToRequest(cookies);
 				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
@@ -126,7 +127,6 @@ internal class YahooService : IYahooService
 	public async Task<Models.Yahoo.Profile> GetProfileAsync(string symbol, CancellationToken token = default)
 	{
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
-		await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 		Exception? lastException = null;
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/profile/".ToLower();
 
@@ -137,7 +137,8 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetUiCookieCollection());
+					var cookies = await _yahooSession.GetAndRefreshUiCookies(token).ConfigureAwait(false);
+					requestMessage.AddCookiesToRequest(cookies);
 				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
@@ -224,7 +225,8 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetUiCookieCollection());
+					var cookies = await _yahooSession.GetAndRefreshUiCookies(token).ConfigureAwait(false);
+					requestMessage.AddCookiesToRequest(cookies);
 				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();
@@ -330,7 +332,8 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetUiCookieCollection());
+					var cookies = await _yahooSession.GetAndRefreshUiCookies(token).ConfigureAwait(false);
+					requestMessage.AddCookiesToRequest(cookies);
 				}
 
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
@@ -420,7 +423,8 @@ internal class YahooService : IYahooService
 				var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
 				if (attempt == 1)
 				{
-					requestMessage.AddCookiesToRequest(_yahooSession.GetUiCookieCollection());
+					var cookies = await _yahooSession.GetAndRefreshUiCookies(token).ConfigureAwait(false);
+					requestMessage.AddCookiesToRequest(cookies);
 				}
 				var response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 				response.EnsureSuccessStatusCode();

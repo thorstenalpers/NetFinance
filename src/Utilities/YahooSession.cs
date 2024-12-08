@@ -58,7 +58,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 						var cookies = GetCookies(response);
 						requestMessage.AddCookiesToRequest(cookies);
 
-						response = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+						response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
 						_crumb = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 						if (string.IsNullOrEmpty(_crumb) || _crumb.Contains("Too Many Requests"))
 						{
@@ -87,7 +87,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 
 						// get consent
 						await Task.Delay(TimeSpan.FromSeconds(1));
-						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent.ToLower());
+						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent.ToLower(), token);
 						response.EnsureSuccessStatusCode();
 
 						var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -130,12 +130,12 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 						requestMessage.Headers.Add("Sec-GPC", "1");
 						requestMessage.Headers.Add("Connection", "keep-alive");
 
-						response = await httpClient.SendAsync(requestMessage);
+						response = await httpClient.SendAsync(requestMessage, token);
 						response.EnsureSuccessStatusCode();
 						await Task.Delay(TimeSpan.FromSeconds(1));
 
 						// finalize
-						response = await httpClient.GetAsync((string?)$"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}");
+						response = await httpClient.GetAsync((string?)$"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}", token);
 						response.EnsureSuccessStatusCode();
 						if (handler.CookieContainer?.Count < 3)
 						{
@@ -149,7 +149,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 				}
 				catch (Exception ex)
 				{
-					_logger.LogInformation($"Retry after exception {ex}");
+					_logger.LogInformation($"Retry after exception=--\n{ex}\n---");
 					await Task.Delay((int)Math.Pow(2, attempt) * 1000);
 					lastException = ex;
 				}
@@ -221,12 +221,14 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 		return _userAgent ?? "";
 	}
 
-	public CookieCollection GetApiCookieCollection()
+	public async Task<CookieCollection> GetAndRefreshApiCookies(CancellationToken token = default)
 	{
+		await RefreshSessionAsync(token).ConfigureAwait(false);
 		return _apiCookieContainer?.GetCookies(new Uri("https://finance.yahoo.com")) ?? [];
 	}
-	public CookieCollection GetUiCookieCollection()
+	public async Task<CookieCollection> GetAndRefreshUiCookies(CancellationToken token = default)
 	{
+		await RefreshSessionAsync(token).ConfigureAwait(false);
 		return _uiCookieContainer?.GetCookies(new Uri("https://finance.yahoo.com")) ?? [];
 	}
 }
