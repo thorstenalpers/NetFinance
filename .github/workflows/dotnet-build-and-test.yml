@@ -36,6 +36,10 @@ jobs:
     - name: Run unit tests
       run: |
           dotnet test ${{ env.Test_Project_Path }} --collect:"XPlat Code Coverage" --results-directory ./TestResults/UnitTests --configuration Release --filter Category=UnitTests --logger "console;verbosity=detailed"
+          if [ $? -ne 0 ]; then
+            echo "Tests failed, marking job as failed"
+            exit 1
+          fi
           reportgenerator -reports:./TestResults/UnitTests/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage/Unit -reporttypes:Html
 
     - name: Upload coverage report
@@ -47,6 +51,10 @@ jobs:
     - name: Run integration tests
       run: |
           dotnet test ${{ env.Test_Project_Path }} --collect:"XPlat Code Coverage" --results-directory ./TestResults/IntegrationTests --configuration Release --filter Category=IntegrationTests --logger "console;verbosity=detailed"
+          if [ $? -ne 0 ]; then
+            echo "Tests failed, marking job as failed"
+            exit 1
+          fi
           reportgenerator -reports:./TestResults/IntegrationTests/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage/Integration -reporttypes:Html
       env:
           NetFinanceConfiguration__AlphaVantageApiKey: ${{ secrets.ALPHAVANTAGEAPIKEY }}
