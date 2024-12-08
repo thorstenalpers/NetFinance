@@ -22,29 +22,20 @@ public class YahooTests
 	[SetUp]
 	public void SetUp()
 	{
-		var serviceProvider = new ServiceCollection();
-		//.AddLogging(builder =>
-		//{
-		//	builder.AddConsole();
-		//	builder.SetMinimumLevel(LogLevel.Information);
-		//	builder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning); // Override for HttpClient
-		//});
-
-
 		var services = new ServiceCollection();
 		services.AddLogging(builder =>
 		{
-			//builder.AddConsole(cfg => cfg.DisableColors = false);
+			//builder.AddConsole();
 			builder.SetMinimumLevel(LogLevel.Information);
 			builder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning); // Override for HttpClient
 
 			builder.AddSimpleConsole(options =>
 			{
+				options.UseUtcTimestamp = true;
 				options.SingleLine = true;
 				options.TimestampFormat = "yyyy-MM-dd HH:mm ";
-				options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
+				//options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
 			});
-			builder.SetMinimumLevel(LogLevel.Information);
 		});
 
 
@@ -56,7 +47,7 @@ public class YahooTests
 
 		services.AddNetFinance(new NetFinanceConfiguration
 		{
-			Http_Timeout = 10,
+			Http_Timeout = 5,
 			Http_Retries = 3
 		});
 

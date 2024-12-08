@@ -64,7 +64,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 				{
 					_userAgent = Helper.CreateRandomUserAgent();
 					_logger.LogInformation($"Retry after exception={ex.Message}");
-					await Task.Delay((int)Math.Pow(2, attempt) * 500);
+					await Task.Delay((int)Math.Pow(2, attempt) * 500, token).ConfigureAwait(false); ;
 					lastException = ex;
 				}
 			}
@@ -123,7 +123,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
 
 			// get consent
-			await Task.Delay(TimeSpan.FromSeconds(1));
+			await Task.Delay(TimeSpan.FromSeconds(1), token);
 			var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent.ToLower(), token);
 			response.EnsureSuccessStatusCode();
 
@@ -141,7 +141,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			{
 				throw new NetFinanceException("Unable to retrieve csrfToken and sessionId.");
 			}
-			await Task.Delay(TimeSpan.FromSeconds(1));
+			await Task.Delay(TimeSpan.FromSeconds(1), token);
 
 			// reject consent
 			var postData = new List<KeyValuePair<string, string>>
@@ -162,7 +162,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			requestMessage.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 			response = await httpClient.SendAsync(requestMessage, token);
 			response.EnsureSuccessStatusCode();
-			await Task.Delay(TimeSpan.FromSeconds(1));
+			await Task.Delay(TimeSpan.FromSeconds(1), token);
 
 			// finalize
 			response = await httpClient.GetAsync((string?)$"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}", token);
