@@ -32,8 +32,8 @@ public class YahooTests
 			builder.AddSimpleConsole(options =>
 			{
 				options.UseUtcTimestamp = true;
-				options.SingleLine = true;
-				options.TimestampFormat = "yyyy-MM-dd HH:mm ";
+				//options.SingleLine = true;
+				//options.TimestampFormat = "yyyy-MM-dd HH:mm ";
 				//options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
 			});
 		});
