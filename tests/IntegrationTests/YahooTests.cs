@@ -44,14 +44,18 @@ public class YahooTests
 
 		services.AddNetFinance(new NetFinanceConfiguration
 		{
-			Http_Timeout = 10,
-			Http_Retries = 5
+			Http_Timeout = 5,
+			Http_Retries = 2
 		});
 
 		_serviceProvider = services.BuildServiceProvider();
 		_service = _serviceProvider.GetRequiredService<IYahooService>();
+	}
 
-		Task.Delay(TimeSpan.FromSeconds(60)).GetAwaiter().GetResult();
+	[TearDown]
+	public void TearDown()
+	{
+		Task.Delay(TimeSpan.FromSeconds(2)).GetAwaiter().GetResult(); // 2 secs between runs
 	}
 
 	[Test]

@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using NetFinance.Models.AlphaVantage;
 
@@ -147,44 +146,30 @@ public static class Helper
 
 	public static string CreateRandomUserAgent(Random? random = null)
 	{
-		string userAgent;
-		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-		{
-			userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
-		}
-		else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-		{
-			userAgent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0";
-		}
-		else
-		{
-			userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
-		}
-		return userAgent;
+		random ??= new Random();
+		List<string> firefoxVersions = [ "133.0",
+										 "132.0", "132.0.1", "132.0.2",
+										 "131.0", "131.0.1", "131.0.2",
+										 "130.0", "130.0.1",
+										 "129.0", "129.0.1", "129.0.2"];
 
-		//random ??= new Random();
-		//List<string> firefoxVersions = [ "133.0",
-		//								 "132.0", "132.0.1", "132.0.2",
-		//								 "131.0", "131.0.1", "131.0.2",
-		//								 "130.0", "130.0.1",
-		//								 "129.0", "129.0.1", "129.0.2"];
-
-		//List<string> operatingSystems = [
-		//   "Windows NT 10.0; Win64; x64",
-		//	"Linux x86_64"
-		//  ];
-		//var firefoxUserAgents = new List<string>();
-		//var allAgents = new List<string>();
-		//foreach (var firefoxVersion in firefoxVersions)
-		//{
-		//	foreach (var operatingSystem in operatingSystems)
-		//	{
-		//		string userAgent = $"Mozilla/5.0 ({operatingSystem}; rv:{firefoxVersion}) Gecko/20100101 Firefox/{firefoxVersion}";
-		//		allAgents.Add(userAgent);
-		//	}
-		//}
-		//var index = random.Next(allAgents.Count);
-		//return allAgents[index];
+		List<string> operatingSystems = [
+		   "Windows NT 10.0; Win64; x64",
+			"Linux x86_64",
+			"X11; Ubuntu; Linux x86_64"
+		  ];
+		var firefoxUserAgents = new List<string>();
+		var allAgents = new List<string>();
+		foreach (var firefoxVersion in firefoxVersions)
+		{
+			foreach (var operatingSystem in operatingSystems)
+			{
+				string userAgent = $"Mozilla/5.0 ({operatingSystem}; rv:{firefoxVersion}) Gecko/20100101 Firefox/{firefoxVersion}";
+				allAgents.Add(userAgent);
+			}
+		}
+		var index = random.Next(allAgents.Count);
+		return allAgents[index];
 	}
 
 	public static void AddCookiesToRequest(this HttpRequestMessage requestMessage, CookieCollection? cookieCollection)
@@ -202,8 +187,6 @@ public static class Helper
 			}
 		}
 	}
-
-
 
 	public static bool AreAllFieldsNull<T>(T obj)
 	{

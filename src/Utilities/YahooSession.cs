@@ -16,7 +16,8 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 {
 	private readonly ILogger<IYahooSession> _logger = logger;
 	private readonly NetFinanceConfiguration _options = options.Value ?? throw new ArgumentNullException(nameof(options));
-	private SemaphoreSlim _semaphore = new(1, 1); private readonly string _userAgent = Helper.CreateRandomUserAgent();
+	private SemaphoreSlim _semaphore = new(1, 1);
+	private string _userAgent = Helper.CreateRandomUserAgent();
 	private CookieContainer? _apiCookieContainer;
 	private CookieContainer? _uiCookieContainer;
 	private string? _crumb;
@@ -113,23 +114,16 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 							new("sessionId", sessionId),
 							new("originalDoneUrl", "https://finance.yahoo.com"),
 							new("namespace", "yahoo"),
-							new("consentUUID", "default")
 						};
 						foreach (var value in new List<string> { "reject", "reject" })
 						{
 							postData.Add(new("reject", value));
 						}
-						var url = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}";
-						var requestMessage = new HttpRequestMessage(HttpMethod.Post, url)
+						var requestMessage = new HttpRequestMessage(HttpMethod.Post, (string?)$"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}")
 						{
-							Content = new FormUrlEncodedContent(postData),
+							Content = new FormUrlEncodedContent(postData)
 						};
 						requestMessage.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-						requestMessage.Headers.Add("Referer", url);
-						requestMessage.Headers.Add("DNT", "1");
-						requestMessage.Headers.Add("Sec-GPC", "1");
-						requestMessage.Headers.Add("Connection", "keep-alive");
-
 						response = await httpClient.SendAsync(requestMessage, token);
 						response.EnsureSuccessStatusCode();
 						await Task.Delay(TimeSpan.FromSeconds(1));
@@ -149,6 +143,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 				}
 				catch (Exception ex)
 				{
+					_userAgent = Helper.CreateRandomUserAgent();
 					_logger.LogInformation($"Retry after exception=--\n{ex}\n---");
 					await Task.Delay((int)Math.Pow(2, attempt) * 1000);
 					lastException = ex;
