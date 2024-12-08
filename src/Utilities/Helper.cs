@@ -156,14 +156,10 @@ public static class Helper
 		{
 			userAgent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0";
 		}
-		else //if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+		else
 		{
 			userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36";
 		}
-		//else
-		//{
-		//	userAgent = "Mozilla/5.0 (Unknown OS) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
-		//}
 		return userAgent;
 
 		//random ??= new Random();
@@ -191,7 +187,7 @@ public static class Helper
 		//return allAgents[index];
 	}
 
-	public static void AddCookiesToRequest(this HttpRequestMessage requestMessage, CookieCollection cookieCollection)
+	public static void AddCookiesToRequest(this HttpRequestMessage requestMessage, CookieCollection? cookieCollection)
 	{
 		if (cookieCollection != null && requestMessage != null && cookieCollection.Count > 0)
 		{

@@ -12,9 +12,6 @@ public class NetFinanceConfiguration
 	/// <summary> Default HTTP timeout in seconds </summary>
 	[Required] public int Http_Timeout = 30;
 
-	/// <summary> Default wait-time between retries in seconds </summary>
-	[Required] public int Http_Retries_Waittime = 30;
-
 	/// <summary> time in hours after refrshing cookies </summary>
 	[Required] public int Yahoo_Cookie_RefreshTime = 6;
 

@@ -12,7 +12,7 @@ using NetFinance.Interfaces;
 
 namespace NetFinance.Utilities;
 
-internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<IYahooSession> logger) : IYahooSession
+internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceConfiguration> options) : IYahooSession
 {
 	private readonly ILogger<IYahooSession> _logger = logger;
 	private readonly NetFinanceConfiguration _options = options.Value ?? throw new ArgumentNullException(nameof(options));
@@ -40,8 +40,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 			{
 				try
 				{
-
-					// get auth cookie
+					// ******************** get auth cookie ********************
 					var handler = new HttpClientHandler
 					{
 						CookieContainer = new CookieContainer(),
@@ -49,41 +48,32 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					};
 					using (var httpClient = new HttpClient(handler))
 					{
-						//var cookieContainer = new CookieContainer();
+						httpClient.DefaultRequestHeaders.Add("User-Agent", _userAgent);
+						httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
+						httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+
 						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Authentication.ToLower(), token).ConfigureAwait(false);
-						var firstCookieString = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
 
 						var requestMessage = new HttpRequestMessage(HttpMethod.Get, _options.Yahoo_BaseUrl_Crumb_Api.ToLower());
-						//requestMessage.Headers.Add("Cookie", firstCookieString);
-						requestMessage.Headers.Add("User-Agent", _userAgent);
-						requestMessage.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
-						requestMessage.Headers.Add("Accept-Language", "en-US,en;q=0.5");
+						var cookies = GetCookies(response);
+						requestMessage.AddCookiesToRequest(cookies);
 
-						var crumbResponse = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
-						_crumb = await crumbResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+						response = await httpClient.SendAsync(requestMessage).ConfigureAwait(false);
+						_crumb = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 						if (string.IsNullOrEmpty(_crumb) || _crumb.Contains("Too Many Requests"))
 						{
 							throw new NetFinanceException("Failed to retrieve Yahoo crumb.");
 						}
-						var lastCookies = crumbResponse.Headers.GetValues("Set-Cookie").ToList();
-						//foreach (var cookieStr in lastCookies)
-						//{
-						//	var container = new CookieContainer();
-						//	container.SetCookies(new Uri("https://query1.finance.yahoo.com"), cookieStr);
-						//	var cookies = container.GetCookies(new Uri("https://yahoo.com"));
+						cookies = GetCookies(response);
+						_apiCookieContainer = new CookieContainer();
+						_apiCookieContainer.Add(cookies);
+						if (cookies?.Count < 3)
+						{
+							throw new NetFinanceException("failed to get api cookies.");
+						}
+					}
 
-						//	foreach (Cookie cookie in cookies)
-						//	{
-						//		if (cookie != null && !cookie.Expired)
-						//		{
-						//			cookieContainer.Add(cookie);
-						//		}
-						//	}
-						//}
-						_apiCookieContainer = handler.CookieContainer;
-					};
-
-					// get consent cookie
+					// ******************** get consent cookie ********************
 					handler = new HttpClientHandler
 					{
 						CookieContainer = new CookieContainer(),
@@ -129,13 +119,13 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 						{
 							postData.Add(new("reject", value));
 						}
-						var url1 = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}";
-						var requestMessage = new HttpRequestMessage(HttpMethod.Post, url1)
+						var url = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}";
+						var requestMessage = new HttpRequestMessage(HttpMethod.Post, url)
 						{
 							Content = new FormUrlEncodedContent(postData),
 						};
 						requestMessage.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-						requestMessage.Headers.Add("Referer", url1);
+						requestMessage.Headers.Add("Referer", url);
 						requestMessage.Headers.Add("DNT", "1");
 						requestMessage.Headers.Add("Sec-GPC", "1");
 						requestMessage.Headers.Add("Connection", "keep-alive");
@@ -145,10 +135,12 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 						await Task.Delay(TimeSpan.FromSeconds(1));
 
 						// finalize
-						var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}";
-						response = await httpClient.GetAsync(url2);
+						response = await httpClient.GetAsync((string?)$"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}");
 						response.EnsureSuccessStatusCode();
-
+						if (handler.CookieContainer?.Count < 3)
+						{
+							throw new NetFinanceException("failed to get ui cookies.");
+						}
 						_uiCookieContainer = handler.CookieContainer;
 						_refreshTime = DateTime.UtcNow;
 						_logger.LogInformation($"Session established successfully");
@@ -158,7 +150,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 				catch (Exception ex)
 				{
 					_logger.LogInformation($"Retry after exception {ex}");
-					await Task.Delay(TimeSpan.FromSeconds(_options.Http_Retries_Waittime), token);
+					await Task.Delay((int)Math.Pow(2, attempt) * 1000);
 					lastException = ex;
 				}
 			}
@@ -167,6 +159,27 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 		finally
 		{
 			_semaphore.Release();
+		}
+	}
+
+	private static CookieCollection? GetCookies(HttpResponseMessage response)
+	{
+		try
+		{
+			var cookieHeaders = response.Headers.GetValues("Set-Cookie").ToList();
+
+			var cookieContainer = new CookieContainer();
+			foreach (var cookieHeader in cookieHeaders)
+			{
+				var uri = new Uri("https://finance.yahoo.com");
+				cookieContainer.SetCookies(uri, cookieHeader);
+			}
+			var cookies = cookieContainer.GetCookies(new Uri("https://finance.yahoo.com"));
+			return cookies;
+		}
+		catch
+		{
+			return null;
 		}
 	}
 

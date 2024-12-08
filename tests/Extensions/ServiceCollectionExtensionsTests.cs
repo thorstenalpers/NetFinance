@@ -39,7 +39,6 @@ public class ServiceCollectionExtensionsTests
 			Yahoo_BaseUrl_Consent = "https://www.google9.de",
 			Http_Retries = 100,
 			Http_Timeout = 1000,
-			Http_Retries_Waittime = 100,
 		};
 
 		// Act

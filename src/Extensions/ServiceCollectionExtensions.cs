@@ -20,7 +20,6 @@ public static class ServiceCollectionExtensions
 		{
 			opt.Http_Retries = cfg.Http_Retries;
 			opt.Http_Timeout = cfg.Http_Timeout;
-			opt.Http_Retries_Waittime = cfg.Http_Retries_Waittime;
 
 			opt.AlphaVantageApiKey = cfg.AlphaVantageApiKey;
 			opt.AlphaVantage_ApiUrl = cfg.AlphaVantage_ApiUrl;
@@ -51,7 +50,7 @@ public static class ServiceCollectionExtensions
 			{
 				var session = provider.GetRequiredService<IYahooSession>();
 				client.DefaultRequestHeaders.Add("User-Agent", session.GetUserAgent());
-				client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
+				client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 				client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
 				client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);
 			});
