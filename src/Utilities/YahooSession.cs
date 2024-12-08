@@ -30,6 +30,13 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			return;
 		}
 		await _semaphore.WaitAsync(token).ConfigureAwait(false);
+		if (forceRefresh)
+		{
+			_uiCookieContainer = null;
+			_apiCookieContainer = null;
+			_crumb = null;
+		}
+
 		if (!forceRefresh && !string.IsNullOrEmpty(_crumb) && AreCookiesValid())
 		{
 			return;
@@ -41,8 +48,14 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			{
 				try
 				{
-					(_crumb, _apiCookieContainer) = await CreateApiCookiesAndCrumb(token).ConfigureAwait(false);
-					_uiCookieContainer = await CreateUiCookiesAndCrumb(token).ConfigureAwait(false);
+					if (_uiCookieContainer == null || _uiCookieContainer?.Count == 0)
+					{
+						_uiCookieContainer = await CreateUiCookiesAndCrumb(token).ConfigureAwait(false);
+					}
+					if (_apiCookieContainer == null || _apiCookieContainer?.Count == 0 || _crumb == null)
+					{
+						(_crumb, _apiCookieContainer) = await CreateApiCookiesAndCrumb(token).ConfigureAwait(false);
+					}
 
 					_logger.LogInformation($"Session established successfully");
 					_refreshTime = DateTime.UtcNow;
