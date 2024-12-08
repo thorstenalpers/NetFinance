@@ -86,11 +86,11 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			_crumb = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 			if (string.IsNullOrEmpty(_crumb) || _crumb.Contains("Too Many Requests"))
 			{
-				throw new NetFinanceException("Failed to retrieve Yahoo crumb.");
+				throw new NetFinanceException("Unable to retrieve Yahoo crumb.");
 			}
 			if (handler?.CookieContainer?.Count < 3)
 			{
-				throw new NetFinanceException("failed to get api cookies.");
+				throw new NetFinanceException("Unable to get api cookies.");
 			}
 		}
 		return (_crumb, handler?.CookieContainer ?? new());
@@ -120,13 +120,13 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			var sessionIdNode = document.QuerySelector("input[name='sessionId']");
 			if (csrfTokenNode == null || sessionIdNode == null)
 			{
-				throw new NetFinanceException("Failed to retrieve csrfTokenNode and sessionIdNode.");
+				throw new NetFinanceException("Unable to retrieve csrfTokenNode and sessionIdNode.");
 			}
 			var csrfToken = csrfTokenNode.GetAttribute("value");
 			var sessionId = sessionIdNode.GetAttribute("value");
 			if (string.IsNullOrEmpty(csrfToken) || string.IsNullOrEmpty(sessionId))
 			{
-				throw new NetFinanceException("Failed to retrieve csrfToken and sessionId.");
+				throw new NetFinanceException("Unable to retrieve csrfToken and sessionId.");
 			}
 			await Task.Delay(TimeSpan.FromSeconds(1));
 
@@ -156,7 +156,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			response.EnsureSuccessStatusCode();
 			if (handler.CookieContainer?.Count < 3)
 			{
-				throw new NetFinanceException("failed to get ui cookies.");
+				throw new NetFinanceException("Unable to get ui cookies.");
 			}
 		};
 		return handler?.CookieContainer ?? new();

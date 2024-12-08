@@ -77,7 +77,7 @@ internal class XetraService : IXetraService
 		}
 		catch (Exception ex)
 		{
-			throw new NetFinanceException($"Failed to download from {_options.Xetra_DownloadUrl_Instruments}", ex);
+			throw new NetFinanceException($"Unable to download from {_options.Xetra_DownloadUrl_Instruments}", ex);
 		}
 	}
 }

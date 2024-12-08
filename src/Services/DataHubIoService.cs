@@ -62,7 +62,7 @@ internal class DatahubIoService : IDatahubIoService
 		}
 		catch (Exception ex)
 		{
-			throw new NetFinanceException($"Failed to download from {_options.DatahubIo_DownloadUrl_NasdaqListedSymbols}", ex);
+			throw new NetFinanceException($"Unable to download from {_options.DatahubIo_DownloadUrl_NasdaqListedSymbols}", ex);
 		}
 	}
 
@@ -83,7 +83,7 @@ internal class DatahubIoService : IDatahubIoService
 		}
 		catch (Exception ex)
 		{
-			throw new NetFinanceException($"Failed to download from {_options.DatahubIo_DownloadUrl_SP500Symbols}", ex);
+			throw new NetFinanceException($"Unable to download from {_options.DatahubIo_DownloadUrl_SP500Symbols}", ex);
 		}
 	}
 }
