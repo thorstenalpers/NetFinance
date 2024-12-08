@@ -27,7 +27,7 @@ public class YahooTests
 		{
 			//builder.AddConsole();
 			builder.SetMinimumLevel(LogLevel.Information);
-			builder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning); // Override for HttpClient
+			//builder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning); // Override for HttpClient
 
 			builder.AddSimpleConsole(options =>
 			{
