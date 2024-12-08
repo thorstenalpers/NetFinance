@@ -133,13 +133,13 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			var sessionIdNode = document.QuerySelector("input[name='sessionId']");
 			if (csrfTokenNode == null || sessionIdNode == null)
 			{
-				throw new NetFinanceException($"Unable to retrieve csrfTokenNode and sessionIdNode, html={htmlContent}");
+				throw new NetFinanceException($"Unable to retrieve csrfTokenNode and sessionIdNode, cookies={handler.CookieContainer?.Count}");
 			}
 			var csrfToken = csrfTokenNode.GetAttribute("value");
 			var sessionId = sessionIdNode.GetAttribute("value");
 			if (string.IsNullOrEmpty(csrfToken) || string.IsNullOrEmpty(sessionId))
 			{
-				throw new NetFinanceException($"Unable to retrieve csrfToken and sessionId., html={htmlContent}");
+				throw new NetFinanceException($"Unable to retrieve csrfToken and sessionId., cookies={handler.CookieContainer?.Count}");
 			}
 			await Task.Delay(TimeSpan.FromSeconds(1), token).ConfigureAwait(false);
 
