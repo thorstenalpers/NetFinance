@@ -42,12 +42,6 @@ jobs:
           }
           reportgenerator -reports:./TestResults/UnitTests/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage/Unit -reporttypes:Html
 
-    - name: Upload coverage report
-      uses: actions/upload-artifact@v4.4.3
-      with:
-        name: unit-test-coverage-report
-        path: ./TestResults/Coverage/Unit
-
     - name: Run integration tests
       run: |
           dotnet test ${{ env.Test_Project_Path }} --collect:"XPlat Code Coverage" --results-directory ./TestResults/IntegrationTests --configuration Release --filter Category=IntegrationTests --logger "console;verbosity=detailed"
@@ -58,8 +52,14 @@ jobs:
           reportgenerator -reports:./TestResults/IntegrationTests/**/coverage.cobertura.xml -targetdir:./TestResults/Coverage/Integration -reporttypes:Html
       env:
           NetFinanceConfiguration__AlphaVantageApiKey: ${{ secrets.ALPHAVANTAGEAPIKEY }}
+          
+    - name: Upload unit test coverage report
+      uses: actions/upload-artifact@v4.4.3
+      with:
+        name: unit-test-coverage-report
+        path: ./TestResults/Coverage/Unit
 
-    - name: Upload coverage report
+    - name: Upload integration test coverage report
       uses: actions/upload-artifact@v4.4.3
       with:
         name: integration-test-coverage-report
