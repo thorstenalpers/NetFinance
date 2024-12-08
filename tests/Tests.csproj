@@ -69,5 +69,7 @@
     <None Update="TestData\Yahoo\summary.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
+  <None Remove="TestResults\**" />
+</ItemGroup>
+    
 </Project>

@@ -109,6 +109,11 @@ public class YahooTests
 	//}
 
 	[TestCase("MSFT")]      // Microsoft Corporation (Nasdaq)
+	[TestCase("IBM")]       // IBM (Nasdaq)
+	[TestCase("SAP.DE")]    // SAP SE (Xetra)
+	[TestCase("6758.T")]    // Sony Group Corporation (Tokyo)
+	[TestCase("VOO")]       // Vanguard S&P 500 ETF
+	[TestCase("EURUSD=X")]  // Euro to USD
 	public async Task GetQuoteAsync_ValidSymbols_ReturnsQuote(string symbol)
 	{
 		var quote = await _service.GetQuoteAsync(symbol);
@@ -122,26 +127,6 @@ public class YahooTests
 		Assert.That(!string.IsNullOrWhiteSpace(quote.ShortName), Is.True);
 		Assert.That(!string.IsNullOrWhiteSpace(quote.LongName), Is.True);
 	}
-
-	//[TestCase("MSFT")]      // Microsoft Corporation (Nasdaq)
-	//[TestCase("IBM")]       // IBM (Nasdaq)
-	//[TestCase("SAP.DE")]    // SAP SE (Xetra)
-	//[TestCase("6758.T")]    // Sony Group Corporation (Tokyo)
-	//[TestCase("VOO")]       // Vanguard S&P 500 ETF
-	//[TestCase("EURUSD=X")]  // Euro to USD
-	//public async Task GetQuoteAsync_ValidSymbols_ReturnsQuote(string symbol)
-	//{
-	//	var quote = await _service.GetQuoteAsync(symbol);
-
-	//	var json = JsonConvert.SerializeObject(quote, Formatting.Indented);
-	//	Assert.That(quote, Is.Not.Null);
-	//	Assert.That(quote.Symbol, Is.EqualTo(symbol));
-	//	Assert.That(quote.FirstTradeDate.Value.Date >= new DateTime(1920, 1, 1) && quote.FirstTradeDate.Value.Date <= DateTime.UtcNow, Is.True);
-	//	Assert.That(!string.IsNullOrWhiteSpace(quote.QuoteType), Is.True);
-	//	Assert.That(!string.IsNullOrWhiteSpace(quote.Exchange), Is.True);
-	//	Assert.That(!string.IsNullOrWhiteSpace(quote.ShortName), Is.True);
-	//	Assert.That(!string.IsNullOrWhiteSpace(quote.LongName), Is.True);
-	//}
 
 	//[TestCase("MSFT", true)]      // Microsoft Corporation (Nasdaq)
 	//[TestCase("SAP", true)]       // SAP SE (Nasdaq)
