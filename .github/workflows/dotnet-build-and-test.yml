@@ -11,6 +11,7 @@ jobs:
     env:
       Solution_Name: NetFinance.sln
       Test_Project_Path: tests/Tests.csproj      
+      FORCE_COLOR: "true"
 
     steps:
     - name: Checkout
