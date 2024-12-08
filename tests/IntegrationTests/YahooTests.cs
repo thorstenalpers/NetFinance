@@ -72,7 +72,6 @@ public class YahooTests
 	//}
 
 	[Test]
-	[Order(3)]
 	public async Task GetRecordsAsync_ValidSymbols_ReturnsRecords()
 	{
 		var startDate = new DateTime(2024, 01, 04);
@@ -103,7 +102,6 @@ public class YahooTests
 	}
 
 	[Test]
-	[Order(3)]
 	public async Task GetProfileAsync_WithoutIoC_ReturnsProfile()
 	{
 		var service = YahooService.Create();
@@ -119,7 +117,6 @@ public class YahooTests
 							//[TestCase("6758.T")]    // Sony Group Corporation (Tokyo)
 							//[TestCase("VOO")]       // Vanguard S&P 500 ETF
 							//[TestCase("EURUSD=X")]  // Euro to USD
-	[Order(2)]
 	public async Task GetQuoteAsync_ValidSymbols_ReturnsQuote(string symbol)
 	{
 		var quote = await _service.GetQuoteAsync(symbol);
@@ -218,7 +215,6 @@ public class YahooTests
 	[TestCase("6758.T", true)]    // Sony Group Corporation (Tokyo)
 								  //[TestCase("VOO", false)]       // Vanguard S&P 500 ETF
 								  //[TestCase("EURUSD=X", false)]  // Euro to USD
-	[Order(1)]
 	public async Task GetFinancialReportsAsync_ValidSymbols_ReturnsReports(string symbol, bool shouldHaveReport)
 	{
 		var reports = await _service.GetFinancialReportsAsync(symbol);

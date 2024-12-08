@@ -16,7 +16,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 {
 	private readonly ILogger<IYahooSession> _logger = logger;
 	private readonly NetFinanceConfiguration _options = options.Value ?? throw new ArgumentNullException(nameof(options));
-	private SemaphoreSlim _semaphore = new(1, 1);
+	//private SemaphoreSlim _semaphore = new(1, 1);
 	private string _userAgent = Helper.CreateRandomUserAgent();
 	private CookieContainer? _apiCookieContainer;
 	private CookieContainer? _uiCookieContainer;
@@ -30,7 +30,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			return; // refreshed
 		}
 
-		await _semaphore.WaitAsync(token).ConfigureAwait(false);
+		//await _semaphore.WaitAsync(token).ConfigureAwait(false);
 
 		if (!forceRefresh && !string.IsNullOrEmpty(_crumb) && AreCookiesValid())
 		{
@@ -73,7 +73,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 		}
 		finally
 		{
-			_semaphore.Release();
+			//_semaphore.Release();
 		}
 	}
 
