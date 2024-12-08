@@ -71,7 +71,7 @@ internal class YahooService : IYahooService
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 		var url = $"{_options.Yahoo_BaseUrl_Quote_Api}?" +
 			$"&symbols={string.Join(",", symbols)}" +
-			$"&crumb={_yahooSession.GetCrumb()}";
+			$"&crumb={_yahooSession.GetCrumb()}".ToLower();
 		Exception? lastException = null;
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
@@ -129,7 +129,7 @@ internal class YahooService : IYahooService
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 		await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 		Exception? lastException = null;
-		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/profile/";
+		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/profile/".ToLower();
 
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
@@ -194,7 +194,7 @@ internal class YahooService : IYahooService
 				lastException = ex;
 
 				// try using without cookies
-				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/profile/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}";
+				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/profile/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}".ToLower();
 			}
 		}
 		_logger.LogWarning($"No profile found after {_options.Http_Retries} attempts.");
@@ -213,7 +213,7 @@ internal class YahooService : IYahooService
 		var period1 = Helper.ToUnixTimestamp(startDate.Date) ?? throw new NetFinanceException("Invalid startDate");
 		var period2 = Helper.ToUnixTimestamp(endDate.Value.Date) ?? throw new NetFinanceException("Invalid endDate");
 
-		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/history/?period1={period1}&period2={period2}";
+		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/history/?period1={period1}&period2={period2}".ToLower();
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
 			try
@@ -311,7 +311,7 @@ internal class YahooService : IYahooService
 				lastException = ex;
 
 				// try using without cookies
-				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/history/?period1={period1}&period2={period2}&_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}";
+				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/history/?period1={period1}&period2={period2}&_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}".ToLower();
 			}
 		}
 		_logger.LogWarning($"No records found after {_options.Http_Retries} attempts.");
@@ -323,7 +323,7 @@ internal class YahooService : IYahooService
 		Exception? lastException = null;
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 		await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
-		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/";
+		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/".ToLower();
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
 			try
@@ -402,7 +402,7 @@ internal class YahooService : IYahooService
 				lastException = ex;
 
 				// try using without cookies
-				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}";
+				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}".ToLower();
 			}
 		}
 		_logger.LogWarning($"No financial reports found after {_options.Http_Retries} attempts.");
@@ -415,7 +415,7 @@ internal class YahooService : IYahooService
 		await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 		Exception? lastException = null;
 		var symbolsToSecurity = new Dictionary<string, Quote>();
-		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/";
+		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/".ToLower();
 
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
@@ -531,7 +531,7 @@ internal class YahooService : IYahooService
 				lastException = ex;
 
 				// try using without cookies
-				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}";
+				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}".ToLower();
 			}
 		}
 		_logger.LogWarning($"No summary found after {_options.Http_Retries} attempts.");

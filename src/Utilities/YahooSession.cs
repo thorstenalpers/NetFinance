@@ -44,10 +44,10 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					// get auth cookie
 					using (var httpClient = new HttpClient())
 					{
-						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Authentication, token).ConfigureAwait(false);
+						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Authentication.ToLower(), token).ConfigureAwait(false);
 						var firstCookieString = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
 
-						var requestMessage = new HttpRequestMessage(HttpMethod.Get, _options.Yahoo_BaseUrl_Crumb_Api);
+						var requestMessage = new HttpRequestMessage(HttpMethod.Get, _options.Yahoo_BaseUrl_Crumb_Api.ToLower());
 						requestMessage.Headers.Add("Cookie", firstCookieString);
 						requestMessage.Headers.Add("User-Agent", _userAgent);
 						requestMessage.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
@@ -90,7 +90,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 
 						// get consent
 						await Task.Delay(TimeSpan.FromSeconds(1));
-						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent);
+						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent.ToLower());
 						response.EnsureSuccessStatusCode();
 
 						var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -122,7 +122,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 						{
 							postData.Add(new("reject", value));
 						}
-						var url1 = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId=" + sessionId;
+						var url1 = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}".ToLower();
 						var requestMessage = new HttpRequestMessage(HttpMethod.Post, url1)
 						{
 							Content = new FormUrlEncodedContent(postData),
@@ -138,7 +138,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 						await Task.Delay(TimeSpan.FromSeconds(1));
 
 						// finalize
-						var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId=" + sessionId;
+						var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}".ToLower();
 						response = await httpClient.GetAsync(url2);
 						response.EnsureSuccessStatusCode();
 
