@@ -47,10 +47,10 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IOpenDataService, OpenDataService>();
 
 		services.AddHttpClient(cfg.Yahoo_Http_ClientName)
-			.ConfigureHttpClient(client =>
+			.ConfigureHttpClient((provider, client) =>
 			{
-				var userAgent = Helper.CreateRandomUserAgent();
-				client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+				var session = provider.GetRequiredService<IYahooSession>();
+				client.DefaultRequestHeaders.Add("User-Agent", session.GetUserAgent());
 				client.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
 				client.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
 				client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);

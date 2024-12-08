@@ -12,18 +12,6 @@ namespace NetFinance.Utilities;
 
 public static class Helper
 {
-
-	public static readonly List<string> FirefoxVersions = [ "133.0",
-										 "132.0", "132.0.1", "132.0.2",
-										 "131.0", "131.0.1", "131.0.2",
-										 "130.0", "130.0.1",
-										 "129.0", "129.0.1", "129.0.2"];
-
-	public static readonly List<string> OperatingSystems = [
-		"Windows NT 10.0; Win64; x64",
-		"Linux x86_64"
-	];
-
 	public static bool IsNullOrEmpty<T>(this IEnumerable<T> list)
 	{
 		return list?.Any() != true;
@@ -159,12 +147,21 @@ public static class Helper
 	public static string CreateRandomUserAgent(Random? random = null)
 	{
 		random ??= new Random();
+		List<string> firefoxVersions = [ "133.0",
+										 "132.0", "132.0.1", "132.0.2",
+										 "131.0", "131.0.1", "131.0.2",
+										 "130.0", "130.0.1",
+										 "129.0", "129.0.1", "129.0.2"];
 
+		List<string> operatingSystems = [
+		   "Windows NT 10.0; Win64; x64",
+			"Linux x86_64"
+	   ];
 		var firefoxUserAgents = new List<string>();
 		var allAgents = new List<string>();
-		foreach (var firefoxVersion in FirefoxVersions)
+		foreach (var firefoxVersion in firefoxVersions)
 		{
-			foreach (var operatingSystem in OperatingSystems)
+			foreach (var operatingSystem in operatingSystems)
 			{
 				string userAgent = $"Mozilla/5.0 ({operatingSystem}; rv:{firefoxVersion}) Gecko/20100101 Firefox/{firefoxVersion}";
 				allAgents.Add(userAgent);
@@ -189,6 +186,8 @@ public static class Helper
 			}
 		}
 	}
+
+
 
 	public static bool AreAllFieldsNull<T>(T obj)
 	{
