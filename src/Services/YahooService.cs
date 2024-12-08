@@ -67,7 +67,6 @@ internal class YahooService : IYahooService
 
 	public async Task<IEnumerable<Quote>> GetQuotesAsync(List<string> symbols, CancellationToken token = default)
 	{
-		await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 		var url = $"{_options.Yahoo_BaseUrl_Quote_Api}?" +
 			$"&symbols={string.Join(",", symbols)}" +
@@ -204,7 +203,6 @@ internal class YahooService : IYahooService
 	{
 		Exception? lastException = null;
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
-		await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 
 		endDate ??= DateTime.UtcNow;
 		endDate = endDate.Value.AddDays(1).Date;
@@ -321,7 +319,6 @@ internal class YahooService : IYahooService
 	{
 		Exception? lastException = null;
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
-		await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/".ToLower();
 		for (int attempt = 1; attempt <= 20; attempt++)
 		{
@@ -411,7 +408,6 @@ internal class YahooService : IYahooService
 	public async Task<Summary> GetSummaryAsync(string symbol, CancellationToken token = default)
 	{
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
-		await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 		Exception? lastException = null;
 		var symbolsToSecurity = new Dictionary<string, Quote>();
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/".ToLower();
