@@ -41,105 +41,13 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			{
 				try
 				{
-					// ******************** get auth cookie ********************
-					var handler = new HttpClientHandler
-					{
-						CookieContainer = new CookieContainer(),
-						UseCookies = true
-					};
-					using (var httpClient = new HttpClient(handler))
-					{
-						httpClient.DefaultRequestHeaders.Add("User-Agent", _userAgent);
-						httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
-						httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
-
-						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Authentication.ToLower(), token).ConfigureAwait(false);
-
-						var requestMessage = new HttpRequestMessage(HttpMethod.Get, _options.Yahoo_BaseUrl_Crumb_Api.ToLower());
-						var cookies = GetCookies(response);
-						requestMessage.AddCookiesToRequest(cookies);
-
-						response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
-						_crumb = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-						if (string.IsNullOrEmpty(_crumb) || _crumb.Contains("Too Many Requests"))
-						{
-							throw new NetFinanceException("Failed to retrieve Yahoo crumb.");
-						}
-						cookies = GetCookies(response);
-						_apiCookieContainer = new CookieContainer();
-						_apiCookieContainer.Add(cookies);
-						if (cookies?.Count < 3)
-						{
-							throw new NetFinanceException("failed to get api cookies.");
-						}
-					}
+					(_crumb, _apiCookieContainer) = await CreateApiCookiesAndCrumb(token).ConfigureAwait(false);
 
 					// ******************** get consent cookie ********************
-					handler = new HttpClientHandler
-					{
-						CookieContainer = new CookieContainer(),
-						UseCookies = true
-					};
-					using (var httpClient = new HttpClient(handler))
-					{
-						httpClient.DefaultRequestHeaders.Add("User-Agent", _userAgent);
-						httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
-						httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+					_uiCookieContainer = await CreateUiCookiesAndCrumb(token).ConfigureAwait(false);
 
-						// get consent
-						await Task.Delay(TimeSpan.FromSeconds(1));
-						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent.ToLower(), token);
-						response.EnsureSuccessStatusCode();
-
-						var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-						var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
-						var csrfTokenNode = document.QuerySelector("input[name='csrfToken']");
-						var sessionIdNode = document.QuerySelector("input[name='sessionId']");
-						if (csrfTokenNode == null || sessionIdNode == null)
-						{
-							throw new NetFinanceException("Failed to retrieve csrfTokenNode and sessionIdNode.");
-						}
-						var csrfToken = csrfTokenNode.GetAttribute("value");
-						var sessionId = sessionIdNode.GetAttribute("value");
-						if (string.IsNullOrEmpty(csrfToken) || string.IsNullOrEmpty(sessionId))
-						{
-							throw new NetFinanceException("Failed to retrieve csrfToken and sessionId.");
-						}
-						await Task.Delay(TimeSpan.FromSeconds(1));
-
-						// reject consent
-						var postData = new List<KeyValuePair<string, string>>
-						{
-							new("csrfToken", csrfToken),
-							new("sessionId", sessionId),
-							new("originalDoneUrl", "https://finance.yahoo.com"),
-							new("namespace", "yahoo"),
-						};
-						foreach (var value in new List<string> { "reject", "reject" })
-						{
-							postData.Add(new("reject", value));
-						}
-						var requestMessage = new HttpRequestMessage(HttpMethod.Post, (string?)$"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}")
-						{
-							Content = new FormUrlEncodedContent(postData)
-						};
-						requestMessage.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-						response = await httpClient.SendAsync(requestMessage, token);
-						response.EnsureSuccessStatusCode();
-						await Task.Delay(TimeSpan.FromSeconds(1));
-
-						// finalize
-						response = await httpClient.GetAsync((string?)$"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}", token);
-						response.EnsureSuccessStatusCode();
-						if (handler.CookieContainer?.Count < 3)
-						{
-							throw new NetFinanceException("failed to get ui cookies.");
-						}
-						_uiCookieContainer = handler.CookieContainer;
-						_refreshTime = DateTime.UtcNow;
-						_logger.LogInformation($"Session established successfully");
-						return;
-					};
+					_logger.LogInformation($"Session established successfully");
+					_refreshTime = DateTime.UtcNow;
 				}
 				catch (Exception ex)
 				{
@@ -157,25 +65,103 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 		}
 	}
 
-	private static CookieCollection? GetCookies(HttpResponseMessage response)
+	private async Task<(string crumb, CookieContainer cookieContainer)> CreateApiCookiesAndCrumb(CancellationToken token)
 	{
-		try
+		var handler = new HttpClientHandler
 		{
-			var cookieHeaders = response.Headers.GetValues("Set-Cookie").ToList();
+			CookieContainer = new CookieContainer(),
+			UseCookies = true
+		};
+		using (var httpClient = new HttpClient(handler))
+		{
+			httpClient.DefaultRequestHeaders.Add("User-Agent", _userAgent);
+			httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
+			httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
 
-			var cookieContainer = new CookieContainer();
-			foreach (var cookieHeader in cookieHeaders)
+			var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Authentication.ToLower(), token).ConfigureAwait(false);
+
+			var requestMessage = new HttpRequestMessage(HttpMethod.Get, _options.Yahoo_BaseUrl_Crumb_Api.ToLower());
+			var cookieHeader = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
+			requestMessage.Headers.Add("Cookie", cookieHeader);
+
+			response = await httpClient.SendAsync(requestMessage, token).ConfigureAwait(false);
+			_crumb = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+			if (string.IsNullOrEmpty(_crumb) || _crumb.Contains("Too Many Requests"))
 			{
-				var uri = new Uri("https://finance.yahoo.com");
-				cookieContainer.SetCookies(uri, cookieHeader);
+				throw new NetFinanceException("Failed to retrieve Yahoo crumb.");
 			}
-			var cookies = cookieContainer.GetCookies(new Uri("https://finance.yahoo.com"));
-			return cookies;
+			if (handler?.CookieContainer?.Count < 3)
+			{
+				throw new NetFinanceException("failed to get api cookies.");
+			}
 		}
-		catch
+		return (_crumb, handler?.CookieContainer ?? new());
+	}
+
+	private async Task<CookieContainer> CreateUiCookiesAndCrumb(CancellationToken token)
+	{
+		var handler = new HttpClientHandler
 		{
-			return null;
-		}
+			CookieContainer = new CookieContainer(),
+			UseCookies = true
+		};
+		using (var httpClient = new HttpClient(handler))
+		{
+			httpClient.DefaultRequestHeaders.Add("User-Agent", _userAgent);
+			httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
+			httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+
+			// get consent
+			await Task.Delay(TimeSpan.FromSeconds(1));
+			var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent.ToLower(), token);
+			response.EnsureSuccessStatusCode();
+
+			var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+			var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
+			var csrfTokenNode = document.QuerySelector("input[name='csrfToken']");
+			var sessionIdNode = document.QuerySelector("input[name='sessionId']");
+			if (csrfTokenNode == null || sessionIdNode == null)
+			{
+				throw new NetFinanceException("Failed to retrieve csrfTokenNode and sessionIdNode.");
+			}
+			var csrfToken = csrfTokenNode.GetAttribute("value");
+			var sessionId = sessionIdNode.GetAttribute("value");
+			if (string.IsNullOrEmpty(csrfToken) || string.IsNullOrEmpty(sessionId))
+			{
+				throw new NetFinanceException("Failed to retrieve csrfToken and sessionId.");
+			}
+			await Task.Delay(TimeSpan.FromSeconds(1));
+
+			// reject consent
+			var postData = new List<KeyValuePair<string, string>>
+						{
+							new("csrfToken", csrfToken),
+							new("sessionId", sessionId),
+							new("originalDoneUrl", "https://finance.yahoo.com"),
+							new("namespace", "yahoo"),
+						};
+			foreach (var value in new List<string> { "reject", "reject" })
+			{
+				postData.Add(new("reject", value));
+			}
+			var requestMessage = new HttpRequestMessage(HttpMethod.Post, (string?)$"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}")
+			{
+				Content = new FormUrlEncodedContent(postData)
+			};
+			requestMessage.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+			response = await httpClient.SendAsync(requestMessage, token);
+			response.EnsureSuccessStatusCode();
+			await Task.Delay(TimeSpan.FromSeconds(1));
+
+			// finalize
+			response = await httpClient.GetAsync((string?)$"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}", token);
+			response.EnsureSuccessStatusCode();
+			if (handler.CookieContainer?.Count < 3)
+			{
+				throw new NetFinanceException("failed to get ui cookies.");
+			}
+		};
+		return handler?.CookieContainer ?? new();
 	}
 
 	public bool AreCookiesValid()
