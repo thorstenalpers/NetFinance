@@ -43,7 +43,7 @@ public class DataHubIoServiceTests
 		NetFinanceConfiguration cfg = null;
 
 		// Act
-		var service = DataHubIoService.Create(cfg);
+		var service = DatahubIoService.Create(cfg);
 
 		// Assert
 		Assert.That(service, Is.Not.Null);
@@ -55,7 +55,7 @@ public class DataHubIoServiceTests
 		// Arrange
 		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "DatahubIo", "nasdaq-listed-symbols.csv");
 		SetupHttpCsvFileResponse(filePath);
-		var service = new DataHubIoService(
+		var service = new DatahubIoService(
 			_mockHttpClientFactory.Object,
 			_mockOptions.Object);
 
@@ -75,7 +75,7 @@ public class DataHubIoServiceTests
 		// Arrange
 		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "DatahubIo", "constituents-financials.csv");
 		SetupHttpCsvFileResponse(filePath);
-		var service = new DataHubIoService(
+		var service = new DatahubIoService(
 			_mockHttpClientFactory.Object,
 			_mockOptions.Object);
 

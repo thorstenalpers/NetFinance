@@ -103,12 +103,12 @@ This project includes data from the following external resources:
    - URL: https://www.xetra.com/resource/blob/1528/76087c675c856fe7720917da03a62a34/data/t7-xetr-allTradableInstruments.csv  
    - License: Please refer to Xetra's terms of service or data usage policy at https://www.xetra.com/xetra-de/instrumente/alle-handelbaren-instrumente  
   
-2. **S&P 500 Symbols (DataHubIo)**:  
+2. **S&P 500 Symbols (DatahubIo)**:  
    - URL: https://raw.githubusercontent.com/datasets/s-and-p-500-companies-financials/refs/heads/main/data/constituents-financials.csv  
    - License: This dataset is licensed under the Public Domain Dedication and License (PDDL). The PDDL allows unrestricted use, sharing, modification, and distribution of the data for any purpose, including commercial use.  
    - Notice: The PDDL allows unrestricted use, modification, and distribution of the data. The MIT/BSD licenses permit free use of the code with attribution and disclaimers. While formal credit is not required, it is recommended to include a link back or provide credit to Rufus Pollock and the Open Knowledge Foundation.  
   
-3. **NASDAQ Symbols (DataHubIo)**:  
+3. **NASDAQ Symbols (DatahubIo)**:  
    - URL: https://raw.githubusercontent.com/datasets/nasdaq-listings/refs/heads/main/data/nasdaq-listed-symbols.csv  
    - License: This dataset is licensed under the Public Domain Dedication and License (PDDL). The PDDL allows unrestricted use, sharing, modification, and distribution of the data for any purpose, including commercial use.  
    - Notice: The data originates from the NASDAQ OMX Group, which retains copyright over the original information. Users should review the copyright notice of the source dataset to ensure compliance with any specific restrictions regarding public or commercial use.  

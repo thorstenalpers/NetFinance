@@ -13,18 +13,18 @@ using Microsoft.Extensions.Options;
 using NetFinance.Exceptions;
 using NetFinance.Extensions;
 using NetFinance.Interfaces;
-using NetFinance.Models.DataHubIo;
+using NetFinance.Models.DatahubIo;
 using NetFinance.Utilities;
 
 namespace NetFinance.Services;
 
-internal class DataHubIoService : IDataHubIoService
+internal class DatahubIoService : IDatahubIoService
 {
 	private readonly IHttpClientFactory _httpClientFactory;
 	private readonly NetFinanceConfiguration _options;
 	private static ServiceProvider? _serviceProvider = null;
 
-	public DataHubIoService(IHttpClientFactory httpClientFactory, IOptions<NetFinanceConfiguration> options)
+	public DatahubIoService(IHttpClientFactory httpClientFactory, IOptions<NetFinanceConfiguration> options)
 	{
 		_httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
 		_options = options?.Value ?? throw new ArgumentNullException(nameof(options));
@@ -35,7 +35,7 @@ internal class DataHubIoService : IDataHubIoService
 	/// Provides methods for retrieving financial instruments, market data, and other relevant information from OpenData.
 	/// </summary>
 	/// <param name="cfg">Optional: Default values to configure .Net Finance. <see cref="NetFinanceConfiguration"/> ></param>
-	public static IDataHubIoService Create(NetFinanceConfiguration? cfg = null)
+	public static IDatahubIoService Create(NetFinanceConfiguration? cfg = null)
 	{
 		if (_serviceProvider == null)
 		{
@@ -43,7 +43,7 @@ internal class DataHubIoService : IDataHubIoService
 			services.AddNetFinance(cfg);
 			_serviceProvider = services.BuildServiceProvider();
 		}
-		return _serviceProvider.GetRequiredService<IDataHubIoService>();
+		return _serviceProvider.GetRequiredService<IDatahubIoService>();
 	}
 
 	public async Task<IEnumerable<NasdaqInstrument>> GetNasdaqInstrumentsAsync(CancellationToken token = default)

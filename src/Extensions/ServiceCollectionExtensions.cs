@@ -43,7 +43,7 @@ public static class ServiceCollectionExtensions
 		services.AddScoped<IYahooService, YahooService>();
 		services.AddScoped<IXetraService, XetraService>();
 		services.AddScoped<IAlphaVantageService, AlphaVantageService>();
-		services.AddScoped<IDataHubIoService, DataHubIoService>();
+		services.AddScoped<IDatahubIoService, DatahubIoService>();
 
 		services.AddHttpClient(cfg.Yahoo_Http_ClientName)
 			.ConfigureHttpClient((provider, client) =>

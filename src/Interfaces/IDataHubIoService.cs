@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NetFinance.Models.DataHubIo;
+using NetFinance.Models.DatahubIo;
 
 namespace NetFinance.Interfaces;
 
@@ -9,7 +9,7 @@ namespace NetFinance.Interfaces;
 /// Represents a service for interacting with the DataHubIo API.
 /// Provides methods for retrieving financial instruments, market data, and other relevant information from DataHubIo.
 /// </summary>
-public interface IDataHubIoService
+public interface IDatahubIoService
 {
 	/// <summary>
 	/// Asynchronously retrieves a list of Nasdaq instruments from the DataHubIo API.

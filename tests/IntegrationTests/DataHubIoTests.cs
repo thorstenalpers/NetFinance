@@ -16,7 +16,7 @@ namespace NetFinance.Tests.IntegrationTests;
 public class DataHubIoTests
 {
 	private static IServiceProvider _serviceProvider;
-	private IDataHubIoService _service;
+	private IDatahubIoService _service;
 
 	[OneTimeSetUp]
 	public void OneTimeSetUp()
@@ -52,13 +52,13 @@ public class DataHubIoTests
 	[SetUp]
 	public void Setup()
 	{
-		_service = _serviceProvider.GetRequiredService<IDataHubIoService>();
+		_service = _serviceProvider.GetRequiredService<IDatahubIoService>();
 	}
 
 	[Test]
 	public async Task GetNasdaqInstrumentsAsync_WithoutIoC_ReturnsInstruments()
 	{
-		var service = DataHubIoService.Create();
+		var service = DatahubIoService.Create();
 		var instruments = await service.GetNasdaqInstrumentsAsync();
 
 		Assert.That(instruments, Is.Not.Empty);

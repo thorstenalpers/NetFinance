@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CsvHelper.Configuration;
-using NetFinance.Models.DataHubIo;
+using NetFinance.Models.DatahubIo;
 
 namespace NetFinance.Utilities;
 
