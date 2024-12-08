@@ -22,18 +22,22 @@ public class YahooTests
 	[SetUp]
 	public void SetUp()
 	{
-		var serviceProvider = new ServiceCollection()
-			.AddLogging(builder =>
-			{
-				builder.AddConsole();
-				builder.SetMinimumLevel(LogLevel.Information);
-				builder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning); // Override for HttpClient
-			});
+		var serviceProvider = new ServiceCollection();
+		//.AddLogging(builder =>
+		//{
+		//	builder.AddConsole();
+		//	builder.SetMinimumLevel(LogLevel.Information);
+		//	builder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning); // Override for HttpClient
+		//});
 
 
 		var services = new ServiceCollection();
 		services.AddLogging(builder =>
 		{
+			//builder.AddConsole(cfg => cfg.DisableColors = false);
+			builder.SetMinimumLevel(LogLevel.Information);
+			builder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning); // Override for HttpClient
+
 			builder.AddSimpleConsole(options =>
 			{
 				options.SingleLine = true;
