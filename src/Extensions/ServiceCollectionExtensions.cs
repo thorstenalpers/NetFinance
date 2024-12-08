@@ -26,8 +26,8 @@ public static class ServiceCollectionExtensions
 
 			opt.Xetra_DownloadUrl_Instruments = cfg.Xetra_DownloadUrl_Instruments;
 
-			opt.DataHubIo_DownloadUrl_SP500Symbols = cfg.DataHubIo_DownloadUrl_SP500Symbols;
-			opt.DataHubIo_DownloadUrl_NasdaqListedSymbols = cfg.DataHubIo_DownloadUrl_NasdaqListedSymbols;
+			opt.DatahubIo_DownloadUrl_SP500Symbols = cfg.DatahubIo_DownloadUrl_SP500Symbols;
+			opt.DatahubIo_DownloadUrl_NasdaqListedSymbols = cfg.DatahubIo_DownloadUrl_NasdaqListedSymbols;
 
 			opt.Yahoo_BaseUrl_Html = cfg.Yahoo_BaseUrl_Html;
 			opt.Yahoo_BaseUrl_Authentication = cfg.Yahoo_BaseUrl_Authentication;
@@ -75,7 +75,7 @@ public static class ServiceCollectionExtensions
 				client.Timeout = TimeSpan.FromSeconds(cfg.Http_Timeout);
 			});
 
-		services.AddHttpClient(cfg.DataHubIo_Http_ClientName)
+		services.AddHttpClient(cfg.DatahubIo_Http_ClientName)
 			.ConfigureHttpClient(client =>
 			{
 				var userAgent = Helper.CreateRandomUserAgent();

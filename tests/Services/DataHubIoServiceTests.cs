@@ -53,7 +53,7 @@ public class DataHubIoServiceTests
 	public async Task GetNasdaqInstrumentsAsync_WithValidEntries_ReturnsResult()
 	{
 		// Arrange
-		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "OpenData", "nasdaq-listed-symbols.csv");
+		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "DatahubIo", "nasdaq-listed-symbols.csv");
 		SetupHttpCsvFileResponse(filePath);
 		var service = new DataHubIoService(
 			_mockHttpClientFactory.Object,
@@ -73,7 +73,7 @@ public class DataHubIoServiceTests
 	public async Task GetSAndP500InstrumentsAsync_WithValidEntries_ReturnsResult()
 	{
 		// Arrange
-		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "OpenData", "constituents-financials.csv");
+		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "DatahubIo", "constituents-financials.csv");
 		SetupHttpCsvFileResponse(filePath);
 		var service = new DataHubIoService(
 			_mockHttpClientFactory.Object,

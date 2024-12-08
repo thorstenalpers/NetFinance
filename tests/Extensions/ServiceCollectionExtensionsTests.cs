@@ -29,8 +29,8 @@ public class ServiceCollectionExtensionsTests
 		{
 			AlphaVantageApiKey = "xxx",
 			AlphaVantage_ApiUrl = "https://www.google1.de",
-			DataHubIo_DownloadUrl_NasdaqListedSymbols = "https://www.google2.de",
-			DataHubIo_DownloadUrl_SP500Symbols = "https://www.google3.de",
+			DatahubIo_DownloadUrl_NasdaqListedSymbols = "https://www.google2.de",
+			DatahubIo_DownloadUrl_SP500Symbols = "https://www.google3.de",
 			Xetra_DownloadUrl_Instruments = "https://www.google4.de",
 			Yahoo_BaseUrl_Authentication = "https://www.google5.de",
 			Yahoo_BaseUrl_Crumb_Api = "https://www.google6.de",
@@ -61,12 +61,12 @@ public class ServiceCollectionExtensionsTests
 		Assert.That(resolvedCfg.Http_Timeout, Is.EqualTo(cfg.Http_Timeout));
 		Assert.That(resolvedCfg.Xetra_DownloadUrl_Instruments, Is.EqualTo(cfg.Xetra_DownloadUrl_Instruments));
 		Assert.That(resolvedCfg.Xetra_DownloadUrl_Instruments, Is.EqualTo(cfg.Xetra_DownloadUrl_Instruments));
-		Assert.That(resolvedCfg.DataHubIo_DownloadUrl_SP500Symbols, Is.EqualTo(cfg.DataHubIo_DownloadUrl_SP500Symbols));
-		Assert.That(resolvedCfg.DataHubIo_DownloadUrl_NasdaqListedSymbols, Is.EqualTo(cfg.DataHubIo_DownloadUrl_NasdaqListedSymbols));
+		Assert.That(resolvedCfg.DatahubIo_DownloadUrl_SP500Symbols, Is.EqualTo(cfg.DatahubIo_DownloadUrl_SP500Symbols));
+		Assert.That(resolvedCfg.DatahubIo_DownloadUrl_NasdaqListedSymbols, Is.EqualTo(cfg.DatahubIo_DownloadUrl_NasdaqListedSymbols));
 		Assert.That(resolvedCfg.AlphaVantage_ApiUrl, Is.EqualTo(cfg.AlphaVantage_ApiUrl));
 
-		var clientOpenData = clientFactory.CreateClient(cfg.DataHubIo_Http_ClientName);
-		Assert.That(clientOpenData, Is.Not.Null);
+		var clientDatahubIo = clientFactory.CreateClient(cfg.DatahubIo_Http_ClientName);
+		Assert.That(clientDatahubIo, Is.Not.Null);
 
 		var clientAlphaVantage = clientFactory.CreateClient(cfg.AlphaVantage_Http_ClientName);
 		Assert.That(clientAlphaVantage, Is.Not.Null);

@@ -37,10 +37,10 @@ public class NetFinanceConfiguration
 	[Required] public string Xetra_DownloadUrl_Instruments = "https://www.xetra.com/resource/blob/1528/76087c675c856fe7720917da03a62a34/data/t7-xetr-allTradableInstruments.csv";
 
 	/// <summary> Download URL of DataHubIo S&P500 listed symbols </summary>
-	[Required] public string DataHubIo_DownloadUrl_SP500Symbols = "https://raw.githubusercontent.com/datasets/s-and-p-500-companies-financials/refs/heads/main/data/constituents-financials.csv";
+	[Required] public string DatahubIo_DownloadUrl_SP500Symbols = "https://raw.githubusercontent.com/datasets/s-and-p-500-companies-financials/refs/heads/main/data/constituents-financials.csv";
 
 	/// <summary> Download URL of DataHubIo nasdaq listed symbols </summary>
-	[Required] public string DataHubIo_DownloadUrl_NasdaqListedSymbols = "https://raw.githubusercontent.com/datasets/nasdaq-listings/refs/heads/main/data/nasdaq-listed-symbols.csv";
+	[Required] public string DatahubIo_DownloadUrl_NasdaqListedSymbols = "https://raw.githubusercontent.com/datasets/nasdaq-listings/refs/heads/main/data/nasdaq-listed-symbols.csv";
 
 	/// <summary> Base url for Alpha Vantage API calls </summary>
 	[Required] public string AlphaVantage_ApiUrl = "https://www.alphavantage.co";
@@ -54,6 +54,6 @@ public class NetFinanceConfiguration
 	/// <summary> Name of the AlphaVantage HttpClient used from HttpClientFactory </summary>
 	internal readonly string AlphaVantage_Http_ClientName = "NetFinanceAlphaVantageClient";
 
-	/// <summary> Name of the Yahoo HttpClient used from HttpClientFactory </summary>
-	internal readonly string DataHubIo_Http_ClientName = "NetFinanceDataHubIoClient";
+	/// <summary> Name of the DatahubIo HttpClient used from HttpClientFactory </summary>
+	internal readonly string DatahubIo_Http_ClientName = "NetFinanceDatahubIoClient";
 }

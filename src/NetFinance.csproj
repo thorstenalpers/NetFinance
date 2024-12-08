@@ -14,10 +14,10 @@
 	<PackageId>NetFinance</PackageId>
 	<Version>1.0.0</Version>
 	<Authors>Thorsten Alpers</Authors>
-	<Description>.Net Finance is a robust library designed for .NET developers to easily fetch and manage financial data from multiple sources, including Yahoo Finance, Xetra, OpenData, and AlphaVantage. Ideal for building financial applications, this library simplifies data retrieval and integration.</Description>
+	<Description>.NET Finance connects to financial data APIs like Yahoo, Xetra, Alpha Vantage, and DataHub.io.</Description>
 	<PackageProjectUrl>https://github.com/thorstenalpers/NetFinance</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/thorstenalpers/NetFinance</RepositoryUrl>
-	<PackageTags>NetFinance;Nasdaq;Xetra;Yahoo;Finance;Trading;Stock;Exchange</PackageTags>
+	<PackageTags>NetFinance;Nasdaq;Xetra;Yahoo;DataHubIo;Finance;Trading</PackageTags>
 	<Copyright>Copyright 2024</Copyright>
 	<RepositoryType>git</RepositoryType>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>

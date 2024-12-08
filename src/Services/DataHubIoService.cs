@@ -48,10 +48,10 @@ internal class DataHubIoService : IDataHubIoService
 
 	public async Task<IEnumerable<NasdaqInstrument>> GetNasdaqInstrumentsAsync(CancellationToken token = default)
 	{
-		var httpClient = _httpClientFactory.CreateClient(_options.DataHubIo_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.DatahubIo_Http_ClientName);
 		try
 		{
-			var response = await httpClient.GetAsync(_options.DataHubIo_DownloadUrl_NasdaqListedSymbols, token);
+			var response = await httpClient.GetAsync(_options.DatahubIo_DownloadUrl_NasdaqListedSymbols, token);
 			response.EnsureSuccessStatusCode();
 			var config = new CsvConfiguration(CultureInfo.InvariantCulture);
 
@@ -62,16 +62,16 @@ internal class DataHubIoService : IDataHubIoService
 		}
 		catch (Exception ex)
 		{
-			throw new NetFinanceException($"Failed to download from {_options.DataHubIo_DownloadUrl_NasdaqListedSymbols}", ex);
+			throw new NetFinanceException($"Failed to download from {_options.DatahubIo_DownloadUrl_NasdaqListedSymbols}", ex);
 		}
 	}
 
 	public async Task<IEnumerable<SP500Instrument>> GetSAndP500InstrumentsAsync(CancellationToken token = default)
 	{
-		var httpClient = _httpClientFactory.CreateClient(_options.DataHubIo_Http_ClientName);
+		var httpClient = _httpClientFactory.CreateClient(_options.DatahubIo_Http_ClientName);
 		try
 		{
-			var response = await httpClient.GetAsync(_options.DataHubIo_DownloadUrl_SP500Symbols, token);
+			var response = await httpClient.GetAsync(_options.DatahubIo_DownloadUrl_SP500Symbols, token);
 			response.EnsureSuccessStatusCode();
 			var config = new CsvConfiguration(CultureInfo.InvariantCulture);
 
@@ -83,7 +83,7 @@ internal class DataHubIoService : IDataHubIoService
 		}
 		catch (Exception ex)
 		{
-			throw new NetFinanceException($"Failed to download from {_options.DataHubIo_DownloadUrl_SP500Symbols}", ex);
+			throw new NetFinanceException($"Failed to download from {_options.DatahubIo_DownloadUrl_SP500Symbols}", ex);
 		}
 	}
 }
