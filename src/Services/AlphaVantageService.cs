@@ -53,7 +53,7 @@ internal class AlphaVantageService : IAlphaVantageService
 	{
 		Exception? lastException = null;
 		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
-		for (int attempt = 0; attempt < _options.Http_Retries; attempt++)
+		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
 			try
 			{
@@ -97,7 +97,7 @@ internal class AlphaVantageService : IAlphaVantageService
 			throw new NetFinanceException("Startdate after Endate");
 		}
 		var daysToImport = ((endDate ?? startDate) - startDate).TotalDays;
-		for (int retryAttempt = 0; retryAttempt < _options.Http_Retries; retryAttempt++)
+		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
 			try
 			{
@@ -197,7 +197,7 @@ internal class AlphaVantageService : IAlphaVantageService
 		var httpClient = _httpClientFactory.CreateClient(_options.AlphaVantage_Http_ClientName);
 		Exception? lastException = null;
 
-		for (int retryAttempt = 0; retryAttempt < _options.Http_Retries; retryAttempt++)
+		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
 			try
 			{
@@ -286,7 +286,7 @@ internal class AlphaVantageService : IAlphaVantageService
 			throw new NetFinanceException("Startdate after Endate");
 		}
 		var daysToImport = ((endDate ?? startDate) - startDate).TotalDays;
-		for (int retryAttempt = 0; retryAttempt < _options.Http_Retries; retryAttempt++)
+		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
 			try
 			{
