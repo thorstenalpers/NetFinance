@@ -38,13 +38,13 @@ public class YahooTests
 			builder.SetMinimumLevel(LogLevel.Information);
 			//builder.AddFilter("System.Net.Http.HttpClient", LogLevel.Warning); // Override for HttpClient
 
-			//builder.AddSimpleConsole(options =>
-			//{
-			//options.UseUtcTimestamp = true;
-			//options.SingleLine = true;
-			//options.TimestampFormat = "yyyy-MM-dd HH:mm ";
-			//options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
-			//});
+			builder.AddSimpleConsole(options =>
+			{
+				options.UseUtcTimestamp = true;
+				options.SingleLine = true;
+				//options.TimestampFormat = "yyyy-MM-dd HH:mm ";
+				options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
+			});
 		});
 		_serviceProvider = services.BuildServiceProvider();
 		_service = _serviceProvider.GetRequiredService<IYahooService>();

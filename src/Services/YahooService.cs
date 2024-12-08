@@ -117,7 +117,7 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry for {string.Join(",", symbols)}");
 				lastException = ex;
-				//await Task.Delay((int)Math.Pow(2, attempt) * 1000);
+				await Task.Delay(TimeSpan.FromSeconds(2));
 			}
 		}
 		_logger.LogWarning($"No quotes found after {_options.Http_Retries} attempts.");
@@ -190,7 +190,7 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry for {symbol}");
 				lastException = ex;
-				//await Task.Delay((int)Math.Pow(2, attempt) * 1000);
+				await Task.Delay(TimeSpan.FromSeconds(2));
 
 				// try using without cookies
 				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/profile/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}".ToLower();
@@ -307,7 +307,7 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry for {symbol}");
 				lastException = ex;
-				//await Task.Delay((int)Math.Pow(2, attempt) * 1000);
+				await Task.Delay(TimeSpan.FromSeconds(2));
 
 				// try using without cookies
 				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/history/?period1={period1}&period2={period2}&_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}".ToLower();
@@ -398,7 +398,7 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry for {symbol}");
 				lastException = ex;
-				//await Task.Delay((int)Math.Pow(2, attempt) * 1000);
+				await Task.Delay(TimeSpan.FromSeconds(2));
 
 				// try using without cookies
 				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}".ToLower();
@@ -527,7 +527,7 @@ internal class YahooService : IYahooService
 			{
 				_logger.LogInformation($"Retry for {symbol}");
 				lastException = ex;
-				//await Task.Delay((int)Math.Pow(2, attempt) * 1000);
+				await Task.Delay(TimeSpan.FromSeconds(2));
 
 				// try using without cookies
 				url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/?_guc_consent_skip={Helper.ToUnixTimestamp(DateTime.UtcNow.AddHours(1))}".ToLower();
