@@ -15,7 +15,7 @@ namespace NetFinance.Tests.Services;
 
 [TestFixture]
 [Category("UnitTests")]
-public class OpenDataServiceTests
+public class DataHubIoServiceTests
 {
 	private Mock<IHttpClientFactory> _mockHttpClientFactory;
 	private Mock<IOptions<NetFinanceConfiguration>> _mockOptions;
@@ -43,7 +43,7 @@ public class OpenDataServiceTests
 		NetFinanceConfiguration cfg = null;
 
 		// Act
-		var service = OpenDataService.Create(cfg);
+		var service = DataHubIoService.Create(cfg);
 
 		// Assert
 		Assert.That(service, Is.Not.Null);
@@ -55,7 +55,7 @@ public class OpenDataServiceTests
 		// Arrange
 		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "OpenData", "nasdaq-listed-symbols.csv");
 		SetupHttpCsvFileResponse(filePath);
-		var service = new OpenDataService(
+		var service = new DataHubIoService(
 			_mockHttpClientFactory.Object,
 			_mockOptions.Object);
 
@@ -75,7 +75,7 @@ public class OpenDataServiceTests
 		// Arrange
 		var filePath = Path.Combine(Directory.GetCurrentDirectory(), "TestData", "OpenData", "constituents-financials.csv");
 		SetupHttpCsvFileResponse(filePath);
-		var service = new OpenDataService(
+		var service = new DataHubIoService(
 			_mockHttpClientFactory.Object,
 			_mockOptions.Object);
 

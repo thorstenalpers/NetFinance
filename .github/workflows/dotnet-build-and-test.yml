@@ -1,4 +1,4 @@
-name: Nightly Tests
+name: CI
 
 on:
   push:

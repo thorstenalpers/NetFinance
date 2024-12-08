@@ -45,10 +45,10 @@
     <None Update="TestData\AlphaVantage\record.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\OpenData\constituents-financials.csv">
+    <None Update="TestData\DataHubIo\constituents-financials.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="TestData\OpenData\nasdaq-listed-symbols.csv">
+    <None Update="TestData\DataHubIo\nasdaq-listed-symbols.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="TestData\Xetra\t7-xetr-allTradableInstruments.csv">

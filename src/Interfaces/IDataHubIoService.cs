@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NetFinance.Models.OpenData;
+using NetFinance.Models.DataHubIo;
 
 namespace NetFinance.Interfaces;
 
@@ -9,7 +9,7 @@ namespace NetFinance.Interfaces;
 /// Represents a service for interacting with the OpenData API.
 /// Provides methods for retrieving financial instruments, market data, and other relevant information from OpenData.
 /// </summary>
-public interface IOpenDataService
+public interface IDataHubIoService
 {
 	/// <summary>
 	/// Asynchronously retrieves a list of Nasdaq instruments from the OpenData API.

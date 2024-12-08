@@ -13,10 +13,10 @@ namespace NetFinance.Tests.IntegrationTests;
 
 [TestFixture]
 [Category("IntegrationTests")]
-public class OpenDataTests
+public class DataHubIoTests
 {
 	private static IServiceProvider _serviceProvider;
-	private IOpenDataService _service;
+	private IDataHubIoService _service;
 
 	[OneTimeSetUp]
 	public void OneTimeSetUp()
@@ -28,7 +28,7 @@ public class OpenDataTests
 				builder.SetMinimumLevel(LogLevel.Information);
 			});
 		var builder = new ConfigurationBuilder();
-		builder.AddUserSecrets<OpenDataTests>();
+		builder.AddUserSecrets<DataHubIoTests>();
 		builder.AddEnvironmentVariables();
 		var configuration = builder.Build();
 
@@ -52,13 +52,13 @@ public class OpenDataTests
 	[SetUp]
 	public void Setup()
 	{
-		_service = _serviceProvider.GetRequiredService<IOpenDataService>();
+		_service = _serviceProvider.GetRequiredService<IDataHubIoService>();
 	}
 
 	[Test]
 	public async Task GetNasdaqInstrumentsAsync_WithoutIoC_ReturnsInstruments()
 	{
-		var service = OpenDataService.Create();
+		var service = DataHubIoService.Create();
 		var instruments = await service.GetNasdaqInstrumentsAsync();
 
 		Assert.That(instruments, Is.Not.Empty);

@@ -28,7 +28,7 @@ public class AlphaVantageTests
 				builder.SetMinimumLevel(LogLevel.Information);
 			});
 		var builder = new ConfigurationBuilder();
-		builder.AddUserSecrets<OpenDataTests>();
+		builder.AddUserSecrets<DataHubIoTests>();
 		builder.AddEnvironmentVariables();
 		var configuration = builder.Build();
 
