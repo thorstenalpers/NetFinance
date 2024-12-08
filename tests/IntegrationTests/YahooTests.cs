@@ -23,6 +23,17 @@ public class YahooTests
 	public void SetUp()
 	{
 		var services = new ServiceCollection();
+
+		var cfgBuilder = new ConfigurationBuilder();
+		cfgBuilder.AddUserSecrets<YahooTests>();
+		cfgBuilder.AddEnvironmentVariables();
+
+		services.AddSingleton<IConfiguration>(cfgBuilder.Build());
+		services.AddNetFinance(new NetFinanceConfiguration
+		{
+			Http_Timeout = 5,
+			Http_Retries = 3
+		});
 		services.AddLogging(builder =>
 		{
 			builder.AddConsole();
@@ -37,20 +48,6 @@ public class YahooTests
 			//options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
 			//});
 		});
-
-
-		var cfgBuilder = new ConfigurationBuilder();
-		cfgBuilder.AddUserSecrets<YahooTests>();
-		cfgBuilder.AddEnvironmentVariables();
-
-		services.AddSingleton<IConfiguration>(cfgBuilder.Build());
-
-		services.AddNetFinance(new NetFinanceConfiguration
-		{
-			Http_Timeout = 5,
-			Http_Retries = 3
-		});
-
 		_serviceProvider = services.BuildServiceProvider();
 		_service = _serviceProvider.GetRequiredService<IYahooService>();
 	}
