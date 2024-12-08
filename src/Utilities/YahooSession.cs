@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -84,63 +83,63 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 					};
 					using (var httpClient = new HttpClient(handler))
 					{
-						httpClient.DefaultRequestHeaders.Add("User-Agent", _userAgent);
-						httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
-						httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
+						//httpClient.DefaultRequestHeaders.Add("User-Agent", _userAgent);
+						//httpClient.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml,application/json;q=0.9,*/*;q=0.8");
+						//httpClient.DefaultRequestHeaders.Add("Accept-Language", "en-US,en;q=0.5");
 
-						// get consent
-						await Task.Delay(TimeSpan.FromSeconds(1));
-						var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent.ToLower());
-						response.EnsureSuccessStatusCode();
+						//// get consent
+						//await Task.Delay(TimeSpan.FromSeconds(1));
+						//var response = await httpClient.GetAsync(_options.Yahoo_BaseUrl_Consent.ToLower());
+						//response.EnsureSuccessStatusCode();
 
-						var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-						var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
-						var csrfTokenNode = document.QuerySelector("input[name='csrfToken']");
-						var sessionIdNode = document.QuerySelector("input[name='sessionId']");
-						if (csrfTokenNode == null || sessionIdNode == null)
-						{
-							throw new NetFinanceException("Failed to retrieve csrfTokenNode and sessionIdNode.");
-						}
-						var csrfToken = csrfTokenNode.GetAttribute("value");
-						var sessionId = sessionIdNode.GetAttribute("value");
-						if (string.IsNullOrEmpty(csrfToken) || string.IsNullOrEmpty(sessionId))
-						{
-							throw new NetFinanceException("Failed to retrieve csrfToken and sessionId.");
-						}
-						await Task.Delay(TimeSpan.FromSeconds(1));
+						//var htmlContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+						//var document = new AngleSharp.Html.Parser.HtmlParser().ParseDocument(htmlContent);
+						//var csrfTokenNode = document.QuerySelector("input[name='csrfToken']");
+						//var sessionIdNode = document.QuerySelector("input[name='sessionId']");
+						//if (csrfTokenNode == null || sessionIdNode == null)
+						//{
+						//	throw new NetFinanceException("Failed to retrieve csrfTokenNode and sessionIdNode.");
+						//}
+						//var csrfToken = csrfTokenNode.GetAttribute("value");
+						//var sessionId = sessionIdNode.GetAttribute("value");
+						//if (string.IsNullOrEmpty(csrfToken) || string.IsNullOrEmpty(sessionId))
+						//{
+						//	throw new NetFinanceException("Failed to retrieve csrfToken and sessionId.");
+						//}
+						//await Task.Delay(TimeSpan.FromSeconds(1));
 
-						// reject consent
-						var postData = new List<KeyValuePair<string, string>>
-						{
-							new("csrfToken", csrfToken),
-							new("sessionId", sessionId),
-							new("originalDoneUrl", "https://finance.yahoo.com"),
-							new("namespace", "yahoo"),
-							new("consentUUID", "default")
-						};
-						foreach (var value in new List<string> { "reject", "reject" })
-						{
-							postData.Add(new("reject", value));
-						}
-						var url1 = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}";
-						var requestMessage = new HttpRequestMessage(HttpMethod.Post, url1)
-						{
-							Content = new FormUrlEncodedContent(postData),
-						};
-						requestMessage.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-						requestMessage.Headers.Add("Referer", url1);
-						requestMessage.Headers.Add("DNT", "1");
-						requestMessage.Headers.Add("Sec-GPC", "1");
-						requestMessage.Headers.Add("Connection", "keep-alive");
+						//// reject consent
+						//var postData = new List<KeyValuePair<string, string>>
+						//{
+						//	new("csrfToken", csrfToken),
+						//	new("sessionId", sessionId),
+						//	new("originalDoneUrl", "https://finance.yahoo.com"),
+						//	new("namespace", "yahoo"),
+						//	new("consentUUID", "default")
+						//};
+						//foreach (var value in new List<string> { "reject", "reject" })
+						//{
+						//	postData.Add(new("reject", value));
+						//}
+						//var url1 = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}";
+						//var requestMessage = new HttpRequestMessage(HttpMethod.Post, url1)
+						//{
+						//	Content = new FormUrlEncodedContent(postData),
+						//};
+						//requestMessage.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+						//requestMessage.Headers.Add("Referer", url1);
+						//requestMessage.Headers.Add("DNT", "1");
+						//requestMessage.Headers.Add("Sec-GPC", "1");
+						//requestMessage.Headers.Add("Connection", "keep-alive");
 
-						response = await httpClient.SendAsync(requestMessage);
-						response.EnsureSuccessStatusCode();
-						await Task.Delay(TimeSpan.FromSeconds(1));
+						//response = await httpClient.SendAsync(requestMessage);
+						//response.EnsureSuccessStatusCode();
+						//await Task.Delay(TimeSpan.FromSeconds(1));
 
-						// finalize
-						var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}";
-						response = await httpClient.GetAsync(url2);
-						response.EnsureSuccessStatusCode();
+						//// finalize
+						//var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}";
+						//response = await httpClient.GetAsync(url2);
+						//response.EnsureSuccessStatusCode();
 
 						_cookieContainer = cookieContainer;
 						_refreshTime = DateTime.UtcNow;
