@@ -122,7 +122,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 						{
 							postData.Add(new("reject", value));
 						}
-						var url1 = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}".ToLower();
+						var url1 = $"{_options.Yahoo_BaseUrl_Consent_Collect}?sessionId={sessionId}";
 						var requestMessage = new HttpRequestMessage(HttpMethod.Post, url1)
 						{
 							Content = new FormUrlEncodedContent(postData),
@@ -138,7 +138,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 						await Task.Delay(TimeSpan.FromSeconds(1));
 
 						// finalize
-						var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}".ToLower();
+						var url2 = $"{_options.Yahoo_BaseUrl_Consent}?sessionId={sessionId}";
 						response = await httpClient.GetAsync(url2);
 						response.EnsureSuccessStatusCode();
 

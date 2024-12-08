@@ -71,7 +71,7 @@ internal class YahooService : IYahooService
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 		var url = $"{_options.Yahoo_BaseUrl_Quote_Api}?" +
 			$"&symbols={string.Join(",", symbols)}" +
-			$"&crumb={_yahooSession.GetCrumb()}".ToLower();
+			$"&crumb={_yahooSession.GetCrumb()}";
 		Exception? lastException = null;
 		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
 		{
