@@ -323,7 +323,7 @@ internal class YahooService : IYahooService
 		var httpClient = _httpClientFactory.CreateClient(_options.Yahoo_Http_ClientName);
 		await _yahooSession.RefreshSessionAsync(token).ConfigureAwait(false);
 		var url = $"{_options.Yahoo_BaseUrl_Html}/{symbol}/financials/".ToLower();
-		for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
+		for (int attempt = 1; attempt <= 20; attempt++)
 		{
 			try
 			{
