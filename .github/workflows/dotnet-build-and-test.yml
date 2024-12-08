@@ -1,4 +1,4 @@
-name: Build and test the develop branch
+name: Nightly Tests
 
 on:
   push:
