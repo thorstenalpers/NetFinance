@@ -144,6 +144,7 @@ internal class YahooSession(IOptions<NetFinanceConfiguration> options, ILogger<I
 
 						_cookieContainer = cookieContainer;
 						_refreshTime = DateTime.UtcNow;
+						_logger.LogInformation($"Session established successfully");
 						return;
 					};
 				}
