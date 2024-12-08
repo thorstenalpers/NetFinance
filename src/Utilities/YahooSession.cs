@@ -49,15 +49,14 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 			{
 				try
 				{
-					if (_uiCookieContainer == null || _uiCookieContainer?.Count == 0)
-					{
-						_uiCookieContainer = await CreateUiCookiesAndCrumb(token).ConfigureAwait(false);
-					}
 					if (_apiCookieContainer == null || _apiCookieContainer?.Count == 0 || _crumb == null)
 					{
 						(_crumb, _apiCookieContainer) = await CreateApiCookiesAndCrumb(token).ConfigureAwait(false);
 					}
-
+					if (_uiCookieContainer == null || _uiCookieContainer?.Count == 0)
+					{
+						_uiCookieContainer = await CreateUiCookiesAndCrumb(token).ConfigureAwait(false);
+					}
 					_logger.LogInformation($"Session established successfully");
 					_refreshTime = DateTime.UtcNow;
 				}
@@ -65,7 +64,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 				{
 					_userAgent = Helper.CreateRandomUserAgent();
 					_logger.LogInformation($"Retry after exception={ex?.Message}");
-					await Task.Delay((int)Math.Pow(2, attempt) * 500, token).ConfigureAwait(false);
+					//await Task.Delay((int)Math.Pow(2, attempt) * 500, token).ConfigureAwait(false);
 					lastException = ex;
 				}
 			}

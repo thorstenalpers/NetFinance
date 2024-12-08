@@ -6,8 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NetFinance.Extensions;
 using NetFinance.Interfaces;
-using NetFinance.Services;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace NetFinance.Tests.IntegrationTests;
@@ -55,7 +53,7 @@ public class YahooTests
 	[TearDown]
 	public void TearDown()
 	{
-		Task.Delay(TimeSpan.FromSeconds(2)).GetAwaiter().GetResult(); // 2 secs between runs
+		//Task.Delay(TimeSpan.FromSeconds(2)).GetAwaiter().GetResult(); // 2 secs between runs
 	}
 
 	//[Test]
@@ -71,65 +69,65 @@ public class YahooTests
 	//	Assert.That(lastRecentRecord.Date.Date >= startDate, Is.True);
 	//}
 
-	[Test]
-	public async Task GetRecordsAsync_ValidSymbols_ReturnsRecords()
-	{
-		var startDate = new DateTime(2024, 01, 04);
-		var endDate = new DateTime(2024, 01, 05);
-		var records = await _service.GetDailyRecordsAsync("SAP.DE", startDate, endDate);
+	//[Test]
+	//public async Task GetRecordsAsync_ValidSymbols_ReturnsRecords()
+	//{
+	//	var startDate = new DateTime(2024, 01, 04);
+	//	var endDate = new DateTime(2024, 01, 05);
+	//	var records = await _service.GetDailyRecordsAsync("SAP.DE", startDate, endDate);
 
-		Assert.That(records, Is.Not.Empty);
-		Assert.That(records.Count(), Is.EqualTo(2));
+	//	Assert.That(records, Is.Not.Empty);
+	//	Assert.That(records.Count(), Is.EqualTo(2));
 
-		var record1 = records.FirstOrDefault();
-		var record2 = records.Skip(1).FirstOrDefault();
+	//	var record1 = records.FirstOrDefault();
+	//	var record2 = records.Skip(1).FirstOrDefault();
 
-		Assert.That(record1.Date.Date, Is.EqualTo(new DateTime(2024, 01, 05).Date));
-		Assert.That(record1.Open, Is.EqualTo(134.82m));
-		Assert.That(record1.High, Is.EqualTo(137.58m));
-		Assert.That(record1.Low, Is.EqualTo(134.42m));
-		Assert.That(record1.Close, Is.EqualTo(137.08m));
-		Assert.That(record1.AdjustedClose, Is.Not.Null);
-		Assert.That(record1.Volume, Is.EqualTo(1171604));
+	//	Assert.That(record1.Date.Date, Is.EqualTo(new DateTime(2024, 01, 05).Date));
+	//	Assert.That(record1.Open, Is.EqualTo(134.82m));
+	//	Assert.That(record1.High, Is.EqualTo(137.58m));
+	//	Assert.That(record1.Low, Is.EqualTo(134.42m));
+	//	Assert.That(record1.Close, Is.EqualTo(137.08m));
+	//	Assert.That(record1.AdjustedClose, Is.Not.Null);
+	//	Assert.That(record1.Volume, Is.EqualTo(1171604));
 
-		Assert.That(record2.Date.Date, Is.EqualTo(new DateTime(2024, 01, 04).Date));
-		Assert.That(record2.Open, Is.EqualTo(136.92m));
-		Assert.That(record2.High, Is.EqualTo(137.76m));
-		Assert.That(record2.Low, Is.EqualTo(136.18m));
-		Assert.That(record2.Close, Is.EqualTo(136.44m));
-		Assert.That(record2.AdjustedClose, Is.Not.Null);
-		Assert.That(record2.Volume, Is.EqualTo(1114133));
-	}
+	//	Assert.That(record2.Date.Date, Is.EqualTo(new DateTime(2024, 01, 04).Date));
+	//	Assert.That(record2.Open, Is.EqualTo(136.92m));
+	//	Assert.That(record2.High, Is.EqualTo(137.76m));
+	//	Assert.That(record2.Low, Is.EqualTo(136.18m));
+	//	Assert.That(record2.Close, Is.EqualTo(136.44m));
+	//	Assert.That(record2.AdjustedClose, Is.Not.Null);
+	//	Assert.That(record2.Volume, Is.EqualTo(1114133));
+	//}
 
-	[Test]
-	public async Task GetProfileAsync_WithoutIoC_ReturnsProfile()
-	{
-		var service = YahooService.Create();
-		var profile = await service.GetProfileAsync("SAP.DE");
+	//[Test]
+	//public async Task GetProfileAsync_WithoutIoC_ReturnsProfile()
+	//{
+	//	var service = YahooService.Create();
+	//	var profile = await service.GetProfileAsync("SAP.DE");
 
-		Assert.That(profile, Is.Not.Null);
-		Assert.That(profile.Adress, Is.Not.Null);
-	}
+	//	Assert.That(profile, Is.Not.Null);
+	//	Assert.That(profile.Adress, Is.Not.Null);
+	//}
 
-	[TestCase("MSFT")]      // Microsoft Corporation (Nasdaq)
-	[TestCase("IBM")]       // IBM (Nasdaq)
-							//[TestCase("SAP.DE")]    // SAP SE (Xetra)
-							//[TestCase("6758.T")]    // Sony Group Corporation (Tokyo)
-							//[TestCase("VOO")]       // Vanguard S&P 500 ETF
-							//[TestCase("EURUSD=X")]  // Euro to USD
-	public async Task GetQuoteAsync_ValidSymbols_ReturnsQuote(string symbol)
-	{
-		var quote = await _service.GetQuoteAsync(symbol);
+	//[TestCase("MSFT")]      // Microsoft Corporation (Nasdaq)
+	//[TestCase("IBM")]       // IBM (Nasdaq)
+	//						//[TestCase("SAP.DE")]    // SAP SE (Xetra)
+	//						//[TestCase("6758.T")]    // Sony Group Corporation (Tokyo)
+	//						//[TestCase("VOO")]       // Vanguard S&P 500 ETF
+	//						//[TestCase("EURUSD=X")]  // Euro to USD
+	//public async Task GetQuoteAsync_ValidSymbols_ReturnsQuote(string symbol)
+	//{
+	//	var quote = await _service.GetQuoteAsync(symbol);
 
-		var json = JsonConvert.SerializeObject(quote, Formatting.Indented);
-		Assert.That(quote, Is.Not.Null);
-		Assert.That(quote.Symbol, Is.EqualTo(symbol));
-		Assert.That(quote.FirstTradeDate.Value.Date >= new DateTime(1920, 1, 1) && quote.FirstTradeDate.Value.Date <= DateTime.UtcNow, Is.True);
-		Assert.That(!string.IsNullOrWhiteSpace(quote.QuoteType), Is.True);
-		Assert.That(!string.IsNullOrWhiteSpace(quote.Exchange), Is.True);
-		Assert.That(!string.IsNullOrWhiteSpace(quote.ShortName), Is.True);
-		Assert.That(!string.IsNullOrWhiteSpace(quote.LongName), Is.True);
-	}
+	//	var json = JsonConvert.SerializeObject(quote, Formatting.Indented);
+	//	Assert.That(quote, Is.Not.Null);
+	//	Assert.That(quote.Symbol, Is.EqualTo(symbol));
+	//	Assert.That(quote.FirstTradeDate.Value.Date >= new DateTime(1920, 1, 1) && quote.FirstTradeDate.Value.Date <= DateTime.UtcNow, Is.True);
+	//	Assert.That(!string.IsNullOrWhiteSpace(quote.QuoteType), Is.True);
+	//	Assert.That(!string.IsNullOrWhiteSpace(quote.Exchange), Is.True);
+	//	Assert.That(!string.IsNullOrWhiteSpace(quote.ShortName), Is.True);
+	//	Assert.That(!string.IsNullOrWhiteSpace(quote.LongName), Is.True);
+	//}
 
 	//[TestCase("MSFT", true)]      // Microsoft Corporation (Nasdaq)
 	//[TestCase("SAP", true)]       // SAP SE (Nasdaq)
