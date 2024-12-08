@@ -19,8 +19,8 @@ public class YahooTests
 	private static IServiceProvider _serviceProvider;
 	private IYahooService _service;
 
-	[OneTimeSetUp]
-	public void OneTimeSetUp()
+	[SetUp]
+	public async void SetUp()
 	{
 		var serviceProvider = new ServiceCollection()
 			.AddLogging(builder =>
@@ -49,12 +49,9 @@ public class YahooTests
 		});
 
 		_serviceProvider = services.BuildServiceProvider();
-	}
-
-	[SetUp]
-	public void Setup()
-	{
 		_service = _serviceProvider.GetRequiredService<IYahooService>();
+
+		await Task.Delay(TimeSpan.FromSeconds(60));
 	}
 
 	[Test]
