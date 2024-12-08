@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using NetFinance.Extensions;
 using NetFinance.Interfaces;
 using NetFinance.Services;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace NetFinance.Tests.IntegrationTests;
@@ -107,6 +108,21 @@ public class YahooTests
 
 		Assert.That(profile, Is.Not.Null);
 		Assert.That(profile.Adress, Is.Not.Null);
+	}
+
+	[TestCase("MSFT")]      // Microsoft Corporation (Nasdaq)
+	public async Task GetQuoteAsync_ValidSymbols_ReturnsQuote(string symbol)
+	{
+		var quote = await _service.GetQuoteAsync(symbol);
+
+		var json = JsonConvert.SerializeObject(quote, Formatting.Indented);
+		Assert.That(quote, Is.Not.Null);
+		Assert.That(quote.Symbol, Is.EqualTo(symbol));
+		Assert.That(quote.FirstTradeDate.Value.Date >= new DateTime(1920, 1, 1) && quote.FirstTradeDate.Value.Date <= DateTime.UtcNow, Is.True);
+		Assert.That(!string.IsNullOrWhiteSpace(quote.QuoteType), Is.True);
+		Assert.That(!string.IsNullOrWhiteSpace(quote.Exchange), Is.True);
+		Assert.That(!string.IsNullOrWhiteSpace(quote.ShortName), Is.True);
+		Assert.That(!string.IsNullOrWhiteSpace(quote.LongName), Is.True);
 	}
 
 	//[TestCase("MSFT")]      // Microsoft Corporation (Nasdaq)
