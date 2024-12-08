@@ -34,9 +34,15 @@ public class YahooTests
 		var services = new ServiceCollection();
 		services.AddLogging(builder =>
 		{
-			builder.AddConsole();
+			builder.AddSimpleConsole(options =>
+			{
+				options.SingleLine = true;
+				options.TimestampFormat = "yyyy-MM-dd HH:mm ";
+			});
 			builder.SetMinimumLevel(LogLevel.Information);
 		});
+
+
 		var cfgBuilder = new ConfigurationBuilder();
 		cfgBuilder.AddUserSecrets<YahooTests>();
 		cfgBuilder.AddEnvironmentVariables();
