@@ -1,3 +1,5 @@
+[![Publish NuGet Package](https://github.com/thorstenalpers/NetFinance/actions/workflows/dotnet-publish.yml/badge.svg)](https://github.com/thorstenalpers/NetFinance/actions/workflows/dotnet-publish.yml)
+
 # .Net Finance
 
 The **.Net Finance** library leverages the **Yahoo! Finance API** to retrieve various types of financial data, such as stock quotes, company profiles, and historical records. It provides a convenient way to interact with financial information for various symbols, including individual stocks, ETFs, and currency pairs. The library includes several methods to retrieve specific types of data such as quotes, profiles, and historical market records for a given symbol.
