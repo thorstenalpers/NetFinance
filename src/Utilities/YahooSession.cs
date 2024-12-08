@@ -44,7 +44,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 		try
 		{
 			Exception? lastException = null;
-			for (int attempt = 1; attempt <= _options.Http_Retries; attempt++)
+			for (int attempt = 1; attempt <= 10; attempt++)
 			{
 				try
 				{
@@ -64,7 +64,7 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 				{
 					_userAgent = Helper.CreateRandomUserAgent();
 					_logger.LogInformation($"Retry after exception={ex.Message}");
-					await Task.Delay((int)Math.Pow(2, attempt) * 1000);
+					await Task.Delay((int)Math.Pow(2, attempt) * 500);
 					lastException = ex;
 				}
 			}
