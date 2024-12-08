@@ -42,8 +42,6 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 				try
 				{
 					(_crumb, _apiCookieContainer) = await CreateApiCookiesAndCrumb(token).ConfigureAwait(false);
-
-					// ******************** get consent cookie ********************
 					_uiCookieContainer = await CreateUiCookiesAndCrumb(token).ConfigureAwait(false);
 
 					_logger.LogInformation($"Session established successfully");
@@ -52,12 +50,12 @@ internal class YahooSession(ILogger<IYahooSession> logger, IOptions<NetFinanceCo
 				catch (Exception ex)
 				{
 					_userAgent = Helper.CreateRandomUserAgent();
-					_logger.LogInformation($"Retry after exception=--\n{ex}\n---");
+					_logger.LogInformation($"Retry after exception={ex.Message}");
 					await Task.Delay((int)Math.Pow(2, attempt) * 1000);
 					lastException = ex;
 				}
 			}
-			_logger.LogError("Failed to authenticate, lastException=" + lastException + "\n");
+			_logger.LogWarning($"Cannot authenticate, lastException={lastException?.Message}\n");
 		}
 		finally
 		{
